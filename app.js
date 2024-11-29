@@ -31,6 +31,45 @@ function initializeCarousel() {
     });
 }
 
+    const heading = document.getElementById("heading");
+            const moon = document.getElementById("moon");
+
+            window.addEventListener("scroll", () => {
+                let value = window.scrollY;
+
+                if (value <= 800) {
+                    heading.style.marginTop = value * 1.5 + 'px';
+                    moon.style.right = 12 + value * 0.1 + '%';
+                }
+            });
+
+    function setActive(element) {
+        // Remover la clase 'active' de todos los elementos
+        const items = document.querySelectorAll('.nav-item');
+        items.forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // Agregar la clase 'active' al elemento clickeado
+        element.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Selecciona el primer elemento de la barra de navegación
+        const firstItem = document.querySelector('.nav-item');
+        if (firstItem) {
+            // Agrega la clase 'active' al primer elemento
+            firstItem.classList.add('active');
+        }
+
+        // Añade el evento de clic a cada elemento para que la clase 'active' se actualice
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                setActive(item);
+            });
+        });
+    });
+
 // Funcion para boton Volver en login y Sign Up
 
 function volverInformativa() {
@@ -43,10 +82,10 @@ function volverLogin() {
 
 $(document).ready(function() {
     console.log('JQuery está trabajando');
-    
+
     // Mostrar Primera Opción Al Cargar La Página Por Primera Vez //
     ciudadesSostenibles();
-    
+
     // Método Que Muestra El Contenido Del Botón Ciudades Sostenibles //
     function ciudadesSostenibles (){
         let template_bar = '';
@@ -54,7 +93,7 @@ $(document).ready(function() {
                     <h1>Ciudades y Comunidades Sostenibles</h1>
 
                     <p>Las comunidades y ciudades sostenibles son aquellas que buscan mejorar la calidad de vida de sus habitantes al mismo tiempo que minimizan su impacto negativo en el medio ambiente. Se trata de un modelo de desarrollo urbano que busca un equilibrio entre el crecimiento económico, el cuidado del entorno natural y el bienestar social.</p>
-                    
+
                     <p>
                         Las ciudades representan el futuro del modo de vida global. La población mundial alcanzó los 8000 millones de personas en 2022, de las cuales más de la mitad viven en zonas urbanas. Se prevé que esta cifra aumente y que para 2050 el 70 % de la población vivirá en ciudades.<br/>
                         Aproximadamente 1100 millones de personas viven actualmente en barrios marginales, o en condiciones similares en las ciudades, y se espera que en los próximos 30 años haya 2000 millones más.<br/>    
@@ -73,13 +112,17 @@ $(document).ready(function() {
                         <li><b>Movilidad sostenible: </b>Apuestan por el transporte público, la bicicleta y los vehículos eléctricos, reduciendo así la congestión y la contaminación.</li>
                     </ul>
 
+                    <img src="https://imgs.search.brave.com/LBFmU5-51vrgZPOLoT_htWiAYq6O5UtvdJ1zwOsncD4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuZXNtYXJ0Y2l0/eS5lcy9tZWRpYS8y/MDI0LzAzL2NpdWRh/ZC1zb3N0ZW5pYmxl/LWVzbWFydGNpdHkt/MjAyNDAzMTQtMTcw/Mi0xMDI0eDU4NS5w/bmc" alt="" class="fotosContenedor"><br/>
+
                     <h2>Beneficios de vivir en una comunidad sostenible</h2>
                     <ul>
                         <li><b>Mejor calidad de vida: </b>Aire más limpio, menos ruido, más espacios verdes y una mayor sensación de bienestar.</li>
                         <li><b>Reducción del impacto ambiental: </b>Menor consumo de energía y agua, reducción de la emisión de gases de efecto invernadero y protección de la biodiversidad.</li>
                         <li><b>Mayor cohesión social:</b>Fomento de la participación ciudadana, la colaboración y el sentido de comunidad.</li>
                         <li><b>Desarrollo económico a largo plazo: </b>Atracción de inversiones y creación de empleos en sectores sostenibles</li>
-                    </ul>
+                    </ul=>
+
+                    <img src="https://imgs.search.brave.com/rE2CuPEWI3oJ1CjgQBQsP5eAUOdOkm1W-MDSBLZPju4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cmVwc29sLmNvbS9j/b250ZW50L2RhbS9y/ZXBzb2wtY29ycG9y/YXRlL2VzL3Nvc3Rl/bmliaWxpZGFkL2Np/dWRhZGVzLXNvc3Rl/bmlibGVzMi5qcGcu/dHJhbnNmb3JtL3Jw/LXJlbmRpdGlvbi1t/ZC9pbWFnZS5qcGc" alt="" class="fotosContenedor"><br/>
 
                     <h2>¿En qué nos afecta?</h2>
                     <p>
@@ -319,7 +362,75 @@ $(document).ready(function() {
         success: function(){
                 let template_bar = '';
                 template_bar += `
-                            <h1>AQUI VA EL CODIGO 4</h1>
+                            <h1>Datos destacables</h1>
+                            <p> 
+                                El Objetivo de Desarrollo Sostenible (ODS) 11 de la ONU se enfoca en crear ciudades y comunidades sostenibles, promoviendo un entorno urbano inclusivo, seguro, resiliente y sostenible. Contribuir a este objetivo implica adoptar prácticas y tomar decisiones que beneficien tanto al medioambiente como a la calidad de vida de las personas. A continuaci[on te sugerimos acciones clave para aportar a una ciudad sostenible:
+                            </p>
+
+                            <h2> 1. Promover el transporte sostenible </h2>
+                            <ul>
+                                <li> Usar medios de transporte público o alternativas como bicicletas y caminatas, reduciendo la dependencia de automóviles privados.</li>
+                                <li>Optar por vehículos eléctricos o de baja emisión si necesitas transporte privado.</li>
+                                <li>Apoyar y abogar por la expansión de redes de transporte público eficientes y accesibles.</li>
+                            </ul>
+                            
+                            <h2> 2. Impulsar espacios verdes y biodiversidad </h2>
+                            <ul>
+                                <li> Participar en campañas de reforestación urbana y cuidado de áreas verdes.</li>
+                                <li>Promover la creación de jardines comunitarios, techos verdes y muros vegetales para mejorar la calidad del aire y reducir el efecto isla de calor.</li>
+                                <li>Fomentar la protección de la flora y fauna local en los planes de desarrollo urbano.</li>
+                            </ul>
+                            
+                            <h2> 3. Adoptar prácticas de consumo responsable </h2>
+                            <ul>
+                                <li> Reducir, reutilizar y reciclar para minimizar los residuos sólidos urbanos.</li>
+                                <li>Apoyar políticas y empresas que prioricen envases reutilizables y materiales sostenibles.</li>
+                                <li>Optar por productos locales y de comercio justo, que reduzcan la huella de carbono.</li>
+                            </ul>
+                            
+                            <h2> 4. Abogar por viviendas accesibles y sostenibles </h2>
+                            <ul>
+                                <li> Impulsar proyectos que ofrezcan viviendas asequibles y bien planificadas, integradas con servicios esenciales como agua, electricidad y saneamiento.</li>
+                                <li>Promover el uso de materiales de construcción sostenibles y tecnologías de eficiencia energética en edificios.</li>
+                            </ul>
+                            
+                            <h2> 5. Mejorar la resiliencia ante desastres </h2>
+                            <ul>
+                                <li> Apoyar iniciativas de planificación urbana que consideren riesgos climáticos y naturales, como inundaciones, terremotos o tormentas. </li>
+                                <li>Fomentar la educación comunitaria sobre gestión de riesgos y desastres.</li>
+                                <li>Colaborar en la implementación de infraestructuras resilientes, como sistemas de drenaje sostenible y estructuras antisísmicas.</li>
+                            </ul>
+                            
+                            <h2> 6. Participar en la planificación urbana inclusiva </h2>
+                            <ul>
+                                <li> Contribuir a procesos participativos en los que se escuchen las necesidades de diferentes sectores de la sociedad, incluyendo comunidades vulnerables. </li>
+                                <li>Apoyar iniciativas que garanticen acceso equitativo a servicios básicos como salud, educación, transporte y cultura.</li>
+                            </ul>
+                            
+                            <h2> 7. Promover el uso de energía limpia </h2>
+                            <ul>
+                                <li> Usar energías renovables en hogares y negocios, como paneles solares. </li>
+                                <li> Reducir el consumo energético mediante tecnologías eficientes, como bombillas LED y electrodomésticos con certificación energética. </li>
+                                <li> Participar en programas que promuevan la transición a fuentes de energía limpias a nivel local.</li>
+                            </ul>
+                            
+                            <h2> 8. Fomentar la innovación tecnológica sostenible </h2>
+                            <ul>
+                                <li> Apoyar o desarrollar aplicaciones y herramientas tecnológicas que contribuyan a la sostenibilidad urbana, como plataformas para compartir transporte o monitorear el consumo energético.</li>
+                                <li> Impulsar el uso de datos abiertos para tomar decisiones urbanas más inteligentes y sostenibles. </li>
+                            </ul>
+                            
+                            <h2> 9. Educar y sensibilizar </h2>
+                            <ul>
+                                <li> Informar y educar a la comunidad sobre la importancia de las ciudades sostenibles y cómo pueden contribuir. </li>
+                                <li> Fomentar actividades escolares y comunitarias que refuercen valores de respeto por el medioambiente. </li>
+                            </ul>
+                            
+                            <h2> 10. Apoyar políticas públicas sostenibles </h2>
+                            <ul>
+                                <li> Respaldar a líderes y legislaciones que prioricen la sostenibilidad urbana. </li>
+                                <li> Participar en consultas públicas y abogar por normas que promuevan el transporte público, la protección de áreas verdes y la reducción de emisiones contaminantes. </li>
+                            </ul>
                         `;
 
                 let contenedor = document.getElementById("contenedor");
