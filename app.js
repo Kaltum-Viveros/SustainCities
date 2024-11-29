@@ -1,6 +1,6 @@
 // Navegación Al Login Del Foro //
 function irAlForo() {
-    window.location.href = 'login.html';
+    window.location.href = 'login-registro.html';
 }
 
 // Funcion para Slider 10 Ciudades Más Sostenibles //

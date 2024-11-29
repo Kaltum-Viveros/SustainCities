@@ -105,6 +105,7 @@ body {
     color: #fff;
     text-decoration: none;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .link-lr a:hover {
