@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="estilos-lr.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <button class="back-btn" onclick="volverInformativa()"> Volver</button>
+
+    <div class="wrapper">
+        <form action="">
+            <h1>Inicio Sesión</h1>
+            <div class="input-box">
+                <input type="text" id="correo" placeholder="Correo electrónico" required>
+                <i class='bx bxs-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" id="contraseña" placeholder="Contraseña" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+            
+            <button type="submit" class="btn">Iniciar Sesión</button>
+
+            <div class="link-lr">
+                <p>¿No tienes una cuenta?</p>
+                <a href="registro.html">Registrarse</a>
+            </div>
+        </form>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> 
+    <script src="app.js"></script>
+
+</body>
+</html>

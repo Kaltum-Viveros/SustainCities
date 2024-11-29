@@ -1,0 +1,191 @@
+/*  Paleta de colores*/
+:root {
+    --color-primario: #003100;
+    --color-secundario: #185c18;
+    --color-terciario: #2f8731;
+    --color-claro: #47b249;
+    --color-clarito: #5fdd62;
+    --color-blanco: #ffffff;
+    --color-negro: #000000;
+}
+
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-color: var(--color-blanco);
+    color: #333; /* letra*/
+}
+
+/* Cabecera */
+header {
+    background: linear-gradient(90deg, var(--color-primario), var(--color-terciario));
+    color: #fff;    
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header img {
+    max-height: 50px;
+}
+
+header button {
+    background-color: var(--color-blanco);
+    color: var(--color-terciario);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+header button:hover {
+    background-color: #dbdcdb;
+}
+
+/* Barra de navegación */
+nav {
+    border-top: 3px solid var(--color-blanco);
+    background: var(--color-primario);
+    height: 50px;
+}
+
+#barraNavegacion {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#barraNavegacion button {
+    background-color: var(--color-primario);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#barraNavegacion button:hover {
+    background-color: var(--color-secundario);
+}
+
+/* Contenedor */
+#contenedor {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Titulares */
+h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+h2 {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #444;
+}
+
+/* Listas */
+ol {
+    padding-left: 20px;
+}
+
+ol li {
+    margin: 10px 0;
+}
+
+/* Imágenes */
+#logo {
+    width: auto; /* Define el tamaño */
+    height: auto; /* Mantiene la proporción de un círculo */
+    object-fit: cover; /* Asegura que la imagen se recorte correctamente */
+}
+
+
+/* Párrafos */
+p {
+    margin-bottom: 15px;
+}
+
+/* Resaltar elementos importantes */
+b {
+    color: #000;
+}
+
+#foro {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    align-items: center;
+}
+
+#foro p {
+    margin-right: 20px;
+    font-size: large;
+}
+
+/* Estilo del carrusel 10 ciudades*/
+.slider {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    display: none;
+    text-align: center;
+    margin: 0 10px;
+}
+
+.slide.active {
+    display: block; 
+}
+
+.slide p {
+    padding: 40px;
+}
+
+.slide img {
+    width: 581px;
+    height: 306px;
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+button.prev {
+    left: 30px;
+}
+
+button.next {
+    right: 10px;
+}
