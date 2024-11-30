@@ -1,5 +1,5 @@
 <?php
-    namespace proyecto\backend\myapi;
+    namespace backend\myapi;
 
     include_once __DIR__.'/DataBase.php';
 
@@ -92,7 +92,6 @@
             } else {
                 $this->data = array('message' => 'Error al crear el post');
             }
-        
             return $this->getData();
         }
     }

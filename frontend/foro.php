@@ -6,7 +6,7 @@ $id_ciudad = $_SESSION['id_ciudad'];
 $primer_nombre = explode(' ', $nombre)[0];
 
 require_once '../backend/myapi/DataBase.php';
-use proyecto\backend\myapi\DataBase;
+use backend\myapi\DataBase;
 
 class CiudadQuery extends DataBase {
     public function __construct() {

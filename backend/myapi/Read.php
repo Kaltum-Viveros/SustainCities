@@ -1,6 +1,6 @@
 <?php
-namespace proyecto\backend\myapi;
-use proyecto\backend\myapi\DataBase;
+namespace backend\myapi;
+use backend\myapi\DataBase;
 
 include_once __DIR__.'/DataBase.php';
 
