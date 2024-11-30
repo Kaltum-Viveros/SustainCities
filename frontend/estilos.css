@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    color: #ffffff;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* -- Cabecera -- */
+header {
+    background-color: #00192e;
+    color: #ffffff;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+header img {
+    max-height: 50px;
+    margin-right: 10px;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+header img:hover {
+    transform: scale(0.95);
+}
+
+#foro {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#foro p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+#foro img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+#foro:hover img {
+    transform: scale(1.4);
+}
+
+#foro:hover p {
+    transform: translateX(-4px);
+    transition: transform 0.3s ease;
+}
+
+#logo {
+    font-size: 2em;
+    font-weight: 600;
+    user-select: none;
+}
+
+.menu a {
+    font-size: 0.8em;
+    color: #fff;
+    font-weight: 500;
+    text-decoration: none;
+    margin-left: 20px;
+    letter-spacing: 1px;
+    padding: 6px 15px;
+    border-radius: 8px;
+    transition: 0.5s;
+}
+
+.menu a:hover,
+a.active {
+    color: #333;
+    background: #fff;
+}
+
+/* -- Efecto Parallax -- */
+.parallax {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(180deg, black, #060028);
+    background-position: center;
+    background-attachment: fixed;
+    cursor: default;
+}
+
+#heading {
+    position: absolute;
+    top: 5%;
+    margin-right: 1300px;
+    font-size: 5em;
+    color: #fff;
+    text-shadow: 2px 4px 5px #232121;
+    z-index: 0;
+}
+
+.parallax img {
+    position: absolute;
+    width: 100%;
+    pointer-events: none;
+}
+
+.parallax img#moon {
+    width: 500px;
+    top: 25%;
+    right: 10%;
+    z-index: 0;
+}
+
+.parallax img#mountain {
+    position: fixed;
+    bottom: 0%;
+    z-index: 0;
+}
+
+.parallax img#grass {
+    bottom: -35%;
+    z-index: 0;
+}
+
+/* -- Barra de navegación -- */
+nav {
+    background-color: #000000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    margin-top: -80px;
+    top: 80px; /* Ajusta este valor según la altura del header */
+    z-index: 999;
+}
+
+#barraNavegacion {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+#barraNavegacion .nav-item {
+    background-color: transparent;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease, transform 0.2s ease, border-bottom 0.3s ease;
+}
+
+#barraNavegacion .nav-item.active {
+    color: #D9B310;
+}
+
+#barraNavegacion .nav-item::before,
+#barraNavegacion .nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    transition: all .35s ease;
+    opacity: 0;
+}
+
+#barraNavegacion .nav-item::before {
+    top: 0;
+    right: 0;
+    border-top: 3px solid #D9B310;
+    border-right: 3px solid #D9B310;
+    transform: translate(-100%, 50%);
+}
+
+#barraNavegacion .nav-item::after {
+    bottom: 0;
+    left: 0;
+    border-bottom: 3px solid #D9B310;
+    border-left: 3px solid #D9B310;
+    transform: translate(100%, -50%);
+}
+
+#barraNavegacion .nav-item:hover::before,
+#barraNavegacion .nav-item:hover::after {
+    width: 14px;
+    height: 14px;
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* -- Contenedor -- */
+#contenedor {
+    padding: 300px;
+    padding-top: 30px;
+    padding-bottom: 40px;
+    max-width: max-content;
+    background-color: #00192e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: default;
+    position: relative;
+    z-index: 10;
+}
+
+.fotosContenedor {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    margin-bottom: 0;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    border-radius: 5px;
+    border: 3px solid #ddd;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* -- Títulos -- */
+h1, h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    line-height: 1.2;
+    color: #d2d2d3;
+    transition: color 0.3s ease;
+}
+
+h1 {
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    position: relative;
+    display: inline-block;
+}
+h2::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #D9B310; /* Color de la línea */
+    bottom: -4px;
+    left: 0;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+h2:hover::after {
+    opacity: 1;
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+
+h2:hover {
+    color: #D9B310;
+}
+
+
+/* -- Listas -- */
+ol, ul {
+    padding-left: 20px;
+    color: white;
+}
+
+li {
+    margin: 10px 0;
+    color: white;
+}
+
+/* -- Estilo del carrusel 10 ciudades -- */
+.slider {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    display: none;
+    text-align: center;
+    margin: 0 10px;
+}
+
+.slide.active {
+    display: block;
+}
+
+.slide p {
+    padding: 40px;
+}
+
+.slide img {
+    width: 581px;
+    height: 306px;
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+button.prev {
+    left: 30px;
+}
+
+button.next {
+    right: 10px;
+}
