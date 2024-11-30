@@ -121,6 +121,11 @@ $(document).ready(function() {
         }
     }
 
+    $(document).on('submit', '#loginForm', function(event) {
+        event.preventDefault();
+        window.location.href = 'foro.html';
+    });
+
     $(document).on('submit', '#registerForm', function(event) {
         event.preventDefault();
         wrapperLogin();
