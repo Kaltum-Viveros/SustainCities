@@ -5,7 +5,7 @@ abstract class DataBase {
     protected $conexion;
     protected $data;
 
-    protected function __construct($db, $user = 'root', $pass = 'zorobabel') {
+    protected function __construct($db, $user = 'root', $pass = 'changocome') {
         $this->conexion = new \mysqli('localhost', $user, $pass, $db, 3307);
 
         if ($this->conexion->connect_error) {

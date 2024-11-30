@@ -66,6 +66,7 @@
         
             // Guardar el nombre en la sesión
             $_SESSION['nombre'] = $user['nombre'];
+            $_SESSION['id_ciudad'] = $user['id_ciudad'];
         
             // Verificar la contraseña
             if (password_verify($password, $user['password'])) {

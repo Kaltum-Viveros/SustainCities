@@ -193,35 +193,31 @@ $(document).ready(function () {
             })
             .catch(error => console.error('Error al cargar las ciudades:', error));
     }
-});    
 
-function registerUser() {
-    const data = {
-        nombre: document.getElementById('nombre').value,
-        id_ciudad: document.getElementById('ciudad').value,
-        telefono: document.getElementById('telefono').value,
-        correo: document.getElementById('correo').value,
-        password: document.getElementById('contraseña').value
-    };
-
-    fetch('http://localhost/SustainCities/backend/register.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data) // Enviamos todo dentro del campo 'data'
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        if (data.message === 'Usuario registrado exitosamente') {
-            // Redirigir al login o mostrar mensaje de éxito
+    function registerUser() {
+        const data = {
+            nombre: document.getElementById('nombre').value,
+            id_ciudad: document.getElementById('ciudad').value,
+            telefono: document.getElementById('telefono').value,
+            correo: document.getElementById('correo').value,
+            password: document.getElementById('contraseña').value
+        };
+    
+        fetch('http://localhost/SustainCities/backend/register.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) // Enviamos todo dentro del campo 'data'
+            })
+            .then(response => response.json())
+            .then(data => {
+                wrapperLogin();
+            })
+            .catch(error => console.error('Error:', error));
         }
-    })
-    .catch(error => console.error('Error:', error));
-}
 
-// Función para logear un usuario
+        // Función para logear un usuario
 function loginUser() {
     const data = {
         correo: document.getElementById('correo').value,
@@ -238,8 +234,10 @@ function loginUser() {
     .then(response => response.json())
     .then(data => {
         if (data.message === 'Login exitoso') {
-            window.location.href = 'foro.php';
+            window.location.href = 'foroprueba.php';
         }
     })
     .catch(error => console.error('Error:', error));
 }
+
+});
