@@ -1,3 +1,7 @@
+function volverInformativa() {
+    window.location.href = 'index.html';
+}
+
 $(document).ready(function () {
     console.log("login-registro.js cargado");
 
@@ -220,8 +224,8 @@ function registerUser() {
 // Función para logear un usuario
 function loginUser() {
     const data = {
-    correo: document.getElementById('correo').value,
-    password: document.getElementById('contraseña').value
+        correo: document.getElementById('correo').value,
+        password: document.getElementById('contraseña').value
     };
 
     fetch('http://localhost/SustainCities/backend/login.php', {
@@ -229,14 +233,12 @@ function loginUser() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ data }) 
+        body: JSON.stringify( data ) 
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
         if (data.message === 'Login exitoso') {
-            // Redirigir a la página principal o mostrar datos del usuario
-            console.log(data.user); // Aquí puedes acceder a los datos del usuario
+            window.location.href = 'foro.php';
         }
     })
     .catch(error => console.error('Error:', error));

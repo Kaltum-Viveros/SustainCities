@@ -28,7 +28,7 @@
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         
             // Insertar el nuevo usuario
-            $query = "INSERT INTO usuarios (nombre, direccion, telefono, correo, password) VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO usuarios (nombre, telefono, correo, password, id_ciudad) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conexion->prepare($query);
             $stmt->bind_param("sssss", $nombre, $telefono, $correo, $hashedPassword, $id_ciudad);
         
@@ -43,21 +43,30 @@
         
         
         public function loginUser($correo, $password) {
+            // Iniciar la sesión si no está iniciada
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+        
             // Buscar el usuario por correo
             $query = "SELECT * FROM usuarios WHERE correo = ?";
             $stmt = $this->conexion->prepare($query);
             $stmt->bind_param("s", $correo);
             $stmt->execute();
             $result = $stmt->get_result();
-            
+        
+            // Verificar si se encontró el usuario
             if ($result->num_rows === 0) {
-                // Si el correo no existe
                 $this->data = array('message' => 'Correo o contraseña incorrectos');
                 return $this->getData();
             }
-    
+        
+            // Obtener los datos del usuario
             $user = $result->fetch_assoc();
-    
+        
+            // Guardar el nombre en la sesión
+            $_SESSION['nombre'] = $user['nombre'];
+        
             // Verificar la contraseña
             if (password_verify($password, $user['password'])) {
                 // Si la contraseña es correcta
@@ -66,9 +75,10 @@
                 // Si la contraseña es incorrecta
                 $this->data = array('message' => 'Correo o contraseña incorrectos');
             }
-    
+        
             return $this->getData();
         }
+        
 
         public function createPost($titulo, $descripcion, $imagen, $usuario_id) {
             // Insertar el nuevo post

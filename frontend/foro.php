@@ -1,3 +1,7 @@
+<?php
+session_start(); // Asegúrate de que la sesión esté iniciada
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,12 +25,6 @@
                 </h4>
                 <li>   
                     <a href="#">
-                        <i class='bx bxs-user-circle'></i>
-                        UserName
-                    </a>
-                </li>
-                <li>   
-                    <a href="#">
                         <i class='bx bxs-home'></i>
                         Inicio
                     </a>
@@ -38,7 +36,7 @@
                     </a>
                 </li>
                 <li>   
-                    <a href="#">
+                    <a href="http://localhost/SustainCities/frontend/index.html">
                         <i class='bx bx-log-out bx-rotate-180' ></i>
                         Cerrar Sesión
                     </a>
@@ -48,7 +46,7 @@
                 <div class="user-profile">
                     <i class='bx bxs-user-circle' ></i>
                     <div class="user-detail">
-                        <h3>Nombre del User</h3>
+                        <h3><?php echo isset($_SESSION['nombre']) ? $_SESSION['nombre'] : 'Nombre del User'; ?></h3>
                         <span>Estado</span>
                     </div>
                 </div>
@@ -56,4 +54,6 @@
         </aside>
     </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="../backend/login-registro.js"></script>
 </html>

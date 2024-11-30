@@ -18,7 +18,7 @@ if (
 ) 
 {
     $nombre = $data['nombre'];
-    $direccion = $data['direccion'];
+    $id_ciudad = $data['id_ciudad'];
     $telefono = $data['telefono'];
     $correo = $data['correo'];
     $password = $data['password'];
