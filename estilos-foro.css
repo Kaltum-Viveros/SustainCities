@@ -13,14 +13,14 @@ body{
 }
 
 .sidebar {
-    position: fixed;
+    position: fixed; 
     top: 0;
     left: 0;
     height: 100%;
     width: 85px;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow-x: hidden; 
     background: #00192e;
     padding: 25px 20px;
     transition: all 0.4s ease;
@@ -148,4 +148,113 @@ body{
 .sidebar:hover .user-account {
     background: #ffffff2d;
     border-radius: 4px;
+}
+
+/* Contenedor principal */
+.main-content {
+    margin-left: 85px;
+    padding: 20px;
+    transition: margin-left 0.4s ease;
+}
+
+.sidebar:hover + .main-content {
+    margin-left: 260px;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+    width: 100%;
+    background: rgba(0, 25, 46, 0.2);
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px 10px 10px 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.search-bar input {
+    background: transparent;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    color: #00192e;
+}
+
+::placeholder {
+    color: rgba(0, 25, 46, 0.5);
+}
+
+
+.search-bar button {
+    background-color: #00192e;
+    color: #fff;
+    border: none; 
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    position: absolute; /* Posiciona el botón de manera absoluta */
+    right: 10px;
+}
+
+.search-bar button i {
+    vertical-align: middle; 
+}
+
+/* Sección de publicaciones */
+.posts-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Publicación */
+.post {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenido de la publicación */
+.post-content {
+    flex: 3; /* Ocupa más espacio */
+    padding-right: 15px;
+}
+
+.post-content h3 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.post-content p {
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 1rem;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #999;
+}
+
+/* Imagen de la publicación */
+.post-image {
+    flex: 1; /* Ocupa menos espacio */
+    text-align: center;
+}
+
+.post-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
