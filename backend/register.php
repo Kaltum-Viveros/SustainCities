@@ -10,7 +10,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 // Validar que $data no sea nulo y contenga los campos requeridos
 if (
     isset($data['nombre']) &&
-    isset($data['direccion']) &&
+    isset($data['id_ciudad']) &&
     isset($data['telefono']) &&
     isset($data['correo']) &&
     isset($data['password'])
@@ -27,7 +27,7 @@ if (
     $user = new Create('sustaincities');
 
     // Registrar al usuario
-    $user->registerUser($nombre, $direccion, $telefono, $correo, $password);
+    $user->registerUser($nombre, $id_ciudad, $telefono, $correo, $password);
 
     // Obtener la respuesta en JSON y enviarla al cliente
     echo $user->getData();

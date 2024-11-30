@@ -10,7 +10,7 @@
             parent::__construct($db);
         }
 
-        public function registerUser($nombre, $direccion, $telefono, $correo, $password) {
+        public function registerUser($nombre, $id_ciudad, $telefono, $correo, $password) {
             // Verificar si el correo ya está registrado
             $query = "SELECT * FROM usuarios WHERE correo = ?";
             $stmt = $this->conexion->prepare($query);
@@ -30,7 +30,7 @@
             // Insertar el nuevo usuario
             $query = "INSERT INTO usuarios (nombre, direccion, telefono, correo, password) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conexion->prepare($query);
-            $stmt->bind_param("sssss", $nombre, $direccion, $telefono, $correo, $hashedPassword);
+            $stmt->bind_param("sssss", $nombre, $telefono, $correo, $hashedPassword, $id_ciudad);
         
             if ($stmt->execute()) {
                 $this->data = array('message' => 'Usuario registrado exitosamente');
@@ -70,5 +70,19 @@
             return $this->getData();
         }
 
+        public function createPost($titulo, $descripcion, $imagen, $usuario_id) {
+            // Insertar el nuevo post
+            $query = "INSERT INTO posts (titulo, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?)";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->bind_param("sssi", $titulo, $descripcion, $imagen, $usuario_id);
+        
+            if ($stmt->execute()) {
+                $this->data = array('message' => 'Post creado exitosamente');
+            } else {
+                $this->data = array('message' => 'Error al crear el post');
+            }
+        
+            return $this->getData();
+        }
     }
 ?>
