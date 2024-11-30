@@ -1,6 +1,5 @@
 <?php
-use proyecto\backend\myapi\Create;
-include_once __DIR__ . '/myapi/Create.php';
+use backend\myapi\Create;
 
 header('Content-Type: application/json');
 

@@ -1,7 +1,6 @@
 <?php
-use proyecto\backend\myapi\Read;
+use backend\myapi\Read;
 
-include_once __DIR__ . '/myapi/Read.php';
 
 header('Content-Type: application/json');
 

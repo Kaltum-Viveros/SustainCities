@@ -1,7 +1,7 @@
 <?php
-    namespace proyecto\backend\myapi;
+    namespace backend\myapi;
 
-    include_once __DIR__.'/DataBase.php';
+    use backend\myapi\DataBase;
 
     class Create extends DataBase{
 
@@ -81,19 +81,49 @@
         }
         
 
-        public function createPost($titulo, $descripcion, $imagen, $usuario_id) {
-            // Insertar el nuevo post
-            $query = "INSERT INTO posts (titulo, descripcion, imagen, usuario_id) VALUES (?, ?, ?, ?)";
-            $stmt = $this->conexion->prepare($query);
-            $stmt->bind_param("sssi", $titulo, $descripcion, $imagen, $usuario_id);
+        public function createPost($titulo, $descripcion, $imagenes, $usuario_id) {
+            // Inicia una transacción
+            $this->conexion->begin_transaction();
+            $error = false;
         
-            if ($stmt->execute()) {
-                $this->data = array('message' => 'Post creado exitosamente');
+            // Insertar el nuevo post
+            $queryPost = "INSERT INTO post (titulo, descripcion, usuario_id) VALUES (?, ?, ?)";
+            $stmtPost = $this->conexion->prepare($queryPost);
+            $stmtPost->bind_param("ssi", $titulo, $descripcion, $usuario_id);
+        
+            if (!$stmtPost->execute()) {
+                $error = true;
+                $errorMessage = "Error al crear el post: " . $stmtPost->error;
             } else {
-                $this->data = array('message' => 'Error al crear el post');
+                // Obtener el id_post generado
+                $id_post = $this->conexion->insert_id;
+        
+                // Insertar las imágenes asociadas
+                $queryImagen = "INSERT INTO imagen (id_post, imagen) VALUES (?, ?)";
+                $stmtImagen = $this->conexion->prepare($queryImagen);
+        
+                foreach ($imagenes as $imagen) {
+                    $stmtImagen->bind_param("ib", $id_post, $imagen);
+                    if (!$stmtImagen->execute()) {
+                        $error = true;
+                        $errorMessage = "Error al insertar imagen: " . $stmtImagen->error;
+                        break;
+                    }
+                }
+            }
+        
+            if ($error) {
+                // Revertir la transacción en caso de error
+                $this->conexion->rollback();
+                $this->data = array('message' => $errorMessage);
+            } else {
+                // Confirmar la transacción si no hay errores
+                $this->conexion->commit();
+                $this->data = array('message' => 'Post y sus imágenes creados exitosamente');
             }
         
             return $this->getData();
         }
+        
     }
 ?>

@@ -1,5 +1,5 @@
 <?php
-namespace proyecto\backend\myapi;
+namespace backend\myapi;
 
 abstract class DataBase {
     protected $conexion;
