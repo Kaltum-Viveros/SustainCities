@@ -109,7 +109,7 @@
                 }
                 
                 // Validar si existe una imagen
-                if ($imagen) {
+                if ($imagen&& $imagen['error'] === UPLOAD_ERR_OK) {
                     // Comprobar si el archivo de imagen fue subido correctamente
                     if ($imagen['error'] === UPLOAD_ERR_OK) {
                         // Obtener el contenido binario de la imagen

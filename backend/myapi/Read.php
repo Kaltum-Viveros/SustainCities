@@ -11,7 +11,7 @@ class Read extends DataBase {
     }
 
     public function getEstados() {
-        $query = 'SELECT id_estado, nombre_estado FROM estado';
+        $query = 'SELECT id_estado, nombre_estado FROM estado ';
         $stmt = $this->conexion->prepare($query);
 
         if (!$stmt) {
@@ -57,7 +57,7 @@ class Read extends DataBase {
             header('Content-Type: application/json');
     
             // Consulta SQL para obtener los posts de la vista
-            $query = "SELECT * FROM vista_posts_usuario WHERE id_usuario = ?";
+            $query = "SELECT * FROM vista_posts_usuario WHERE id_usuario = ? AND eliminado = 0 ORDER BY fecha_creacion DESC";
             $stmt = $this->conexion->prepare($query);
     
             if (!$stmt) {

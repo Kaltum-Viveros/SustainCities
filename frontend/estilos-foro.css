@@ -367,3 +367,35 @@ body{
 .post-buttons button:hover {
     background-color: #002f5d;
 }
+
+/* Estilo para el botón de editar */
+.btn-edit {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+    background-color: #45a049; /* Verde oscuro al pasar el ratón */
+}
+
+/* Estilo para el botón de eliminar */
+.btn-delete {
+    background-color: #f44336; /* Rojo */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #e53935; /* Rojo oscuro al pasar el ratón */
+}
