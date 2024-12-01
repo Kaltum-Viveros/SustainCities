@@ -121,7 +121,6 @@
                 $this->conexion->commit();
                 $this->data = array('message' => 'Post y sus imágenes creados exitosamente');
             }
-        
             return $this->getData();
         }
         

@@ -1,5 +1,5 @@
 <?php
-    namespace proyecto\backend\myapi;
+    namespace backend\myapi;
     use backend\myapi\DataBase;
 
     include_once __DIR__.'/DataBase.php';

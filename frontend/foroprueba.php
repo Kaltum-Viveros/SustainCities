@@ -6,7 +6,7 @@ $id_ciudad = $_SESSION['id_ciudad'];
 $primer_nombre = explode(' ', $nombre)[0];
 
 require_once '../backend/myapi/DataBase.php';
-use proyecto\backend\myapi\DataBase;
+use backend\myapi\DataBase;
 
 class CiudadQuery extends DataBase {
     public function __construct() {
@@ -63,13 +63,13 @@ try {
                     <div class="menu-separator"></div>
                 </h4>
                 <li>
-                    <a href="#">
+                    <a id="inicio">
                         <i class='bx bxs-home'></i>
                         Inicio
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a id="misPost">
                         <i class='bx bxs-plus-square' ></i>
                         Mis Posts
                     </a>
@@ -101,38 +101,12 @@ try {
         </div>
 
         <!-- Área de publicaciones -->
-        <div class="posts-section">
-            <div class="post">
-                <div class="post-content">
-                    <h3>Título de la Publicación</h3>
-                    <p>Contenido breve de la publicación...</p>
-                    <div class="post-meta">
-                        <span>Autor: Usuario1</span>
-                        <span>Fecha: 2024-11-30</span>
-                    </div>
-                </div>
-                <div class="post-image">
-                    <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
-                </div>
-            </div>
+        <div id="contenedor">
 
-            <div class="post">
-                <div class="post-content">
-                    <h3>Otra Publicación</h3>
-                    <p>Contenido breve de otra publicación...</p>
-                    <div class="post-meta">
-                        <span>Autor: Usuario2</span>
-                        <span>Fecha: 2024-11-29</span>
-                    </div>
-                </div>
-                <div class="post-image">
-                    <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
-                </div>
-            </div>
         </div>
 
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="../backend/login-registro.js"></script>
+<script src="foro.js"></script>
 </ht>
