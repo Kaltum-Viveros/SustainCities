@@ -291,6 +291,7 @@ li {
 }
 
 /* -- Estilo del carrusel 10 ciudades -- */
+
 .slider {
     position: relative;
     width: 100%;
@@ -307,28 +308,96 @@ li {
 .slide {
     min-width: 100%;
     display: none;
-    text-align: center;
-    margin: 0 10px;
+    position: relative;
+    border-radius: 8px;
 }
 
 .slide.active {
     display: block;
-}
-
-.slide p {
-    padding: 40px;
+    overflow: hidden;
 }
 
 .slide img {
-    width: 581px;
-    height: 306px;
+    width: 800px;
+    height: 430px;
+    object-fit: cover;
+    transition: 0.5s ease-in-out;
+}
+
+.slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid white;
+    border-radius: inherit;
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide:hover img {
+    filter: grayscale(1) brightness(0.4);
+}
+
+.slide:hover::after {
+    opacity: 1;
+    inset: 20px;
+}
+
+.slide .slide-contenido {
+    position: absolute;
+    top: 30%; 
+    left: 15%; 
+    transform: translate(-50%, -50%); 
+    z-index: 2;
+    color: #fff;
+    text-align: center; 
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    max-width: 70%; 
+    transform: translateY(20px);
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide .slide-contenido h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 10px; 
+    transform: scale(0.9);
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide .slide-contenido p {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #ddd;
+    margin: 0;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide:hover .slide-contenido {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide:hover .slide-contenido h2 {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.slide:hover .slide-contenido p {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 button.prev, button.next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(180, 171, 171, 0.5);
     color: #fff;
     border: none;
     padding: 10px;
@@ -337,7 +406,7 @@ button.prev, button.next {
 }
 
 button.prev {
-    left: 30px;
+    left: 10px;
 }
 
 button.next {

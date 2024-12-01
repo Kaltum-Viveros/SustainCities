@@ -1,45 +1,4 @@
-<?php
-session_start(); // Asegúrate de que la sesión esté iniciada
 
-$nombre = $_SESSION['nombre'];
-$id_ciudad = $_SESSION['id_ciudad'];
-$primer_nombre = explode(' ', $nombre)[0];
-
-require_once '../backend/myapi/DataBase.php';
-use backend\myapi\DataBase;
-
-class CiudadQuery extends DataBase {
-    public function __construct() {
-        parent::__construct('sustaincities');
-    }
-
-    public function obtenerCiudad($id_ciudad) {
-        $query = "SELECT nombre FROM ciudades WHERE id_ciudad = ?";
-        $stmt = $this->conexion->prepare($query);
-
-        if (!$stmt) {
-            throw new \Exception('Error preparando la consulta: ' . $this->conexion->error);
-        }
-
-        $stmt->bind_param("i", $id_ciudad);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            return $result->fetch_assoc()['nombre'];
-        }
-
-        return "Ciudad desconocida";
-    }
-}
-
-try {
-    $ciudadQuery = new CiudadQuery();
-    $ciudad = $ciudadQuery->obtenerCiudad($id_ciudad);
-} catch (\Exception $e) {
-    die("Error al obtener la ciudad: " . $e->getMessage());
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,8 +44,8 @@ try {
                 <div class="user-profile">
                     <i class='bx bxs-user-circle' ></i>
                     <div class="user-detail">
-                        <h3><?php echo $primer_nombre?></h3>
-                        <span><?php echo $ciudad?></span>
+                        <h3>primer_nombre</h3>
+                        <span>ciudad</span>
                     </div>
                 </div>
             </div>

@@ -5,30 +5,28 @@ $(document).ready(function () {
         let template_bar = `
             <div class="posts-section">
                 <div class="post">
-                    <div class="post-content">
-                        <h3>Título de la Publicación</h3>
-                        <p>Contenido breve de la publicación...</p>
-                        <div class="post-meta">
-                            <span>Autor: Usuario1</span>
-                            <span>Fecha: 2024-11-30</span>
-                        </div>
-                    </div>
                     <div class="post-image">
                         <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
                     </div>
-                </div>
-
-                <div class="post">
                     <div class="post-content">
-                        <h3>Otra Publicación</h3>
-                        <p>Contenido breve de otra publicación...</p>
-                        <div class="post-meta">
-                            <span>Autor: Usuario2</span>
-                            <span>Fecha: 2024-11-29</span>
+                        <div class="post-header">
+                            <i class='bx bx-user-circle' ></i>
+                            <div class="user-details">
+                                <h4>Usuario1</h4>
+                                <h5>Estado, Ciudad</h5>
+                            </div>
                         </div>
-                    </div>
-                    <div class="post-image">
-                        <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
+                        <div class="post-text">
+                            <h3>Categoría de la Publicación</h3>
+                            <p>Contenido breve de la publicación...</p>
+                            <div class="post-meta">
+                                <span><i class='bx bx-calendar' ></i> 2024-11-30</span>
+                                <div class="meta-post-button">
+                                    <span>15 <i class='bx bx-like' ></i></span>
+                                    <span>15 <i class='bx bx-chat'></i></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,45 +70,23 @@ $(document).ready(function () {
                             <h3>Mis Posts</h3>
                             <!-- Ejemplo de publicaciones con o sin imagen -->
                             <div class="post">
+                                <div class="post-image">
+                                    <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
+                                </div>
                                 <div class="post-content">
                                     <h4>Post de Ejemplo 1</h4>
                                     <p>Contenido del post 1...</p>
-                                    <span>Fecha: 2024-11-30</span>
+                                    <span><i class='bx bx-calendar' ></i> 2024-11-30</span>
                                 </div>
                                 <div class="post-buttons">
                                     <form action="edit_post.php" method="GET">
                                         <input type="hidden" name="id" value="1">
-                                        <button type="submit">Editar</button>
+                                        <button type="submit"><i class='bx bx-edit'></i></button>
                                     </form>
                                     <form action="delete_post.php" method="POST">
                                         <input type="hidden" name="id" value="1">
-                                        <button type="submit">Eliminar</button>
+                                        <button type="submit"><i class='bx bx-trash'></i></button>
                                     </form>
-                                </div>
-                                <!-- Imagen opcional -->
-                                <div class="post-image">
-                                    <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
-                                </div>
-                            </div>
-                            <div class="post">
-                                <div class="post-content">
-                                    <h4>Post de Ejemplo 2</h4>
-                                    <p>Contenido del post 2...</p>
-                                    <span>Fecha: 2024-11-29</span>
-                                </div>
-                                <div class="post-buttons">
-                                    <form action="edit_post.php" method="GET">
-                                        <input type="hidden" name="id" value="2">
-                                        <button type="submit">Editar</button>
-                                    </form>
-                                    <form action="delete_post.php" method="POST">
-                                        <input type="hidden" name="id" value="2">
-                                        <button type="submit">Eliminar</button>
-                                    </form>
-                                </div>
-                                <!-- Imagen opcional -->
-                                <div class="post-image">
-                                    <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
                                 </div>
                             </div>
                         </div>

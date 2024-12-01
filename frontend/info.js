@@ -166,86 +166,104 @@ $(document).ready(function() {
                                 <button class="prev">⟨</button>
                                 <div class="slides">
                                     <div class="slide active">
+                                        <img src="resources/img/oslo.jpg" alt="Oslo"/>
                                         <div class="slide-contenido">
                                             <h2>Oslo (Noruega)</h2> 
                                             <p> 
                                                 Oslo lidera en sostenibilidad gracias a su ambicioso objetivo de ser una ciudad neutral en carbono para 2030. Su sistema de transporte público utiliza energía renovable, y sus políticas fomentan la reducción de emisiones mediante zonas libres de autos y una fuerte inversión en infraestructura para bicicletas. 
                                             </p>
                                         </div>
-                                        <img src="resources/img/oslo.jpg" alt="Oslo"/>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2>Estocolmo (Suecia)</h2> 
-                                        <p> 
-                                            Pionera en sostenibilidad, Estocolmo ha implementado planes para convertirse en una ciudad libre de combustibles fósiles para 2040. Destaca por su eficiente gestión de residuos, su amplia red de transporte eléctrico y su integración de la naturaleza dentro del entorno urbano. 
-                                        </p>
                                         <img src="resources/img/estocolmo.jpg" alt="Estocolmo"/>
+                                        <div class="slide-contenido">
+                                            <h2>Estocolmo (Suecia)</h2> 
+                                            <p> 
+                                                Pionera en sostenibilidad, Estocolmo ha implementado planes para convertirse en una ciudad libre de combustibles fósiles para 2040. Destaca por su eficiente gestión de residuos, su amplia red de transporte eléctrico y su integración de la naturaleza dentro del entorno urbano. 
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2> Tokio (Japón) </h2> 
-                                        <p> 
-                                            Tokio combina tecnología avanzada con prácticas sostenibles. Ha implementado iniciativas para reducir el consumo energético en edificios y promover la energía solar. Además, cuenta con extensos programas de reciclaje y áreas verdes como el Parque Yoyogi, que sirven como pulmones urbanos.
-                                        </p>
                                         <img src="resources/img/tokio.jpg" alt="Tokio"/>
+                                        <div class="slide-contenido">
+                                            <h2> Tokio (Japón) </h2> 
+                                            <p> 
+                                                Tokio combina tecnología avanzada con prácticas sostenibles. Ha implementado iniciativas para reducir el consumo energético en edificios y promover la energía solar. Además, cuenta con extensos programas de reciclaje y áreas verdes como el Parque Yoyogi, que sirven como pulmones urbanos.
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2> Copenhague (Dinamarca) </h2> 
-                                        <p> 
-                                            Considerada una de las ciudades más amigables para ciclistas, Copenhague aspira a ser carbono neutral para 2025. Su red de transporte es principalmente eléctrica, y su enfoque en edificios sostenibles y energías renovables la convierten en un modelo global. 
-                                        </p>
                                         <img src="resources/img/copenhague.jpg" alt="Copenhague"/>
+                                        <div class="slide-contenido">
+                                            <h2> Copenhague (Dinamarca) </h2> 
+                                            <p> 
+                                                Considerada una de las ciudades más amigables para ciclistas, Copenhague aspira a ser carbono neutral para 2025. Su red de transporte es principalmente eléctrica, y su enfoque en edificios sostenibles y energías renovables la convierten en un modelo global. 
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2> Berlín (Alemania) </h2> 
-                                        <p> 
-                                            Berlín apuesta por la reutilización de recursos y el desarrollo urbano sostenible. La ciudad fomenta espacios verdes, transporte público eficiente y energía limpia. Además, sus políticas de renovación de edificios priorizan la eficiencia energética. 
-                                        </p>
                                         <img src="resources/img/berlin.jpg" alt="Berlin"/>
+                                        <div class="slide-contenido">
+                                            <h2> Berlín (Alemania) </h2> 
+                                            <p> 
+                                                Berlín apuesta por la reutilización de recursos y el desarrollo urbano sostenible. La ciudad fomenta espacios verdes, transporte público eficiente y energía limpia. Además, sus políticas de renovación de edificios priorizan la eficiencia energética. 
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2> Londres (Reino Unido) </h2> 
-                                        <p> 
-                                            Londres ha implementado zonas de bajas emisiones para reducir la contaminación. Su infraestructura para bicicletas, expansión de transporte eléctrico y proyectos de reforestación urbana refuerzan su compromiso con la sostenibilidad. 
-                                        </p>
                                         <img src="resources/img/londres.jpg" alt="Londres"/>
+                                        <div class="slide-contenido">
+                                            <h2> Londres (Reino Unido) </h2> 
+                                            <p> 
+                                                Londres ha implementado zonas de bajas emisiones para reducir la contaminación. Su infraestructura para bicicletas, expansión de transporte eléctrico y proyectos de reforestación urbana refuerzan su compromiso con la sostenibilidad. 
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2> Seattle (Estados Unidos) </h2> 
-                                        <p> 
-                                            Seattle es conocida por su planificación ambientalmente consciente. Su energía proviene en gran medida de fuentes renovables, y la ciudad incentiva el uso de transporte público, junto con la protección de espacios naturales y su biodiversidad. 
-                                        </p>
                                         <img src="resources/img/seattle.jpg" alt="Seattle"/>
+                                        <div class="slide-contenido">
+                                            <h2> Seattle (Estados Unidos) </h2> 
+                                            <p> 
+                                                Seattle es conocida por su planificación ambientalmente consciente. Su energía proviene en gran medida de fuentes renovables, y la ciudad incentiva el uso de transporte público, junto con la protección de espacios naturales y su biodiversidad. 
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2>  París (Francia) </h2> 
-                                        <p>     
-                                            La capital francesa avanza hacia la sostenibilidad con políticas como la reducción del tráfico vehicular, la expansión de áreas peatonales y un sistema de bicicletas compartidas pionero. París también impulsa proyectos de techos verdes y energías renovables. 
-                                        </p>
                                         <img src="resources/img/paris.jpg" alt="Paris"/>
+                                        <div class="slide-contenido">
+                                            <h2>  París (Francia) </h2> 
+                                            <p>     
+                                                La capital francesa avanza hacia la sostenibilidad con políticas como la reducción del tráfico vehicular, la expansión de áreas peatonales y un sistema de bicicletas compartidas pionero. París también impulsa proyectos de techos verdes y energías renovables. 
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2> San Francisco (Estados Unidos) </h2> 
-                                        <p> 
-                                            San Francisco lidera en reciclaje y compostaje, logrando desviar gran parte de sus desechos de los vertederos. Además, ha invertido significativamente en energía solar y transporte limpio, con un enfoque en preservar sus espacios naturales. 
-                                        </p>
                                         <img src="resources/img/san-francisco.jpg" alt="San Francisco"/>
+                                        <div class="slide-contenido">
+                                            <h2> San Francisco (Estados Unidos) </h2> 
+                                            <p> 
+                                                San Francisco lidera en reciclaje y compostaje, logrando desviar gran parte de sus desechos de los vertederos. Además, ha invertido significativamente en energía solar y transporte limpio, con un enfoque en preservar sus espacios naturales. 
+                                            </p>
+                                        </div>
                                     </div> 
 
                                     <div class="slide">
-                                        <h2> Ámsterdam (Países Bajos) </h2> 
-                                        <p> 
-                                            Ámsterdam es reconocida por su cultura ciclista y su compromiso con la economía circular. La ciudad promueve proyectos de viviendas sostenibles, energías renovables y un transporte público eficiente que utiliza electricidad y biocombustibles. 
-                                        </p>
                                         <img src="resources/img/amsterdam.jpg" alt="Amsterdam"/>
-                                    </div> 
+                                        <div class="slide-contenido">
+                                            <h2> Ámsterdam (Países Bajos) </h2> 
+                                            <p> 
+                                                Ámsterdam es reconocida por su cultura ciclista y su compromiso con la economía circular. La ciudad promueve proyectos de viviendas sostenibles, energías renovables y un transporte público eficiente que utiliza electricidad y biocombustibles. 
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <button class="next">⟩</button>
                             </div>
