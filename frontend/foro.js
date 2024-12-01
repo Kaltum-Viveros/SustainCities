@@ -23,7 +23,7 @@ $(document).ready(function () {
                                 <span><i class='bx bx-calendar' ></i> 2024-11-30</span>
                                 <div class="meta-post-button">
                                     <span>15 <i class='bx bx-like' ></i></span>
-                                    <span>15 <i class='bx bx-chat'></i></span>
+                                    <span><i class='bx bx-chat'></i></span>
                                 </div>
                             </div>
                         </div>
@@ -74,9 +74,15 @@ $(document).ready(function () {
                                     <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
                                 </div>
                                 <div class="post-content">
-                                    <h4>Post de Ejemplo 1</h4>
+                                    <h4>Categoría del Post</h4>
                                     <p>Contenido del post 1...</p>
-                                    <span><i class='bx bx-calendar' ></i> 2024-11-30</span>
+                                    <div class="post-meta">
+                                        <span><i class='bx bx-calendar' ></i> 2024-11-30</span>
+                                        <div class="meta-post-button">
+                                            <span>15 <i id="likes" class='bx bx-like' ></i></span>
+                                            <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="post-buttons">
                                     <form action="edit_post.php" method="GET">

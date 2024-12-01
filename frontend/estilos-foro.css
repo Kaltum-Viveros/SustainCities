@@ -403,7 +403,6 @@ body{
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    padding-top: 125px;
     padding-left: 15px;
     gap: 10px; /* Separación entre los botones */
     position: absolute;
