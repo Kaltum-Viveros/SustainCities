@@ -150,6 +150,8 @@ body{
     border-radius: 4px;
 }
 
+/*estilos chat provicionales*/
+
 /* Contenedor principal */
 .main-content {
     margin-left: 85px;
@@ -257,4 +259,111 @@ body{
     height: auto;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor principal */
+.content-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Formulario a la izquierda y posts a la derecha */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Sección de formulario */
+.form-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo del formulario */
+.form-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-section input, .form-section textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-section button {
+    background-color: #00192e;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.form-section button:hover {
+    background-color: #002f5d;
+}
+
+/* Sección de publicaciones */
+.posts-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Publicación */
+.post {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenido de la publicación */
+.post-content {
+    flex: 3; /* Ocupa más espacio */
+    padding-right: 15px;
+}
+
+.post-content h4 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.post-content p {
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 1rem;
+}
+
+.post-meta, .post-buttons {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #999;
+}
+
+/* Botones de acción */
+.post-buttons form {
+    margin: 0;
+}
+
+.post-buttons button {
+    background-color: #00192e;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.3s;
+}
+
+.post-buttons button:hover {
+    background-color: #002f5d;
 }

@@ -31,28 +31,28 @@ function initializeCarousel() {
     });
 }
 
-    const heading = document.getElementById("heading");
-            const moon = document.getElementById("moon");
+const heading = document.getElementById("heading");
+const moon = document.getElementById("moon");
 
-            window.addEventListener("scroll", () => {
-                let value = window.scrollY;
+window.addEventListener("scroll", () => {
+    let value = window.scrollY;
 
-                if (value <= 800) {
-                    heading.style.marginTop = value * 1.5 + 'px';
-                    moon.style.right = 12 + value * 0.1 + '%';
-                }
-            });
-
-    function setActive(element) {
-        // Remover la clase 'active' de todos los elementos
-        const items = document.querySelectorAll('.nav-item');
-        items.forEach(item => {
-            item.classList.remove('active');
-        });
-
-        // Agregar la clase 'active' al elemento clickeado
-        element.classList.add('active');
+    if (value <= 800) {
+        heading.style.marginTop = value * 1.5 + 'px';
+        moon.style.right = 10 + value * 0.1 + '%';
     }
+});
+
+function setActive(element) {
+// Remover la clase 'active' de todos los elementos
+const items = document.querySelectorAll('.nav-item');
+items.forEach(item => {
+item.classList.remove('active');
+});
+
+// Agregar la clase 'active' al elemento clickeado
+element.classList.add('active');
+}
 
     document.addEventListener('DOMContentLoaded', () => {
         // Selecciona el primer elemento de la barra de navegación

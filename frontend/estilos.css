@@ -91,7 +91,6 @@ a.active {
     color: #333;
     background: #fff;
 }
-
 /* -- Efecto Parallax -- */
 .parallax {
     position: relative;
@@ -99,11 +98,7 @@ a.active {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('resources/img/cielo.png');
-    background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-size: cover;
+    background: linear-gradient(180deg, black, #060028);
     background-position: center;
     background-attachment: fixed;
     cursor: default;
@@ -112,7 +107,8 @@ a.active {
 #heading {
     position: absolute;
     top: 10%;
-    font-size: 5em;
+    margin-right: 1200px;
+    font-size: 3em;
     color: #fff;
     text-shadow: 2px 4px 5px #232121;
     z-index: 0;
@@ -125,15 +121,15 @@ a.active {
 }
 
 .parallax img#moon {
-    width: 500px;
+    width: 400px;
     top: 25%;
-    right: 12%;
+    right: 10%;
     z-index: 0;
 }
 
 .parallax img#mountain {
     position: fixed;
-    bottom: 1%;
+    bottom: -10%;
     z-index: 0;
 }
 
@@ -141,13 +137,12 @@ a.active {
     bottom: -35%;
     z-index: 0;
 }
-
 /* -- Barra de navegación -- */
 nav {
     background-color: #000000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: sticky;
-    margin-top: -100px;
+    margin-top: -80px;
     top: 80px; /* Ajusta este valor según la altura del header */
     z-index: 999;
 }
