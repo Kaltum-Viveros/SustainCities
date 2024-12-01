@@ -94,11 +94,7 @@ try {
 
     <div class="main-content">
         <!-- Barra de búsqueda -->
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar en el foro..." id="search">
-            <button id="search-button"><i class='bx bx-search'></i></button>
-        </div>
-
+        
         <!-- Área de publicaciones -->
         <div id="contenedor">
 
