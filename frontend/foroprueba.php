@@ -3,11 +3,10 @@ session_start(); // Asegúrate de que la sesión esté iniciada
 
 $nombre = $_SESSION['nombre'];
 $id_ciudad = $_SESSION['id_ciudad'];
-$primer_nombre = explode(' ', $nombre)[0];
+$primer_nombre = explode(' ', $nombre)[0];  
 
-require_once '../backend/myapi/DataBase.php';
-use backend\myapi\DataBase;
-
+use SustainCities\backend\myapi\DataBase;  // Asegúrate de usar correctamente el espacio de nombres
+include_once __DIR__ . '/../backend/myapi/DataBase.php'; 
 class CiudadQuery extends DataBase {
     public function __construct() {
         parent::__construct('sustaincities');

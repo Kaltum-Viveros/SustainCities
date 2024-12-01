@@ -6,7 +6,7 @@ $id_ciudad = $_SESSION['id_ciudad'];
 $primer_nombre = explode(' ', $nombre)[0];
 
 require_once '../backend/myapi/DataBase.php';
-use backend\myapi\DataBase;
+use SustainCities\backend\myapi\DataBase;
 
 class CiudadQuery extends DataBase {
     public function __construct() {
@@ -134,5 +134,4 @@ try {
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="../backend/login-registro.js"></script>
 </ht>

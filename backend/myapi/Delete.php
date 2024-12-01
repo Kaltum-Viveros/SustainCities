@@ -1,6 +1,6 @@
 <?php
-    namespace backend\myapi;
-    use backend\myapi\DataBase;
+    namespace SustainCities\backend\myapi;
+    use SustainCities\backend\myapi\DataBase;
 
     include_once __DIR__.'/DataBase.php';
 

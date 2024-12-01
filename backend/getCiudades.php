@@ -1,8 +1,6 @@
 <?php
-use backend\myapi\Read;
-
-include_once __DIR__ . '/myapi/Read.php';
-
+use SustainCities\backend\myapi\Read;
+include_once __DIR__.'/Read.php';
 header('Content-Type: application/json');
 
 // Verificar si se recibió el parámetro `id_estado`

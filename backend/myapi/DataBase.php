@@ -1,11 +1,10 @@
 <?php
-namespace backend\myapi;
-
+namespace SustainCities\backend\myapi;
 abstract class DataBase {
     protected $conexion;
     protected $data;
 
-    protected function __construct($db, $user = 'root', $pass = 'changocome') {
+    protected function __construct($db, $user = 'root', $pass = 'zorobabel') {
         $this->conexion = new \mysqli('localhost', $user, $pass, $db, 3307);
 
         if ($this->conexion->connect_error) {

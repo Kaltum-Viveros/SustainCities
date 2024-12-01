@@ -1,5 +1,8 @@
 <?php
-use backend\myapi\Create;
+
+use SustainCities\backend\myapi\Create;
+include_once __DIR__ . '/myapi/Create.php';
+
 header('Content-Type: application/json');
 
 // Leer y decodificar el JSON enviado desde el cliente
