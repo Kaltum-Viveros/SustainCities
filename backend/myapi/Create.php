@@ -99,7 +99,7 @@
         
             if (!$stmtPost->execute()) {
                 $error = true;
-                $errorMessage = "Error al crear el post: " . $stmtPost->error;
+                $errorMessage = "Error al crear el post desde linea 102: " . $stmtPost->error;
             } else {
                 // Obtener el id_post generado
                 $id_post = $this->conexion->insert_id;
@@ -107,7 +107,7 @@
                     $error = true;
                     $errorMessage = "Error al obtener el ID del post.";
                 }
-        
+                
                 // Validar si existe una imagen
                 if ($imagen) {
                     // Comprobar si el archivo de imagen fue subido correctamente
@@ -152,7 +152,7 @@
             // Cerrar el statement del post
             $stmtPost->close();
         
-            return $this->getData();
+            echo $this->getData();
         }        
     }          
 ?>

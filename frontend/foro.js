@@ -49,7 +49,6 @@
         });
 
         $(document).on('click', '#misPost', function() {
-            actualizarMisPosts();
             $.ajax({
                 url: 'foroprueba.php',
                 success: function() {
@@ -77,6 +76,7 @@
                     let contenedor = document.getElementById("contenedor");
                     if (contenedor) {
                         contenedor.innerHTML = template_bar;
+                        actualizarMisPosts();
                     } else {
                         console.error("Element with ID 'contenedor' not found.");
                     }
@@ -106,17 +106,15 @@
                 contentType: false, // No establecer el tipo de contenido
                 success: function(response) {
                     // Verificar si el servidor respondió con un JSON
-                    let data = JSON.parse(response);
-                    if (data.status === 'success') {
+                    let data = response;
+                    console.log(response);
+                    if (data.status == 'success') {
                         alert('Post creado exitosamente');
                         actualizarMisPosts(); // Actualizar la sección de Mis Posts después de crear el post
                     } else {
-                        alert('Error al crear el post: ' + data.message);
+                        alert('Error al crear el post linea 114: ' + data.message);
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error al crear el post');
-                }
             });
         }
         
@@ -129,8 +127,8 @@
                     let data = response; 
                     console.log(data);
         
-                    if (data.status === 'success') {
-                        if (data.posts === 'No tienes publicaciones.') {
+                    if (data.status == 'success') {
+                        if (data.posts == 'No tienes publicaciones.') {
                             $('#mis-posts-container').html('<p>No tienes publicaciones.</p>');
                         } else {
                             // Aquí generas los posts, si existen
@@ -163,4 +161,4 @@
                 }
             });
         }        
-    });
+});
