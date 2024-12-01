@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var editar = false;
     seccionInicio();
     function seccionInicio() {
         let template_bar = `
@@ -55,14 +56,19 @@ $(document).ready(function () {
                 let template_bar = `
                     <div class="content-container">
                         <div class="form-section">
-                            <h3>Crear Post</h3>
+                            <h3 id="nameP">Crear Post</h3>
                             <form id="createPostForm" enctype="multipart/form-data">
-                                <input type="text" name="title" placeholder="Título del post" required>
-                                <textarea name="content" rows="5" placeholder="Escribe tu post aquí..." required></textarea>
-                                <!-- Sección para subir imágenes (0, 1 o muchas) -->
+                                <input type="hidden" id="post_id" name="post_id" value="">
+                                <input type="text" name="title" id="title" placeholder="Título del post" required>
+                                <textarea name="content" id="content" rows="5" placeholder="Escribe tu post aquí..." required></textarea>
+                                <div id="image-container" style="display: none;">
+                                    <label for="current-image">Imagen Actual:</label>
+                                    <img id="current-image" src="https://via.placeholder.com/150" alt="Imagen actual" style="max-width: 150px; max-height: 150px;">
+                                    <br>
+                                </div>
                                 <label for="images">Sube imágenes (opcional):</label>
                                 <input type="file" name="image" id="image" accept="image/*">
-                                <button type="submit">Publicar</button>
+                                <button type="submit" id="aceptar">Publicar</button>
                             </form>
                         </div>
                         <!-- Contenedor de posts -->
@@ -91,32 +97,55 @@ $(document).ready(function () {
 
     // Función para enviar el post
     function enviarPost(form) {
-        let formData = new FormData(form); // Crear un FormData con los datos del formulario
-    
-        // Mostrar el contenido del formData (opcional)
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
+        let formData = new FormData(form);
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}:`, value);
         }
+        let url = editar === false 
+            ? '/SustainCities/backend/newPost.php' 
+            : '/SustainCities/backend/editPost.php';
     
         $.ajax({
-            url: 'http://localhost/SustainCities/backend/newPost.php', // Archivo PHP que manejará la creación del post
+            url: url, // Archivo PHP que manejará la creación o edición del post
             type: 'POST',
             data: formData,
             processData: false, // No procesar los datos
             contentType: false, // No establecer el tipo de contenido
             success: function(response) {
-                // Verificar si el servidor respondió con un JSON
-                let data = response;
-                console.log(response);
-                if (data.status == 'success') {
-                    alert('Post creado exitosamente');
-                    actualizarMisPosts(); // Actualizar la sección de Mis Posts después de crear el post
+                let data;
+                try {
+                    data = response; // Convertir la respuesta a JSON
+                } catch (e) {
+                    alert('Respuesta inesperada del servidor. Por favor, intenta nuevamente.');
+                    console.error('Error al parsear la respuesta:', response);
+                    return;
+                }
+    
+                if (data.status === 'success') {
+                    alert('Operación exitosa');
+                    actualizarMisPosts();
+                    editar = false; // Reiniciar el estado de edición
+                    $('#nameP').text('Crear Post');
+                    $('#aceptar').text('Publicar');
+                    $('#content').val(''); // Limpiar el id_post después de editar
+                    $('#title').val('');
+                    $('#image-container').hide();
+                    $('#image').val(''); 
                 } else {
-                    alert('Error al crear el post linea 114: ' + data.message);
+                    if (editar) {
+                        alert('Error al editar el post línea 114: ' + data.message);
+                    } else {
+                        alert('Error al crear el post línea 114: ' + data.message);
+                    }
                 }
             },
+            error: function(xhr, status, error) {
+                alert('Error en la comunicación con el servidor: ' + error);
+                console.error('Detalles del error:', xhr, status, error);
+            }
         });
     }
+    
     
     // Función para actualizar la sección de Mis Posts
     function actualizarMisPosts() {
@@ -147,7 +176,7 @@ $(document).ready(function () {
                                     </div>
                                     <form action="edit_post.php" method="GET">
                                         <input type="hidden" name="id" value="${post.id_post}">
-                                        <button type="submit" class="btn-edit">Editar</button>
+                                        <button type="submit" class="btn-edit" id="editarPost-${post.id_post}">Editar</button>
                                     </form>
                                     <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
                                         <input type="hidden" name="id" value="${post.id_post}">
@@ -158,14 +187,54 @@ $(document).ready(function () {
                         });
                         // Insertar los posts generados en el contenedor
                         $('#mis-posts-container').html(postsHtml); 
-    
-                        // Manejador de eventos para eliminar el post
-                        $(document).on('click', '[id^="eliminarPost-"]', function(e) {
+
+                        $(document).on('click', '[id^="editarPost-"]', function(e) {
                             e.preventDefault(); // Evitar que el formulario recargue la página
                             const id_post = $(this).closest('form').find('input[name="id"]').val();
-                            eliminarPost(id_post); // Llamar a la función para eliminar el post
+                            cargarPostParaEdicion(id_post); 
                         });
+
+                        $(document).on('click', '[id^="eliminarPost-"]', function(e) {
+                            e.preventDefault(); 
+                            const id_post = $(this).closest('form').find('input[name="id"]').val();
+                            eliminarPost(id_post); 
+                        });
+                        
+                        function cargarPostParaEdicion(id_post) {
+                            $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                                const post = response.posts[0];
+                                console.log(post);
+                                
+                                // Rellenar el formulario con los datos del post
+                                $('#title').val(post.titulo);
+                                $('#content').val(post.contenido);
+                                $('#post_id').val(post.id_post);
+                                console.log(post.id_post);
+                                // Mostrar la imagen actual (si existe)
+                                if (post.imagen) {
+                                    // Mostrar la imagen actual si está disponible
+                                    $('#current-image').attr('src', 'data:image/jpeg;base64,' + post.imagen);
+                                } else {
+                                    $('#current-image').attr('src', 'https://via.placeholder.com/150');
+                                }
+                        
+                                // Limpiar el campo para la imagen
+                                $('#image').val(''); // Asegurarse de que el input de archivo esté vacío
+                        
+                                // Mostrar el contenedor para editar la imagen
+                                $('#image-container').show(); // Mostrar el contenedor de imagen actual y campo de subida
+                        
+                                $('#nameP').text('Editar Post');
+                                $('#aceptar').text('Guardar Cambios');
+                                editar=true;
+                            });
+                        }          
+                        
+                        function editPost(){
+
+                        }
     
+                        // Función para eliminar el post
                         function eliminarPost(id_post) {
                             if (confirm("¿De verdad deseas eliminar el post?")) {
                                 // Enviar solicitud AJAX para eliminar el post
@@ -185,7 +254,7 @@ $(document).ready(function () {
                                     }
                                 });
                             }
-                        };
+                        }
                     }
                 } else {
                     // Si algo salió mal, mostrar el mensaje de error
@@ -196,5 +265,5 @@ $(document).ready(function () {
                 alert('Error al actualizar la sección de Mis Posts');
             }
         });
-    }     
+    }       
 });
