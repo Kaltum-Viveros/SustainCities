@@ -1,6 +1,7 @@
 <?php
 session_start(); // Asegúrate de que la sesión esté iniciada
 
+$id_usuario = $_SESSION['id_usuario'];
 $nombre = $_SESSION['nombre'];
 $id_ciudad = $_SESSION['id_ciudad'];
 $primer_nombre = explode(' ', $nombre)[0];  

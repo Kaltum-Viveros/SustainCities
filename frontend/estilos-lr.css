@@ -119,16 +119,16 @@ body {
     text-decoration: underline;
 }
 
+/* Estilo del select (transparente y letras blancas) */
 .input-box select {
     width: 100%;
     height: 100%;
-    background: transparent;
-    border: none;
+    background: transparent; /* Fondo transparente */
+    border: 2px solid rgba(255, 255, 255, .2); /* Borde transparente con ligera opacidad */
     outline: none;
-    border: 2px solid rgba(255, 255, 255, .2);
-    border-radius: 40px;
+    border-radius: 40px; /* Radio de borde igual que en los inputs */
     font-size: 16px;
-    color: #000000;
+    color: #fff; /* Letra blanca en el texto */
     padding: 10px 45px 10px 20px;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -136,8 +136,16 @@ body {
     cursor: pointer;
 }
 
-.input-box select::placeholder {
-    color: #000000;
+/* Estilo para las opciones dentro del select (letras blancas y fondo gris oscuro) */
+.input-box select option {
+    background: #00082c; /* Fondo gris oscuro en las opciones */
+    color: #fff; /* Texto blanco en las opciones */
+}
+
+/* Estilo cuando el select estÃ¡ enfocado */
+.input-box input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
 .input-box select:focus {
@@ -145,8 +153,30 @@ body {
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
+/* Estilo para el placeholder (si se usa) */
+.input-box select::placeholder {
+    color: #fff; /* Texto blanco en el placeholder */
+}
+
+/* Estilo para deshabilitar el select (cuando no hay ciudad seleccionada) */
 .input-box select:disabled {
     background-color: transparent;
     color: rgba(255, 255, 255, .5);
     cursor: not-allowed;
+}
+
+/* Estilo para los inputs, asegurando que sigan siendo transparentes como antes */
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent; /* Fondo transparente */
+    border: 2px solid rgba(255, 255, 255, .2); /* Borde igual al de los selects */
+    border-radius: 40px; /* Mantener el mismo radio de borde */
+    font-size: 16px;
+    color: #fff; /* Letra blanca */
+    padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder {
+    color: #fff; /* Color del texto del placeholder blanco */
 }

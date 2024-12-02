@@ -2,14 +2,10 @@
 use SustainCities\backend\myapi\Read;
 include_once __DIR__.'/myapi/Read.php';
 
-if (isset($_GET['query'])) {
-    $user = new Read('sustaincities');
+$user = new Read('sustaincities');
 
-    $busqueda = $_GET['query'];
-    $user->mySearch($busqueda);
-    $user->getData();
+session_start(); 
 
-} else {
-    // Si no se envió el parámetro 'query', retornar un mensaje vacío
-    echo json_encode([]);
-}
+$busqueda = $_GET['query'];
+$id_usuario = $_SESSION['id_usuario']; // Obtener el ID de usuario de la sesión
+$user->mySearch($busqueda, $id_usuario); // Pasar el ID de usuario al método

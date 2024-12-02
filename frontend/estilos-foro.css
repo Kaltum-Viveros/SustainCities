@@ -37,7 +37,6 @@ body{
 
 .sidebar-header img{
     width: 42px;
-    /* border-radius: 50% */;
 }
 
 .sidebar-header h2 {
@@ -45,6 +44,7 @@ body{
     font-weight: 600;
     color: #fff;
     margin-left: 23px;
+    cursor: default;
 }
 
 .sidebar-links {
@@ -57,6 +57,7 @@ body{
 
 .sidebar-links h4 span{
     opacity: 0;
+    cursor: default;
 }
 
 .sidebar:hover .sidebar-links h4 span{
@@ -89,6 +90,10 @@ body{
     transform: scaleX(0);
 }
 
+.sidebar-links li {
+    cursor: pointer;
+}
+
 .sidebar-links li i {
     font-size: 30px;;
     color: #dbd4d4e3;
@@ -115,6 +120,7 @@ body{
     margin-top: auto;
     padding: 12px 10px;
     margin-left: -10px;
+    cursor: default;
 }
 
 .user-account .user-profile {
@@ -223,10 +229,15 @@ body{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.post:hover {
+    border-color: #002f5d;
+    box-shadow: 0 0 10px rgba(0, 47, 93, 0.5); 
+}
+
 /* Contenido de la publicación */
 .post-content {
-    flex: 3; /* Ocupa más espacio */
-    padding-right: 15px;
+    flex: 3;
+    
 }
 
 .post-content h3 {
@@ -235,7 +246,7 @@ body{
     color: #333;
 }
 
-.post-content p {
+.post-content h6 {
     margin-bottom: 10px;
     color: #666;
     font-size: 1rem;
@@ -243,22 +254,69 @@ body{
 
 .post-meta {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Alinea el contenido a la derecha */
     font-size: 0.875rem;
     color: #999;
 }
 
+
+
 /* Imagen de la publicación */
 .post-image {
-    flex: 1; /* Ocupa menos espacio */
     text-align: center;
 }
 
 .post-image img {
-    max-width: 100%;
+    max-width: 150px;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    align-items: center; /* Alinea el ícono y el contenedor de texto verticalmente */
+    gap: 10px; /* Espacio entre el ícono y los textos */
+    margin-bottom: 10px;
+}
+
+.post-header i {
+    font-size: 3rem; /* Ajusta el tamaño del ícono */
+    color: #333; /* Color del ícono */
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column; /* Pone h4 encima de h5 */
+    margin: 0;
+}
+
+.user-details h4, .user-details h5 {
+    margin: 0; /* Elimina márgenes predeterminados */
+    color: #333; /* Color del texto */
+}
+
+.user-details h4 {
+    font-size: 1.2rem; /* Tamaño del h4 */
+    font-weight: bold; /* Negrita para el h4 */
+}
+
+.user-details h5 {
+    font-size: 1rem; /* Tamaño del h5 */
+    color: #666; /* Color más suave para el h5 */
+    margin-top: -15px; /* Reducción del espacio entre h4 y h5 */
+}
+
+#post-text {
+    padding-left: 10px;
+}
+
+#post-text p {
+    max-width: 1249px;
+}
+
+.post-content p {
+    max-width: 777px;
 }
 
 /* Contenedor principal */
@@ -275,6 +333,8 @@ body{
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 444px; /* Ajusta este valor según lo necesites */
+    overflow-y: auto; /* Permite desplazarse si el contenido excede la altura máxima */
 }
 
 /* Estilo del formulario */
@@ -286,9 +346,15 @@ body{
 
 .form-section input, .form-section textarea {
     padding: 10px;
+    margin-top: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
+}
+
+.form-section input:focus, .form-section textarea:focus {
+    border-color: #002f5d;
+    box-shadow: 0 0 10px rgba(0, 47, 93, 0.5); 
 }
 
 .form-section button {
@@ -321,12 +387,14 @@ body{
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 /* Contenido de la publicación */
 .post-content {
     flex: 3; /* Ocupa más espacio */
     padding-right: 15px;
+    padding-left: 15px;
 }
 
 .post-content h4 {
@@ -341,12 +409,23 @@ body{
     font-size: 1rem;
 }
 
-.post-meta, .post-buttons {
+.post-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding-left: 15px;
+    gap: 10px; /* Separación entre los botones */
+    position: absolute;
+    top: 15px;
+    right: 15px; /* Colocarlos en la esquina superior derecha */
+}
+
+/*.post-meta, .post-buttons {
     display: flex;
     justify-content: space-between;
     font-size: 0.875rem;
     color: #999;
-}
+}*/
 
 /* Botones de acción */
 .post-buttons form {
@@ -357,45 +436,21 @@ body{
     background-color: #00192e;
     color: #fff;
     border: none;
-    padding: 5px 10px;
+    padding: 8px 12px; /* Ajustar tamaño del botón */
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espaciado entre el icono y el texto */
     transition: background-color 0.3s;
+}
+
+.post-buttons button i {
+    font-size: 1.2rem; /* Tamaño adecuado para los iconos */
 }
 
 .post-buttons button:hover {
     background-color: #002f5d;
-}
-
-/* Estilo para el botón de editar */
-.btn-edit {
-    background-color: #4CAF50; /* Verde */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-edit:hover {
-    background-color: #45a049; /* Verde oscuro al pasar el ratón */
-}
-
-/* Estilo para el botón de eliminar */
-.btn-delete {
-    background-color: #f44336; /* Rojo */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-delete:hover {
-    background-color: #e53935; /* Rojo oscuro al pasar el ratón */
 }

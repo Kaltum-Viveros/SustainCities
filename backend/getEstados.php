@@ -1,6 +1,6 @@
 <?php
 use SustainCities\backend\myapi\Read;
-include_once __DIR__.'/Read.php';
+include_once __DIR__ . '/myapi/Read.php';
 header('Content-Type: application/json');
 
 try {

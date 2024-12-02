@@ -12,7 +12,6 @@
         }
         
         public function updatePost($titulo, $descripcion, $imagen, $id_post) {
-            // Inicia una transacción
             $this->conexion->begin_transaction();
             $error = false;
             $errorMessage = '';
@@ -28,41 +27,50 @@
             } else {
                 // Validar si existe una imagen
                 if ($imagen && $imagen['error'] === UPLOAD_ERR_OK) {
-                    // Obtener el contenido binario de la imagen
                     $imageContent = file_get_contents($imagen['tmp_name']);
         
-                    // Actualizar la imagen asociada al post
-                    $queryImagen = "UPDATE imagenes SET imagen = ? WHERE id_post = ?";
+                    // Verificar si ya existe una imagen asociada al post
+                    $queryCheckImage = "SELECT COUNT(*) AS count FROM imagenes WHERE id_post = ?";
+                    $stmtCheckImage = $this->conexion->prepare($queryCheckImage);
+                    $stmtCheckImage->bind_param("i", $id_post);
+                    $stmtCheckImage->execute();
+                    $result = $stmtCheckImage->get_result();
+                    $row = $result->fetch_assoc();
+                    $stmtCheckImage->close();
+        
+                    if ($row['count'] > 0) {
+                        // Actualizar la imagen si ya existe
+                        $queryImagen = "UPDATE imagenes SET imagen = ? WHERE id_post = ?";
+                    } else {
+                        // Insertar una nueva imagen si no existe
+                        $queryImagen = "INSERT INTO imagenes (imagen, id_post) VALUES (?, ?)";
+                    }
+        
                     $stmtImagen = $this->conexion->prepare($queryImagen);
                     $stmtImagen->bind_param("bi", $imageContent, $id_post);
-        
-                    // Enviar los datos binarios de la imagen
                     $stmtImagen->send_long_data(0, $imageContent);
         
                     if (!$stmtImagen->execute()) {
                         $error = true;
-                        $errorMessage = "Error al actualizar la imagen: " . $stmtImagen->error;
+                        $errorMessage = "Error al guardar la imagen: " . $stmtImagen->error;
                     }
         
                     $stmtImagen->close();
                 }
             }
         
-            // Verificar si hubo errores
+            // Confirmar o revertir la transacción
             if ($error) {
-                // Revertir la transacción en caso de error
                 $this->conexion->rollback();
                 $this->data = array('status' => 'error', 'message' => $errorMessage);
             } else {
-                // Confirmar la transacción si no hay errores
                 $this->conexion->commit();
                 $this->data = array('status' => 'success', 'message' => 'Post actualizado exitosamente.');
             }
         
-            // Cerrar el statement del post
             $stmtPost->close();
-        
             echo json_encode($this->data);
-        }          
+        }
+           
     }
 ?>

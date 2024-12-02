@@ -8,20 +8,13 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Iniciar sesión y obtener el ID del usuario (si el usuario está autenticado)
     session_start(); // Si el usuario está autenticado mediante sesión
-    $usuario_id = $_SESSION['id_usuario'];
-
-    // Validar que el ID de usuario esté presente
-    if (!$usuario_id) {
-        echo json_encode(['status' => 'error', 'message' => 'No se encontró el ID de usuario']);
-        exit; // Detener la ejecución después de enviar el error
-    }
 
     try {
         // Crear una instancia del objeto Read
         $user = new Read('sustaincities');
 
         // Llamar a la función para obtener los posts del usuario
-        $user->getPosts($usuario_id); // Suponiendo que esta función maneja la respuesta
+        $user->postInicio(); // Suponiendo que esta función maneja la respuesta
 
     } catch (\Exception $e) {
         // Capturar cualquier error y devolver una respuesta JSON de error

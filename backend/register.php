@@ -1,7 +1,7 @@
 <?php
 
 use SustainCities\backend\myapi\Create;
-include_once __DIR__.'/Create.php';
+include_once __DIR__.'/myapi/Create.php';
 header('Content-Type: application/json');
 // Leer y decodificar el JSON enviado desde el cliente
 $data = json_decode(file_get_contents('php://input'), true);
@@ -13,15 +13,15 @@ if (
     isset($data['telefono']) &&
     isset($data['correo']) &&
     isset($data['password'])
-    
-) 
+
+)
 {
     $nombre = $data['nombre'];
     $id_ciudad = $data['id_ciudad'];
     $telefono = $data['telefono'];
     $correo = $data['correo'];
     $password = $data['password'];
-    
+
     // Crear instancia de la clase
     $user = new Create('sustaincities');
 

@@ -24,9 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     // Manejar la imagen si está disponible
-    $imagen = isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK 
-        ? $_FILES['image'] 
-        : null;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+        // Procesar la imagen si existe
+        $imagen = $_FILES['image'];
+    } else {
+        // Si no se subió una imagen, asignar NULL o un valor predeterminado
+        $imagen = null;
+    }
 
     $user->updatePost($titulo, $descripcion, $imagen, $id_post);
 
