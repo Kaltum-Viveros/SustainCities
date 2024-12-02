@@ -106,8 +106,8 @@ a.active {
 
 #heading {
     position: absolute;
-    top: 5%;
-    margin-right: 1000px;
+    top: 10%;
+    margin-right: 1200px;
     font-size: 3em;
     color: #fff;
     text-shadow: 2px 4px 5px #232121;
@@ -208,7 +208,7 @@ nav {
 
 /* -- Contenedor -- */
 #contenedor {
-    padding: 300px;
+    padding: 30px;
     padding-top: 30px;
     padding-bottom: 40px;
     max-width: max-content;
@@ -217,6 +217,13 @@ nav {
     cursor: default;
     position: relative;
     z-index: 10;
+}
+
+#contenedor-estilo {
+    width: 100%;
+    background-color: #02121f;
+    border-radius: 20px;
+    padding: 80px;
 }
 
 .fotosContenedor {
@@ -239,9 +246,8 @@ h1, h2 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     margin-bottom: 15px;
-    margin-top: 15px;
     line-height: 1.2;
-    color: #d2d2d3;
+    color: #f7f7f8;
     transition: color 0.3s ease;
 }
 
@@ -273,24 +279,104 @@ h2:hover::after {
     transform-origin: bottom left;
 }
 
+h4 {
+    color: #ffffff;
+}
 
 h2:hover {
     color: #D9B310;
+}
+
+/*parrafos*/
+p {
+    text-align: justify;
 }
 
 
 /* -- Listas -- */
 ol, ul {
     padding-left: 20px;
-    color: white;
+    color: rgb(255, 255, 255);
+    text-align: justify;
 }
 
 li {
     margin: 10px 0;
-    color: white;
+    color: rgb(255, 255, 255);
+}
+
+/*iconos*/
+
+.iconos {
+    width: 100px;
+    height: 100px;
+}
+
+
+/* contenedores */
+
+#contenedor-estilo h2 {
+    color: #D9B310;
+}
+.contenedor-intro-cs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.contenedor-intro-cs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.lista-beneficios {
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 100px;
+}
+
+.contenedor-ca {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.contenedor-ca-text {
+    width: 100%;
+    background-color: #02121f;
+    border-radius: 20px;
+    padding: 80px;
+}
+
+.contenedor-ca-text h2 {
+    color: #D9B310;
+}
+
+.contenedor-ca-img {
+    width: 100%;
+    background-color:  #02121f;
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.contenedor-ca-img img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: 0.3s;
 }
 
 /* -- Estilo del carrusel 10 ciudades -- */
+
 .slider {
     position: relative;
     width: 100%;
@@ -307,28 +393,96 @@ li {
 .slide {
     min-width: 100%;
     display: none;
-    text-align: center;
-    margin: 0 10px;
+    position: relative;
+    border-radius: 8px;
 }
 
 .slide.active {
     display: block;
-}
-
-.slide p {
-    padding: 40px;
+    overflow: hidden;
 }
 
 .slide img {
-    width: 581px;
-    height: 306px;
+    width: 800px;
+    height: 430px;
+    object-fit: cover;
+    transition: 0.5s ease-in-out;
+}
+
+.slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid white;
+    border-radius: inherit;
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide:hover img {
+    filter: grayscale(1) brightness(0.4);
+}
+
+.slide:hover::after {
+    opacity: 1;
+    inset: 20px;
+}
+
+.slide .slide-contenido {
+    position: absolute;
+    top: 30%; 
+    left: 15%; 
+    transform: translate(-50%, -50%); 
+    z-index: 2;
+    color: #fff;
+    text-align: center; 
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    max-width: 70%; 
+    transform: translateY(20px);
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide .slide-contenido h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 10px; 
+    transform: scale(0.9);
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide .slide-contenido p {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #ddd;
+    margin: 0;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: 0.4s ease-in-out;
+}
+
+.slide:hover .slide-contenido {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide:hover .slide-contenido h2 {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.slide:hover .slide-contenido p {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 button.prev, button.next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(180, 171, 171, 0.5);
     color: #fff;
     border: none;
     padding: 10px;
@@ -337,7 +491,7 @@ button.prev, button.next {
 }
 
 button.prev {
-    left: 30px;
+    left: 10px;
 }
 
 button.next {

@@ -434,13 +434,15 @@ $(document).ready(function () {
                             // Insertar los resultados generados en el contenedor
                             $('#results-container').html(resultsHtml);
 
-                            $(document).on('click', '[id^="editarPost-"]', function(e) {
+                            // Asegurarse de no duplicar eventos para "Editar"
+                            $(document).off('click', '[id^="editarPost-"]').on('click', '[id^="editarPost-"]', function(e) {
                                 e.preventDefault(); // Evitar que el formulario recargue la página
                                 const id_post = $(this).closest('form').find('input[name="id"]').val();
                                 cargarPostParaEdicion(id_post);
                             });
 
-                            $(document).on('click', '[id^="eliminarPost-"]', function(e) {
+                            // Asegurarse de no duplicar eventos para "Eliminar"
+                            $(document).off('click', '[id^="eliminarPost-"]').on('click', '[id^="eliminarPost-"]', function(e) {
                                 e.preventDefault();
                                 const id_post = $(this).closest('form').find('input[name="id"]').val();
                                 eliminarPost(id_post);
@@ -564,13 +566,15 @@ $(document).ready(function () {
                             // Insertar los posts generados en el contenedor
                             $('#mis-posts-container').html(postsHtml);
 
-                            $(document).on('click', '[id^="editarPost-"]', function(e) {
+                            // Asegurarse de no duplicar eventos para "Editar"
+                            $(document).off('click', '[id^="editarPost-"]').on('click', '[id^="editarPost-"]', function(e) {
                                 e.preventDefault(); // Evitar que el formulario recargue la página
                                 const id_post = $(this).closest('form').find('input[name="id"]').val();
                                 cargarPostParaEdicion(id_post);
                             });
 
-                            $(document).on('click', '[id^="eliminarPost-"]', function(e) {
+                            // Asegurarse de no duplicar eventos para "Eliminar"
+                            $(document).off('click', '[id^="eliminarPost-"]').on('click', '[id^="eliminarPost-"]', function(e) {
                                 e.preventDefault();
                                 const id_post = $(this).closest('form').find('input[name="id"]').val();
                                 eliminarPost(id_post);
@@ -590,7 +594,7 @@ $(document).ready(function () {
                                     if (post.imagen) {
                                         $('#current-image').attr('src', 'data:image/jpeg;base64,' + post.imagen);
                                     } else {
-                                         
+
                                     }
 
                                     $('#image').val(''); // Limpiar el campo de la imagen

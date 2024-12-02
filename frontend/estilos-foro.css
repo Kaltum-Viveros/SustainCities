@@ -333,7 +333,7 @@ body{
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 444px; /* Ajusta este valor según lo necesites */
+    max-height: 460px; /* Ajusta este valor según lo necesites */
     overflow-y: auto; /* Permite desplazarse si el contenido excede la altura máxima */
 }
 
