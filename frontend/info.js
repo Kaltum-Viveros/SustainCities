@@ -91,7 +91,7 @@ $(document).ready(function() {
         let template_bar = '';
         template_bar += `
 
-                    <div id="contenedor-text">
+                    <div id="contenedor-estilo">
                         <h1>Ciudades y Comunidades Sostenibles</h1>
 
                         <div class="contenedor-intro-cs">
@@ -186,7 +186,7 @@ $(document).ready(function() {
                 let template_bar = '';
                 template_bar += `
 
-                            <div id="contenedor-text"> 
+                            <div id="contenedor-estilo"> 
                                     <h1>10 ciudades más sostenibles</h1>
                                 
                                 <p>
@@ -546,7 +546,7 @@ $(document).ready(function() {
                 let template_bar = '';
                 template_bar += `
 
-                            <div id="contenedor-text"> 
+                            <div id="contenedor-estilo"> 
                                     <h1>Metas</h1>
 
                                 <p>El Objetivo de Desarrollo Sostenible (ODS) 11 de la ONU tiene como objetivos...</p>
