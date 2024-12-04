@@ -100,6 +100,86 @@
                     </div>
                 </div>  
             </div>
+
+            <div class="post" id="comentario">
+                    <div class="post-header">
+                        <i class='bx bx-user-circle' ></i>
+                        <div class="user-details" id="comment-details">
+                            <h4>Juan Perez</h4>
+                            <p>Cordoba , Veracruz</p>
+                        </div>
+                    </div>
+                <div class="comment-text" id="comment-text">
+                    <p>Curabitur sed viverra lorem. Vestibulum luctus condimentum sem, quis congue mi condimentum a. Integer a auctor odio. Praesent urna metus, auctor et tempus sed, suscipit vel elit. Nunc varius volutpat tortor eget maximus. Morbi varius, elit at congue aliquam, lorem ipsum vehicula odio, ac scelerisque arcu nulla efficitur mauris. Pellentesque elementum orci ut ante consequat lacinia. Nulla sit amet dignissim lacus. Nullam faucibus suscipit augue condimentum ornare. Aliquam ac nibh quis nunc mattis consequat.</p>
+                    <div class="post-meta">
+                        <span><i class='bx bx-calendar'></i> 2024-12-01 23:22:18</span>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="post" id="comentario">
+                    <div class="post-header">
+                        <i class='bx bx-user-circle' ></i>
+                        <div class="user-details" id="comment-details">
+                            <h4>Juan Perez</h4>
+                            <p>Cordoba , Veracruz</p>
+                        </div>
+                    </div>
+                <div class="comment-text" id="comment-text">
+                    <p>Curabitur sed viverra lorem. Vestibulum luctus condimentum sem, quis congue mi condimentum a. Integer a auctor odio. Praesent urna metus, auctor et tempus sed, suscipit vel elit. Nunc varius volutpat tortor eget maximus. Morbi varius, elit at congue aliquam, lorem ipsum vehicula odio, ac scelerisque arcu nulla efficitur mauris. Pellentesque elementum orci ut ante consequat lacinia. Nulla sit amet dignissim lacus. Nullam faucibus suscipit augue condimentum ornare. Aliquam ac nibh quis nunc mattis consequat.</p>
+                    <div class="post-meta">
+                        <span><i class='bx bx-calendar'></i> 2024-12-01 23:22:18</span>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="post" id="comentario">
+                    <div class="post-header">
+                        <i class='bx bx-user-circle' ></i>
+                        <div class="user-details" id="comment-details">
+                            <h4>Juan Perez</h4>
+                            <p>Cordoba , Veracruz</p>
+                        </div>
+                    </div>
+                <div class="comment-text" id="comment-text">
+                    <p>Curabitur sed viverra lorem. Vestibulum luctus condimentum sem, quis congue mi condimentum a. Integer a auctor odio. Praesent urna metus, auctor et tempus sed, suscipit vel elit. Nunc varius volutpat tortor eget maximus. Morbi varius, elit at congue aliquam, lorem ipsum vehicula odio, ac scelerisque arcu nulla efficitur mauris. Pellentesque elementum orci ut ante consequat lacinia. Nulla sit amet dignissim lacus. Nullam faucibus suscipit augue condimentum ornare. Aliquam ac nibh quis nunc mattis consequat.</p>
+                    <div class="post-meta">
+                        <span><i class='bx bx-calendar'></i> 2024-12-01 23:22:18</span>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="post" id="comentario">
+                    <div class="post-header">
+                        <i class='bx bx-user-circle' ></i>
+                        <div class="user-details" id="comment-details">
+                            <h4>Juan Perez</h4>
+                            <p>Cordoba , Veracruz</p>
+                        </div>
+                    </div>
+                <div class="comment-text" id="comment-text">
+                    <p>Curabitur sed viverra lorem. Vestibulum luctus condimentum sem, quis congue mi condimentum a. Integer a auctor odio. Praesent urna metus, auctor et tempus sed, suscipit vel elit. Nunc varius volutpat tortor eget maximus. Morbi varius, elit at congue aliquam, lorem ipsum vehicula odio, ac scelerisque arcu nulla efficitur mauris. Pellentesque elementum orci ut ante consequat lacinia. Nulla sit amet dignissim lacus. Nullam faucibus suscipit augue condimentum ornare. Aliquam ac nibh quis nunc mattis consequat.</p>
+                    <div class="post-meta">
+                        <span><i class='bx bx-calendar'></i> 2024-12-01 23:22:18</span>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="post" id="comentario">
+                    <div class="post-header">
+                        <i class='bx bx-user-circle' ></i>
+                        <div class="user-details" id="comment-details">
+                            <h4>Juan Perez</h4>
+                            <p>Cordoba , Veracruz</p>
+                        </div>
+                    </div>
+                <div class="comment-text" id="comment-text">
+                    <p>Curabitur sed viverra lorem. Vestibulum luctus condimentum sem, quis congue mi condimentum a. Integer a auctor odio. Praesent urna metus, auctor et tempus sed, suscipit vel elit. Nunc varius volutpat tortor eget maximus. Morbi varius, elit at congue aliquam, lorem ipsum vehicula odio, ac scelerisque arcu nulla efficitur mauris. Pellentesque elementum orci ut ante consequat lacinia. Nulla sit amet dignissim lacus. Nullam faucibus suscipit augue condimentum ornare. Aliquam ac nibh quis nunc mattis consequat.</p>
+                    <div class="post-meta">
+                        <span><i class='bx bx-calendar'></i> 2024-12-01 23:22:18</span>
+                    </div>
+                </div>  
+            </div>
         </div>
 
         <footer class="search-bar">
