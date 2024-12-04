@@ -142,7 +142,7 @@ $(document).ready(function () {
     });
 
     function cargarEstados() {
-        fetch('http://localhost/SustainCities/backend/getEstados.php')
+        fetch('http://localhost/SustainCities/SustainCities/backend/getEstados.php')
             .then(response => response.json())
             .then(estados => {
                 const estadoSelect = document.getElementById('estado');
@@ -174,7 +174,7 @@ $(document).ready(function () {
     }
     
     function cargarCiudades(idEstado) {
-        fetch(`http://localhost/SustainCities/backend/getCiudades.php?id_estado=${idEstado}`)
+        fetch(`http://localhost/SustainCities/SustainCities/backend/getCiudades.php?id_estado=${idEstado}`)
             .then(response => response.json())
             .then(ciudades => {
                 const ciudadSelect = document.getElementById('ciudad');
@@ -203,7 +203,7 @@ $(document).ready(function () {
             password: document.getElementById('contraseña').value
         };
     
-        fetch('http://localhost/SustainCities/backend/register.php', {
+        fetch('http://localhost/SustainCities/SustainCities/backend/register.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -224,7 +224,7 @@ function loginUser() {
         password: document.getElementById('contraseña').value
     };
 
-    fetch('http://localhost/SustainCities/backend/login.php', {
+    fetch('http://localhost/SustainCities/SustainCities/backend/login.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

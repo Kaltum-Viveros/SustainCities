@@ -13,11 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener el ID de la publicación y el ID de usuario desde la solicitud POST
     $data = json_decode(file_get_contents('php://input'), true);
     $id_post = $data['id_post'] ?? null;
-    $id_usuario = $_SESSION['id_usuario'] ?? null;
 
-    if ($id_post && $id_usuario) {
+    if ($id_post) {
         // Llamar a la función para manejar el "like"
-        $user->toggleLike($id_post, $id_usuario);
+        $user->toggleLike($id_post);
 
         // Llamar a la función para obtener los datos actualizados, si es necesario
         $user->getData();

@@ -55,24 +55,26 @@ class Read extends DataBase {
         try {
             // Establecer el encabezado adecuado para la respuesta JSON
             header('Content-Type: application/json');
+
+            $id_usuario = $_SESSION['id_usuario'];
         
             // Consulta SQL para obtener los posts de la vista
             $query = "SELECT * FROM vista_posts_usuario WHERE eliminado = 0 ORDER BY fecha_creacion DESC";
             $stmt = $this->conexion->prepare($query);
-
+    
             if (!$stmt) {
                 throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
             }
-
-            // Vincula el parámetro como un entero (id_usuario)
+    
+            // Ejecutar la consulta y obtener los resultados
             $stmt->execute();
             $result = $stmt->get_result();
-
+    
             // Verificar si hay posts
             if ($result->num_rows > 0) {
                 $posts = [];
-
-                // Generar el array de posts
+    
+                // Iterar sobre los resultados de los posts
                 while ($row = $result->fetch_assoc()) {
                     // Verificar si hay una imagen y convertirla a base64 si existe
                     $imagen = null;
@@ -80,7 +82,26 @@ class Read extends DataBase {
                         // Convertir el BLOB a base64
                         $imagen = base64_encode($row['imagen']);
                     }
-
+    
+                    // Consulta para verificar si el usuario ha dado 'like' a este post
+                    $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
+                    $stmtLike = $this->conexion->prepare($queryLike);
+                    if (!$stmtLike) {
+                        throw new \Exception("Error al preparar la consulta de likes: " . $this->conexion->error);
+                    }
+    
+                    // Vincular los parámetros de usuario e id_post
+                    $stmtLike->bind_param("ii", $id_usuario, $row['id_post']);
+                    $stmtLike->execute();
+                    $stmtLike->store_result();
+    
+                    // Determinar si el usuario ha dado 'like' al post
+                    $haDadoLike = $stmtLike->num_rows > 0;
+    
+                    // Cerrar el stmt de la consulta de likes
+                    $stmtLike->close();
+    
+                    // Agregar el post al array de resultados
                     $posts[] = [
                         'id_post' => $row['id_post'],
                         'titulo' => $row['titulo'],
@@ -92,13 +113,14 @@ class Read extends DataBase {
                         'nombre' => $row['nombre'],
                         'ciudad' => $row['ciudad'],
                         'estado' => $row['estado'],
+                        'ha_dado_like' => $haDadoLike, // Se asigna el valor true o false
                     ];
                 }
-
+    
                 $stmt->close(); // Liberar recursos
                 // Retornar la respuesta en formato JSON
                 echo json_encode(['status' => 'success', 'posts' => $posts]);
-
+    
             } else {
                 // Si no hay posts, retornar un mensaje en formato JSON
                 $stmt->close();
@@ -109,6 +131,8 @@ class Read extends DataBase {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+    
+    
 
     public function getPosts($id_usuario) {
         try {

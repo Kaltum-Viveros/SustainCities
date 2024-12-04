@@ -87,8 +87,8 @@ $(document).ready(function () {
         let formData = new FormData(form);
 
         let url = editar === false
-            ? '/SustainCities/backend/newPost.php'
-            : '/SustainCities/backend/editPost.php';
+            ? '/SustainCities/SustainCities/backend/newPost.php'
+            : '/SustainCities/SustainCities/backend/editPost.php';
 
         $.ajax({
             url: url, // Archivo PHP que manejará la creación o edición del post
@@ -133,7 +133,7 @@ $(document).ready(function () {
 
     function actualizarMisPosts() {
         $.ajax({
-            url: 'http://localhost/SustainCities/backend/myPosts.php', // Archivo PHP que obtiene los posts del usuario
+            url: 'http://localhost/SustainCities/SustainCities/backend/myPosts.php', // Archivo PHP que obtiene los posts del usuario
             type: 'GET',
             success: function(response) {
                 let data = response;
@@ -193,7 +193,7 @@ $(document).ready(function () {
                         });
 
                         function cargarPostParaEdicion(id_post) {
-                            $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                            $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                 const post = response.posts[0];
                                 console.log(post);
                         
@@ -224,7 +224,7 @@ $(document).ready(function () {
                             if (confirm("¿De verdad deseas eliminar el post?")) {
                                 // Enviar solicitud AJAX para eliminar el post
                                 $.ajax({
-                                    url: '/SustainCities/backend/deletePost.php',
+                                    url: '/SustainCities/SustainCities/backend/deletePost.php',
                                     type: 'POST',
                                     data: { id: id_post },
                                     dataType: 'json',
@@ -254,7 +254,7 @@ $(document).ready(function () {
 
     function postInicio() {
         $.ajax({
-            url: 'http://localhost/SustainCities/backend/postInicio.php', // Archivo PHP que obtiene los posts del usuario
+            url: 'http://localhost/SustainCities/SustainCities/backend/postInicio.php', // Archivo PHP que obtiene los posts del usuario
             type: 'GET',
             success: function(response) {
                 let data = response;
@@ -267,16 +267,18 @@ $(document).ready(function () {
                         // Aquí generas los posts, si existen
                         let postsHtml = '';
                         data.posts.forEach(function(post) {
+                            let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo'; // Clase diferente dependiendo de si ha dado like
+                        
                             postsHtml += `
                                 <div class="post">
+                                    <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
                                     <div class="post-image">
-                                        <!-- Asegurándote de que la imagen se muestra correctamente -->
                                         <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
                                     </div>
                                     <div class="post-content">
                                         <div class="post-header">
-                                            <i class='bx bx-user-circle' ></i>
-                                            <div class="user-details"
+                                            <i class='bx bx-user-circle'></i>
+                                            <div class="user-details">
                                                 <h4>${post.nombre}</h4>
                                                 <p>${post.ciudad} , ${post.estado}</p>
                                             </div>
@@ -285,16 +287,19 @@ $(document).ready(function () {
                                             <h4>${post.titulo}</h4>
                                             <p>${post.contenido}</p>
                                             <div class="post-meta">
-                                                <span><i class='bx bx-calendar' ></i> ${post.fecha_creacion}</span>
+                                                <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
                                                 <div class="meta-post-button">
-                                                    <span><i id="likes" class='bx bx-like' ></i></span>
+                                                    <span>
+                                                        <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                    </span>
+                                                    <span class="likes-count">${post.likes || 0}</span>
                                                     <span><i id="comentarios" class='bx bx-chat'></i></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            `;
+                            `;                        
                         });
                         // Insertar los posts generados en el contenedor
                         $('#results-container').html(postsHtml);
@@ -314,7 +319,7 @@ $(document).ready(function () {
                         });
 
                         function cargarPostParaEdicion(id_post) {
-                            $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                            $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                 const post = response.posts[0];
                                 console.log(post);
 
@@ -348,7 +353,7 @@ $(document).ready(function () {
                             if (confirm("¿De verdad deseas eliminar el post?")) {
                                 // Enviar solicitud AJAX para eliminar el post
                                 $.ajax({
-                                    url: '/SustainCities/backend/deletePost.php',
+                                    url: '/SustainCities/SustainCities/backend/deletePost.php',
                                     type: 'POST',
                                     data: { id: id_post },
                                     dataType: 'json',
@@ -386,7 +391,7 @@ $(document).ready(function () {
         // Solo realiza la búsqueda si el query tiene algún valor
         if (query) {
             // Define la URL del backend
-            const url = '/SustainCities/backend/searchAll.php';
+            const url = '/SustainCities/SustainCities/backend/searchAll.php';
 
             $.ajax({
                 url: url,
@@ -449,7 +454,7 @@ $(document).ready(function () {
                             });
 
                             function cargarPostParaEdicion(id_post) {
-                                $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                                $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                     const post = response.posts[0];
                                     console.log(post);
 
@@ -478,7 +483,7 @@ $(document).ready(function () {
                             function eliminarPost(id_post) {
                                 if (confirm("¿De verdad deseas eliminar el post?")) {
                                     $.ajax({
-                                        url: '/SustainCities/backend/deletePost.php',
+                                        url: '/SustainCities/SustainCities/backend/deletePost.php',
                                         type: 'POST',
                                         data: { id: id_post },
                                         dataType: 'json',
@@ -518,7 +523,7 @@ $(document).ready(function () {
         // Solo realiza la búsqueda si el id es 'search-mypost'
         if (query) {
             // Define la URL del backend
-            url = '/SustainCities/backend/mySearch.php';
+            url = '/SustainCities/SustainCities/backend/mySearch.php';
 
             $.ajax({
                 url: url,
@@ -581,7 +586,7 @@ $(document).ready(function () {
                             });
 
                             function cargarPostParaEdicion(id_post) {
-                                $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                                $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                     const post = response.posts[0];
                                     console.log(post);
 
@@ -610,7 +615,7 @@ $(document).ready(function () {
                             function eliminarPost(id_post) {
                                 if (confirm("¿De verdad deseas eliminar el post?")) {
                                     $.ajax({
-                                        url: '/SustainCities/backend/deletePost.php',
+                                        url: '/SustainCities/SustainCities/backend/deletePost.php',
                                         type: 'POST',
                                         data: { id: id_post },
                                         dataType: 'json',
@@ -639,6 +644,57 @@ $(document).ready(function () {
         } else {
             actualizarMisPosts();
         }
+    });
+
+    $(document).on('click', '#like-buton', function() {
+        const id_post = $(this).closest('.post').find('.id_post').val();
+        console.log('Entrando al clic. ID del post:', id_post);
+    
+        // Verifica que se obtuvieron los datos necesarios
+        if (!id_post) {
+            alert('Error: No se pudo obtener la información necesaria.');
+            return;
+        }
+    
+        // Realiza la solicitud al servidor para registrar el "like"
+        $.ajax({
+            url: '../backend/like.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id_post: id_post }),
+            dataType: 'json',
+            success: (data) => {
+                if (data.status === 'success') {
+                    // Verifica si la acción fue "like" o "unlike"
+                    const action = data.message; // Asumiendo que el servidor devuelve esta propiedad
+    
+                    const postElement = $(this).closest('.post');
+                    const likesCount = postElement.find('.likes-count');
+    
+                    if (likesCount.length) {
+                        let currentLikes = parseInt(likesCount.text()) || 0;
+    
+                        if (action === 'Like added') {
+                            // Incrementa el contador de likes y agrega la clase "active" al botón
+                            likesCount.text(currentLikes + 1);
+                            $(this).removeClass('inactivo');
+                            $(this).addClass('activo');
+                        } else if (action === 'Like removed') {
+                            // Decrementa el contador de likes y elimina la clase "active" del botón
+                            likesCount.text(currentLikes - 1);
+                            $(this).removeClass('activo');
+                            $(this).addClass('inactivo');
+                        }
+                    }
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Hubo un problema al enviar la solicitud.');
+            }
+        });
     });
 
 });

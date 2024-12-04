@@ -4,10 +4,11 @@ use SustainCities\backend\myapi\Read;
 include_once __DIR__.'/myapi/Read.php';
 header('Content-Type: application/json');
 
+session_start(); 
+
 // Verificar si la solicitud es GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Iniciar sesión y obtener el ID del usuario (si el usuario está autenticado)
-    session_start(); // Si el usuario está autenticado mediante sesión
 
     try {
         // Crear una instancia del objeto Read

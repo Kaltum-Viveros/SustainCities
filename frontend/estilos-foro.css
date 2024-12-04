@@ -454,3 +454,11 @@ body{
 .post-buttons button:hover {
     background-color: #002f5d;
 }
+
+.activo {
+    color: blue; /* Cambia a azul si el ícono debe ser azul */
+}
+
+.inactivo {
+    background-color: rgb(255, 255, 255); /* Cambia a blanco si el ícono debe ser blanco */
+}

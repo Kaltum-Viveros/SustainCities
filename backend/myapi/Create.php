@@ -154,5 +154,56 @@
         
             echo $this->getData();
         }        
+
+        public function toggleLike($id_post) {
+            try {
+                header('Content-Type: application/json');
+        
+                // Verificar si la sesión contiene 'id_usuario'
+                if (!isset($_SESSION['id_usuario'])) {
+                    throw new Exception('Usuario no autenticado');
+                }
+                
+                $usuario_id = $_SESSION['id_usuario'];
+        
+                // Verificar si el usuario ya ha dado un "like" al post
+                $query = "SELECT * FROM likes WHERE id_post = ? AND id_usuario = ?";
+                $stmt = $this->conexion->prepare($query);
+                $stmt->bind_param('ii', $id_post, $usuario_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+        
+                if ($result->num_rows > 0) {
+                    // Si el "like" ya existe, eliminarlo
+                    $query = "DELETE FROM likes WHERE id_post = ? AND id_usuario = ?";
+                    $stmt = $this->conexion->prepare($query);
+                    $stmt->bind_param('ii', $id_post, $usuario_id);
+                    $stmt->execute();
+        
+                    $query = "UPDATE post SET likes = likes - 1 WHERE id_post = ?";
+                    $stmt = $this->conexion->prepare($query);
+                    $stmt->bind_param('i', $id_post);
+                    $stmt->execute();
+        
+                    echo json_encode(['status' => 'success', 'message' => 'Like removed']);
+                } else {
+                    // Si el "like" no existe, añadirlo
+                    $query = "INSERT INTO likes (id_post, id_usuario) VALUES (?, ?)";
+                    $stmt = $this->conexion->prepare($query);
+                    $stmt->bind_param('ii', $id_post, $usuario_id);
+                    $stmt->execute();
+        
+                    $query = "UPDATE post SET likes = likes + 1 WHERE id_post = ?";
+                    $stmt = $this->conexion->prepare($query);
+                    $stmt->bind_param('i', $id_post);
+                    $stmt->execute();
+        
+                    echo json_encode(['status' => 'success', 'message' => 'Like added']);
+                }
+            } catch (\Exception $e) {
+                echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            }
+        }
+        
     }          
 ?>
