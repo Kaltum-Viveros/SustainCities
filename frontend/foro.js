@@ -76,6 +76,7 @@ $(document).ready(function () {
             }
         });
     });
+    
     $(document).on('submit', '#createPostForm', function(e) {
         e.preventDefault(); // Evitar que el formulario recargue la página
         enviarPost(this); // Llamar a la función para enviar el post
