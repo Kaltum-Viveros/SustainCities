@@ -32,7 +32,6 @@ $(document).ready(function () {
 
     $(document).on('click', '#misPost', function() {
         $.ajax({
-            url: 'foroprueba.php',
             success: function() {
                 let template_bar = `
                 <div class="search-bar">
@@ -148,11 +147,20 @@ $(document).ready(function () {
                         data.posts.forEach(function(post) {
                         let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo';
                         postsHtml += `
-                                    <div class="post">
+                                <div class="post">
+                                    <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
+                                    <div class="post-content">
+                                        <div class="post-header">
+                                            <i class='bx bx-user-circle'></i>
+                                            <div class="user-details">
+                                                <h4>${post.nombre}</h4>
+                                                <p>${post.ciudad} , ${post.estado}</p>
+                                            </div>
+                                        </div>
                                         <div class="post-image">
                                             <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
                                         </div>
-                                        <div class="post-content">
+                                        <div id="post-text">
                                             <h4>${post.titulo}</h4>
                                             <p>${post.contenido}</p>
                                             <div class="post-meta">
@@ -162,7 +170,7 @@ $(document).ready(function () {
                                                         <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
                                                     </span>
                                                     <span class="likes-count">${post.likes || 0}</span>
-                                                    <span><i class='bx bx-chat'></i></span>
+                                                    <span><i id="comentarios" class='bx bx-chat'></i></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -176,20 +184,19 @@ $(document).ready(function () {
                                                 <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
                                             </form>
                                         </div>
-                                        
-                                        <!-- Aquí agregamos el botón para ver los comentarios -->
-                                        <div>
-                                            <button class="ver-comentarios" data-post-id="${post.id_post}">
-                                                Ver comentarios
-                                            </button>
+                                        <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
+                                        <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                            <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                                <!-- Los comentarios se cargarán aquí -->
+                                            </div>
                                         </div>
-                                
-                                        <!-- Contenedor de los comentarios -->
-                                        <div class="comentarios-container" id="comentarios-container-${post.id_post}" style="display: none;">
-                                            <!-- Los comentarios se cargarán aquí -->
+                                        <div class="comment-form">
+                                            <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                            <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
                                         </div>
                                     </div>
-                                `;                    
+                                </div>
+                                `;                
                         });
                         // Insertar los posts generados en el contenedor
                         $('#mis-posts-container').html(postsHtml);
@@ -374,46 +381,46 @@ $(document).ready(function () {
                         data.posts.forEach(function(post) {
                             let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo'; // Clase diferente dependiendo de si ha dado like
                             postsHtml += `
-                    <div class="post">
-                        <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
-                        <div class="post-content">
-                            <div class="post-header">
-                                <i class='bx bx-user-circle'></i>
-                                <div class="user-details">
-                                    <h4>${post.nombre}</h4>
-                                    <p>${post.ciudad} , ${post.estado}</p>
-                                </div>
-                            </div>
-                            <div class="post-image">
-                                <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                            </div>
-                            <div id="post-text">
-                                <h4>${post.titulo}</h4>
-                                <p>${post.contenido}</p>
-                                <div class="post-meta">
-                                    <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
-                                    <div class="meta-post-button">
-                                        <span>
-                                            <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                        </span>
-                                        <span class="likes-count">${post.likes || 0}</span>
-                                        <span><i id="comentarios" class='bx bx-chat'></i></span>
+                            <div class="post">
+                                <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
+                                <div class="post-content">
+                                    <div class="post-header">
+                                        <i class='bx bx-user-circle'></i>
+                                        <div class="user-details">
+                                            <h4>${post.nombre}</h4>
+                                            <p>${post.ciudad} , ${post.estado}</p>
+                                        </div>
+                                    </div>
+                                    <div class="post-image">
+                                        <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
+                                    </div>
+                                    <div id="post-text">
+                                        <h4>${post.titulo}</h4>
+                                        <p>${post.contenido}</p>
+                                        <div class="post-meta">
+                                            <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                            <div class="meta-post-button">
+                                                <span>
+                                                    <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                </span>
+                                                <span class="likes-count">${post.likes || 0}</span>
+                                                <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
+                                    <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                        <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                            <!-- Los comentarios se cargarán aquí -->
+                                        </div>
+                                    </div>
+                                    <div class="comment-form">
+                                        <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                        <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
                                     </div>
                                 </div>
                             </div>
-                            <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
-                            <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
-                                <div id="comentarios-post-${post.id_post}" class="comments-list">
-                                    <!-- Los comentarios se cargarán aquí -->
-                                </div>
-                            </div>
-                            <div class="comment-form">
-                                <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
-                                <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
-                            </div>
-                        </div>
-                    </div>
-                    `;
+                            `;
                         });
                         // Insertar los posts generados en el contenedor
                         $('#results-container').html(postsHtml);
@@ -524,9 +531,7 @@ $(document).ready(function () {
                             resultsHtml += `
                                 <div class="post">
                                     <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
-                                    <div class="post-image">
-                                        <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                    </div>
+                                    
                                     <div class="post-content">
                                         <div class="post-header">
                                             <i class='bx bx-user-circle'></i>
@@ -534,6 +539,9 @@ $(document).ready(function () {
                                                 <h4>${post.nombre}</h4>
                                                 <p>${post.ciudad} , ${post.estado}</p>
                                             </div>
+                                        </div>
+                                        <div class="post-image">
+                                            <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
                                         </div>
                                         <div id="post-text">
                                             <h4>${post.titulo}</h4>
@@ -548,6 +556,16 @@ $(document).ready(function () {
                                                     <span><i id="comentarios" class='bx bx-chat'></i></span>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
+                                        <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                            <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                                <!-- Los comentarios se cargarán aquí -->
+                                            </div>
+                                        </div>
+                                        <div class="comment-form">
+                                            <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                            <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -619,7 +637,7 @@ $(document).ready(function () {
                             }
                         }
                     } else {
-                        $('#results-container').html('<p>Error al cargar los resultados.</p>');
+                        $('#results-container').html('<p>No se encontraron resultados.</p>');
                     }
                 },
                 error: function () {
@@ -659,34 +677,54 @@ $(document).ready(function () {
                             data.posts.forEach(function(post) {
                                 let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo';
                                 postsHtml += `
-                                    <div class="post">
-                                        <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
+                                <div class="post">
+                                    <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
                                     <div class="post-image">
-                                        <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                    </div>
+                                            <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
+                                        </div>
                                     <div class="post-content">
-                                        <h4>${post.titulo}</h4>
-                                        <p>${post.contenido}</p>
-                                        <div class="post-meta">
-                                            <span><i class='bx bx-calendar' ></i> ${post.fecha_creacion}</span>
-                                            <div class="meta-post-button">
-                                                <span>
-                                                    <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                                </span>
-                                                <span class="likes-count">${post.likes || 0}</span>
-                                                <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                        <div class="post-header">
+                                            <i class='bx bx-user-circle'></i>
+                                            <div class="user-details">
+                                                <h4>${post.nombre}</h4>
+                                                <p>${post.ciudad} , ${post.estado}</p>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="post-buttons">
-                                        <form action="edit_post.php" method="GET">
-                                            <input type="hidden" name="id" value="${post.id_post}">
-                                            <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
-                                        </form>
-                                        <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
-                                            <input type="hidden" name="id" value="${post.id_post}">
-                                            <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
-                                        </form>
+                                        
+                                        <div id="post-text">
+                                            <h4>${post.titulo}</h4>
+                                            <p>${post.contenido}</p>
+                                            <div class="post-meta">
+                                                <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                                <div class="meta-post-button">
+                                                    <span>
+                                                        <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                    </span>
+                                                    <span class="likes-count">${post.likes || 0}</span>
+                                                    <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="post-buttons">
+                                            <form action="edit_post.php" method="GET">
+                                                <input type="hidden" name="id" value="${post.id_post}">
+                                                <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
+                                            </form>
+                                            <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
+                                                <input type="hidden" name="id" value="${post.id_post}">
+                                                <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
+                                            </form>
+                                        </div>
+                                        <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
+                                        <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                            <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                                <!-- Los comentarios se cargarán aquí -->
+                                            </div>
+                                        </div>
+                                        <div class="comment-form">
+                                            <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                            <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
+                                        </div>
                                     </div>
                                 </div>
                                 `;

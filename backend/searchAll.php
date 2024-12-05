@@ -8,5 +8,4 @@ $user = new Read('sustaincities');
 
 $busqueda = $_GET['query'];
 $user->searchAll($busqueda);
-$user->getData();
 ?>

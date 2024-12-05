@@ -9,3 +9,5 @@ session_start();
 $busqueda = $_GET['query'];
 $id_usuario = $_SESSION['id_usuario']; // Obtener el ID de usuario de la sesión
 $user->mySearch($busqueda, $id_usuario); // Pasar el ID de usuario al método
+
+?>

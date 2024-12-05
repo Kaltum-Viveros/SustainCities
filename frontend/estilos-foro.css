@@ -266,7 +266,7 @@ body{
     text-align: left;
     width: 100%;
     max-width: 400px;
-    height: auto;
+    height: 100px;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
@@ -380,7 +380,7 @@ body{
 /* Publicación */
 .post {
     display: flex;
-    align-items: center;
+    align-items: auto;
     background: #fff;
     padding: 15px;
     border-radius: 8px;
@@ -620,7 +620,7 @@ footer.search-bar input {
 }
 
 .like-icon.activo {
-    color: #ff5733;
+    color: #00192e;
 }
 
 .like-icon.inactivo {

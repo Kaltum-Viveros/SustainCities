@@ -273,6 +273,7 @@ class Read extends DataBase {
         }
     }
 
+
     public function searchAll($dato) {
         try {
             // Establecer el encabezado adecuado para la respuesta JSON
@@ -356,7 +357,7 @@ class Read extends DataBase {
             } else {
                 // Si no hay posts, retornar un mensaje en formato JSON
                 $stmt->close();
-                echo json_encode(['status' => 'success', 'posts' => 'No se encontraron publicaciones.']);
+                echo json_encode(['status' => 'error', 'posts' => 'No se encontraron publicaciones.']);
             }
         } catch (\Exception $e) {
             // Capturar cualquier error en la ejecución y devolverlo en formato JSON
@@ -427,6 +428,9 @@ class Read extends DataBase {
                         'contenido' => $row['contenido'],
                         'fecha_creacion' => $row['fecha_creacion'],
                         'likes' => $row['likes'],
+                        'nombre' => $row['nombre'],
+                        'ciudad' => $row['ciudad'],
+                        'estado' => $row['estado'],
                         'imagen' => $imagen,
                         'id_usuario' => $row['id_usuario'],
                         'ha_dado_like' => $haDadoLike
