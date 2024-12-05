@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 <li>
-                <a href="http://localhost/SustainCities/SustainCities/frontend/login-registro.html">
+                <a href="http://localhost/SustainCities/frontend/login-registro.html">
                         <i class='bx bx-log-out bx-rotate-180' ></i>
                         Cerrar Sesión
                     </a>

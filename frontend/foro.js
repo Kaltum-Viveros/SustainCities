@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var editar = false;
     seccionInicio();
+
     function seccionInicio() {
         let template_bar = `
             <div class="search-bar">
@@ -82,14 +83,13 @@ $(document).ready(function () {
         enviarPost(this); // Llamar a la función para enviar el post
     });
 
-
     // Función para enviar el post
     function enviarPost(form) {
         let formData = new FormData(form);
 
         let url = editar === false
-            ? '/SustainCities/SustainCities/backend/newPost.php'
-            : '/SustainCities/SustainCities/backend/editPost.php';
+            ? '/SustainCities/backend/newPost.php'
+            : '/SustainCities/backend/editPost.php';
 
         $.ajax({
             url: url, // Archivo PHP que manejará la creación o edición del post
@@ -134,7 +134,7 @@ $(document).ready(function () {
 
     function actualizarMisPosts() {
         $.ajax({
-            url: 'http://localhost/SustainCities/SustainCities/backend/myPosts.php', // Archivo PHP que obtiene los posts del usuario
+            url: 'http://localhost/SustainCities/backend/myPosts.php', // Archivo PHP que obtiene los posts del usuario
             type: 'GET',
             success: function(response) {
                 let data = response;
@@ -147,37 +147,49 @@ $(document).ready(function () {
                         let postsHtml = '';
                         data.posts.forEach(function(post) {
                         let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo';
-                            postsHtml += `
-                                <div class="post">
-                                    <div class="post-image">
-                                        <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                    </div>
-                                    <div class="post-content">
-                                        <h4>${post.titulo}</h4>
-                                        <p>${post.contenido}</p>
-                                        <div class="post-meta">
-                                            <span><i class='bx bx-calendar' ></i> ${post.fecha_creacion}</span>
-                                            <div class="meta-post-button">
-                                                <span>
-                                                    <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                                </span>
-                                                <span class="likes-count">${post.likes || 0}</span>
-                                                <span><i id="comentarios" class='bx bx-chat'></i></span>
+                        postsHtml += `
+                                    <div class="post">
+                                        <div class="post-image">
+                                            <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
+                                        </div>
+                                        <div class="post-content">
+                                            <h4>${post.titulo}</h4>
+                                            <p>${post.contenido}</p>
+                                            <div class="post-meta">
+                                                <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                                <div class="meta-post-button">
+                                                    <span>
+                                                        <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                    </span>
+                                                    <span class="likes-count">${post.likes || 0}</span>
+                                                    <span><i class='bx bx-chat'></i></span>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="post-buttons">
+                                            <form action="edit_post.php" method="GET">
+                                                <input type="hidden" name="id" value="${post.id_post}">
+                                                <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
+                                            </form>
+                                            <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
+                                                <input type="hidden" name="id" value="${post.id_post}">
+                                                <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
+                                            </form>
+                                        </div>
+                                        
+                                        <!-- Aquí agregamos el botón para ver los comentarios -->
+                                        <div>
+                                            <button class="ver-comentarios" data-post-id="${post.id_post}">
+                                                Ver comentarios
+                                            </button>
+                                        </div>
+                                
+                                        <!-- Contenedor de los comentarios -->
+                                        <div class="comentarios-container" id="comentarios-container-${post.id_post}" style="display: none;">
+                                            <!-- Los comentarios se cargarán aquí -->
+                                        </div>
                                     </div>
-                                    <div class="post-buttons">
-                                        <form action="edit_post.php" method="GET">
-                                            <input type="hidden" name="id" value="${post.id_post}">
-                                            <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
-                                        </form>
-                                        <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
-                                            <input type="hidden" name="id" value="${post.id_post}">
-                                            <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
-                                        </form>
-                                    </div>
-                                </div>
-                            `;
+                                `;                    
                         });
                         // Insertar los posts generados en el contenedor
                         $('#mis-posts-container').html(postsHtml);
@@ -197,7 +209,7 @@ $(document).ready(function () {
                         });
 
                         function cargarPostParaEdicion(id_post) {
-                            $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                            $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                 const post = response.posts[0];
                                 console.log(post);
                         
@@ -228,7 +240,7 @@ $(document).ready(function () {
                             if (confirm("¿De verdad deseas eliminar el post?")) {
                                 // Enviar solicitud AJAX para eliminar el post
                                 $.ajax({
-                                    url: '/SustainCities/SustainCities/backend/deletePost.php',
+                                    url: '/SustainCities/backend/deletePost.php',
                                     type: 'POST',
                                     data: { id: id_post },
                                     dataType: 'json',
@@ -256,9 +268,96 @@ $(document).ready(function () {
         });
     }
 
+    // Mostrar u ocultar comentarios al hacer clic en el botón "Ver comentarios"
+    $(document).off('click', '.ver-comentarios').on('click', '.ver-comentarios', function() {
+        var postId = $(this).data("post-id");
+        var comentariosContainer = $("#comentarios-container-" + postId);
+        
+        // Alternar la visibilidad del contenedor de comentarios
+        comentariosContainer.toggle();
+        
+        // Si los comentarios aún no han sido cargados, cargarlos ahora
+        if (comentariosContainer.is(":visible") && comentariosContainer.find(".comment").length === 0) {
+            getComments(postId);
+        }
+    });
+    
+    function getComments(postId) {
+        $.ajax({
+            url: 'http://localhost/SustainCities/backend/getComments.php',
+            type: 'GET',
+            data: { post_id: postId },
+            success: function(response) {
+                console.log(response);  // Verifica la respuesta aquí
+    
+                // Comprobar que la respuesta contiene comentarios
+                if (response.status === 'success' && Array.isArray(response.comentarios)) {
+                    let comentariosHtml = '';
+    
+                    // Iterar sobre los comentarios y agregar el HTML correspondiente
+                    response.comentarios.forEach(function(comentario) {
+                        comentariosHtml += `
+                            <div class="comment">
+                                <div class="comment-author">${comentario.nombre}</div>
+                                <div class="comment-body">${comentario.contenido}</div>
+                                <div class="comment-likes">Likes: ${comentario.likes}</div>
+                            </div>
+                        `;
+                    });
+    
+                    // Inyectar los comentarios en el contenedor adecuado
+                    $("#comentarios-post-" + postId).html(comentariosHtml);
+                } else {
+                    // Si no hay comentarios, mostrar un mensaje
+                    $("#comentarios-post-" + postId).html('<p>No hay comentarios disponibles.</p>');
+                }
+            },
+            error: function() {
+                alert('Error al cargar los comentarios');
+            }
+        });
+    }
+    
+    
+    $(document).off('click', '.submit-comment').on('click', '.submit-comment', function() {
+        var postId = $(this).data("post-id");
+        var comentario = $("#comentario-input-" + postId).val();
+        console.log(postId, comentario);
+        if (comentario) {
+            $.ajax({
+                url: 'http://localhost/SustainCities/backend/addCommentary.php',
+                type: 'POST',
+                data: {
+                    post_id: postId,
+                    comentario: comentario
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.status == 'success') {
+                        // Añadir comentario directamente a la lista
+                        let comentarioHtml = `
+                            <div class="comment">
+                                <div class="comment-author">Tú</div>
+                                <div class="comment-body">${comentario}</div>
+                            </div>
+                        `;
+                        $("#comentarios-post-" + postId).html(comentariosHtml);
+                        $("#comentarios-post-" + postId).prepend(comentarioHtml); // Insertar al inicio de los comentarios
+                        $("#comentario-input-" + postId).val(""); // Limpiar el campo de comentario
+                    } else {
+                        alert("Error al agregar el comentario: " + response.message);
+                    }
+                }
+            });
+        } else {
+            alert("Por favor, escribe un comentario.");
+        }
+    })
+    
+
     function postInicio() {
         $.ajax({
-            url: 'http://localhost/SustainCities/SustainCities/backend/postInicio.php', // Archivo PHP que obtiene los posts del usuario
+            url: 'http://localhost/SustainCities/backend/postInicio.php', // Archivo PHP que obtiene los posts del usuario
             type: 'GET',
             success: function(response) {
                 let data = response;
@@ -273,36 +372,46 @@ $(document).ready(function () {
                         data.posts.forEach(function(post) {
                             let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo'; // Clase diferente dependiendo de si ha dado like
                             postsHtml += `
-                                <div class="post">
-                                    <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
-                                    <div class="post-image">
-                                        <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                    </div>
-                                    <div class="post-content">
-                                        <div class="post-header">
-                                            <i class='bx bx-user-circle'></i>
-                                            <div class="user-details">
-                                                <h4>${post.nombre}</h4>
-                                                <p>${post.ciudad} , ${post.estado}</p>
-                                            </div>
-                                        </div>
-                                        <div id="post-text">
-                                            <h4>${post.titulo}</h4>
-                                            <p>${post.contenido}</p>
-                                            <div class="post-meta">
-                                                <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
-                                                <div class="meta-post-button">
-                                                    <span>
-                                                        <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                                    </span>
-                                                    <span class="likes-count">${post.likes || 0}</span>
-                                                    <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                        <div class="post">
+                                            <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
+                                            <div class="post-content">
+                                                <div class="post-header">
+                                                    <i class='bx bx-user-circle'></i>
+                                                    <div class="user-details">
+                                                        <h4>${post.nombre}</h4>
+                                                        <p>${post.ciudad} , ${post.estado}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="post-image">
+                                                    <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
+                                                </div>
+                                                <div id="post-text">
+                                                    <h4>${post.titulo}</h4>
+                                                    <p>${post.contenido}</p>
+                                                    <div class="post-meta">
+                                                        <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                                        <div class="meta-post-button">
+                                                            <span>
+                                                                <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                            </span>
+                                                            <span class="likes-count">${post.likes || 0}</span>
+                                                            <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
+                                                <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                                    <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                                        <!-- Los comentarios se cargarán aquí -->
+                                                    </div>
+                                                </div>
+                                                <div class="comment-form">
+                                                    <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                                    <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            `;
+                                        `;
                         });
                         // Insertar los posts generados en el contenedor
                         $('#results-container').html(postsHtml);
@@ -322,7 +431,7 @@ $(document).ready(function () {
                         });
 
                         function cargarPostParaEdicion(id_post) {
-                            $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                            $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                 const post = response.posts[0];
                                 console.log(post);
 
@@ -356,7 +465,7 @@ $(document).ready(function () {
                             if (confirm("¿De verdad deseas eliminar el post?")) {
                                 // Enviar solicitud AJAX para eliminar el post
                                 $.ajax({
-                                    url: '/SustainCities/SustainCities/backend/deletePost.php',
+                                    url: '/SustainCities/backend/deletePost.php',
                                     type: 'POST',
                                     data: { id: id_post },
                                     dataType: 'json',
@@ -394,7 +503,7 @@ $(document).ready(function () {
         // Solo realiza la búsqueda si el query tiene algún valor
         if (query) {
             // Define la URL del backend
-            const url = '/SustainCities/SustainCities/backend/searchAll.php';
+            const url = '/SustainCities/backend/searchAll.php';
 
             $.ajax({
                 url: url,
@@ -461,7 +570,7 @@ $(document).ready(function () {
                             });
 
                             function cargarPostParaEdicion(id_post) {
-                                $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                                $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                     const post = response.posts[0];
                                     console.log(post);
 
@@ -490,7 +599,7 @@ $(document).ready(function () {
                             function eliminarPost(id_post) {
                                 if (confirm("¿De verdad deseas eliminar el post?")) {
                                     $.ajax({
-                                        url: '/SustainCities/SustainCities/backend/deletePost.php',
+                                        url: '/SustainCities/backend/deletePost.php',
                                         type: 'POST',
                                         data: { id: id_post },
                                         dataType: 'json',
@@ -530,7 +639,7 @@ $(document).ready(function () {
         // Solo realiza la búsqueda si el id es 'search-mypost'
         if (query) {
             // Define la URL del backend
-            url = '/SustainCities/SustainCities/backend/mySearch.php';
+            url = '/SustainCities/backend/mySearch.php';
 
             $.ajax({
                 url: url,
@@ -597,7 +706,7 @@ $(document).ready(function () {
                             });
 
                             function cargarPostParaEdicion(id_post) {
-                                $.get('/SustainCities/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
+                                $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                     const post = response.posts[0];
                                     console.log(post);
 
@@ -626,7 +735,7 @@ $(document).ready(function () {
                             function eliminarPost(id_post) {
                                 if (confirm("¿De verdad deseas eliminar el post?")) {
                                     $.ajax({
-                                        url: '/SustainCities/SustainCities/backend/deletePost.php',
+                                        url: '/SustainCities/backend/deletePost.php',
                                         type: 'POST',
                                         data: { id: id_post },
                                         dataType: 'json',

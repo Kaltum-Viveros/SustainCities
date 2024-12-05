@@ -208,7 +208,6 @@ class Read extends DataBase {
                 echo json_encode(['status' => 'success', 'posts' => 'No tienes publicaciones.']);
             }
         } catch (\Exception $e) {
-            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
@@ -443,6 +442,54 @@ class Read extends DataBase {
         }
     }
     
+    public function getComments($id_post){
+        try {
+            // Establecer el encabezado adecuado para la respuesta JSON
+            header('Content-Type: application/json');
     
+            // Consulta SQL para obtener los comentarios de un post
+            $query = "SELECT * FROM vw_comentarios WHERE id_post = ? ORDER BY fecha_creacion DESC";
+            $stmt = $this->conexion->prepare($query);
     
+            if (!$stmt) {
+                throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+            }
+    
+            // Vincular el parámetro de id_post
+            $stmt->bind_param('i', $id_post);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            // Verificar si hay comentarios
+            if ($result->num_rows > 0) {
+                $comentarios = [];
+    
+                // Iterar sobre los resultados de los comentarios
+                while ($row = $result->fetch_assoc()) {
+                    $comentarios[] = [
+                        'id_comentario' => $row['id_comentario'],
+                        'contenido' => $row['contenido'],
+                        'fecha_creacion' => $row['fecha_creacion'],
+                        'id_usuario' => $row['id_usuario'],
+                        'nombre' => $row['nombre_usuario'],
+                        'likes'=> $row['likes']
+                    ];
+                }
+    
+                $stmt->close(); // Liberar recursos
+                // Retornar la respuesta en formato JSON
+                echo json_encode(['status' => 'success', 'comentarios' => $comentarios]);
+    
+            } else {
+                // Si no hay comentarios, retornar un mensaje en formato JSON
+                $stmt->close();
+                echo json_encode(['status' => 'success', 'comentarios' => 'No hay comentarios.']);
+            }
+        } catch (\Exception $e) {
+            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }  
 }
+
+?>

@@ -204,6 +204,20 @@
                 echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
+
+        public function addCommentary($id_post, $comentario, $id_usuario) {
+            // Insertar el comentario
+            $query = "INSERT INTO comentarios (id_post, id_usuario, contenido) VALUES (?, ?, ?)";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->bind_param("iis", $id_post, $id_usuario, $comentario);
         
-    }          
+            if ($stmt->execute()) {
+                $this->data = array('message' => 'Comentario agregado exitosamente');
+            } else {
+                $this->data = array('message' => 'Error al agregar el comentario');
+            }
+        
+            echo $this->getData();
+        }
+    }     
 ?>
