@@ -234,7 +234,7 @@ function loginUser() {
     .then(response => response.json())
     .then(data => {
         if (data.message === 'Login exitoso') {
-            window.location.href = 'foroprueba.php';
+            window.location.href = 'foro.php';
         }
     })
     .catch(error => console.error('Error:', error));

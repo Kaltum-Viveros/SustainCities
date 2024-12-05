@@ -40,7 +40,6 @@ try {
     die("Error al obtener la ciudad: " . $e->getMessage());
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,13 +62,13 @@ try {
                     <div class="menu-separator"></div>
                 </h4>
                 <li>
-                    <a href="#">
+                    <a id="inicio">
                         <i class='bx bxs-home'></i>
                         Inicio
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a id="misPost">
                         <i class='bx bxs-plus-square' ></i>
                         Mis Posts
                     </a>
@@ -95,43 +94,14 @@ try {
 
     <div class="main-content">
         <!-- Barra de búsqueda -->
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar en el foro..." id="search">
-            <button id="search-button"><i class='bx bx-search'></i></button>
-        </div>
-
+        
         <!-- Área de publicaciones -->
-        <div class="posts-section">
-            <div class="post">
-                <div class="post-content">
-                    <h3>Título de la Publicación</h3>
-                    <p>Contenido breve de la publicación...</p>
-                    <div class="post-meta">
-                        <span>Autor: Usuario1</span>
-                        <span>Fecha: 2024-11-30</span>
-                    </div>
-                </div>
-                <div class="post-image">
-                    <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
-                </div>
-            </div>
+        <div id="contenedor">
 
-            <div class="post">
-                <div class="post-content">
-                    <h3>Otra Publicación</h3>
-                    <p>Contenido breve de otra publicación...</p>
-                    <div class="post-meta">
-                        <span>Autor: Usuario2</span>
-                        <span>Fecha: 2024-11-29</span>
-                    </div>
-                </div>
-                <div class="post-image">
-                    <img src="https://via.placeholder.com/150" alt="Imagen de la publicación">
-                </div>
-            </div>
         </div>
 
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="foro.js"></script>
 </ht>

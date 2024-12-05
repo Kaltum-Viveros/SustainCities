@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $user = new Read('sustaincities');
 
         // Llamar a la función para obtener los posts del usuario
-        $user->getPosts($usuario_id); // Suponiendo que esta función maneja la respuesta
+        $user->getMyPosts($usuario_id); // Suponiendo que esta función maneja la respuesta
 
     } catch (\Exception $e) {
         // Capturar cualquier error y devolver una respuesta JSON de error

@@ -262,13 +262,6 @@ body{
     color: #999;
 }
 
-
-
-/* Imagen de la publicación */
-.post-image {
-    text-align: center;
-}
-
 .post-image img {
     text-align: left;
     width: 100%;
@@ -568,7 +561,6 @@ footer.search-bar input {
     font-style: italic;
 }
 
-/* Estilos para el botón de ver comentarios */
 .ver-comentarios {
     background-color: #007bff;
     color: #fff;

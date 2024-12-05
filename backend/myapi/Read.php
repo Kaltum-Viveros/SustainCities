@@ -134,18 +134,21 @@ class Read extends DataBase {
     
     
 
-    public function getPosts($id_usuario) {
+    public function getMyPosts($id_usuario) {
         try {
             // Establecer el encabezado adecuado para la respuesta JSON
             header('Content-Type: application/json');
     
-            // Consulta SQL para obtener los posts de la vista
-            $query = "SELECT * FROM vista_posts_usuario WHERE eliminado = 0 ORDER BY fecha_creacion DESC";
+            // Consulta SQL para obtener los posts de la vista, filtrando por el id_usuario
+            $query = "SELECT * FROM vista_posts_usuario WHERE id_usuario = ? AND eliminado = 0 ORDER BY fecha_creacion DESC";
             $stmt = $this->conexion->prepare($query);
     
             if (!$stmt) {
                 throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
             }
+    
+            // Vincular el parámetro de id_usuario
+            $stmt->bind_param("i", $id_usuario);
     
             // Ejecutar la consulta y obtener los resultados
             $stmt->execute();
@@ -208,6 +211,7 @@ class Read extends DataBase {
                 echo json_encode(['status' => 'success', 'posts' => 'No tienes publicaciones.']);
             }
         } catch (\Exception $e) {
+            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
@@ -472,7 +476,8 @@ class Read extends DataBase {
                         'fecha_creacion' => $row['fecha_creacion'],
                         'id_usuario' => $row['id_usuario'],
                         'nombre' => $row['nombre_usuario'],
-                        'likes'=> $row['likes']
+                        'ciudad'=> $row['ciudad'],
+                        'estado'=> $row['estado']
                     ];
                 }
     

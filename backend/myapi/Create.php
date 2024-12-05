@@ -212,9 +212,9 @@
             $stmt->bind_param("iis", $id_post, $id_usuario, $comentario);
         
             if ($stmt->execute()) {
-                $this->data = array('message' => 'Comentario agregado exitosamente');
+               $this->data = array('status' => 'success', 'message' => 'Comentario añadido exitosamente');
             } else {
-                $this->data = array('message' => 'Error al agregar el comentario');
+                $this->data = array('status' => 'error', 'message' => 'Comentario no añadidno');
             }
         
             echo $this->getData();
