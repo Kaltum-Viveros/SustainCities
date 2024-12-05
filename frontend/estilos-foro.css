@@ -262,12 +262,17 @@ body{
     color: #999;
 }
 
+.post-image {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo para la imagen del post */
 .post-image img {
-    text-align: left;
     width: 100%;
-    max-width: 400px;
-    height: 100px;
+    height: auto;
     border-radius: 8px;
+    object-fit: cover;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -395,6 +400,11 @@ body{
     padding-left: 15px;
 }
 
+.post-all {
+    display: grid;
+    grid-template-columns: 200px 1fr; 
+    gap: 20px;
+}
 .post-content h4 {
     font-size: 1.2rem;
     color: #333;
@@ -577,13 +587,7 @@ footer.search-bar input {
     background-color: #0056b3;
 }
 
-/* Estilo para la imagen del post */
-.post-image img {
-    width: 100%;
-    border-radius: 8px;
-    object-fit: cover;
-    max-height: 300px;
-}
+
 
 /* Estilo del texto del post */
 .post-content h3 {
