@@ -138,7 +138,6 @@ $(document).ready(function () {
             success: function(response) {
                 let data = response;
                 console.log(data);
-
                 if (data.status == 'success') {
                     if (data.posts == 'No tienes publicaciones.') {
                         $('#mis-posts-container').html('<p>No tienes publicaciones.</p>');
@@ -146,6 +145,7 @@ $(document).ready(function () {
                         // Aquí generas los posts, si existen
                         let postsHtml = '';
                         data.posts.forEach(function(post) {
+                        let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo';
                             postsHtml += `
                                 <div class="post">
                                     <div class="post-image">
@@ -157,7 +157,10 @@ $(document).ready(function () {
                                         <div class="post-meta">
                                             <span><i class='bx bx-calendar' ></i> ${post.fecha_creacion}</span>
                                             <div class="meta-post-button">
-                                                <span><i id="likes" class='bx bx-like' ></i></span>
+                                                <span>
+                                                    <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                </span>
+                                                <span class="likes-count">${post.likes || 0}</span>
                                                 <span><i id="comentarios" class='bx bx-chat'></i></span>
                                             </div>
                                         </div>
@@ -268,7 +271,6 @@ $(document).ready(function () {
                         let postsHtml = '';
                         data.posts.forEach(function(post) {
                             let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo'; // Clase diferente dependiendo de si ha dado like
-                        
                             postsHtml += `
                                 <div class="post">
                                     <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
@@ -299,7 +301,7 @@ $(document).ready(function () {
                                         </div>
                                     </div>
                                 </div>
-                            `;                        
+                            `;
                         });
                         // Insertar los posts generados en el contenedor
                         $('#results-container').html(postsHtml);
@@ -405,17 +407,18 @@ $(document).ready(function () {
                             $('#results-container').html('<p>No se encontraron resultados.</p>');
                         } else {
                             let resultsHtml = '';
-                            data.posts.forEach(function(post) {
-                                resultsHtml += `
-                                    <div class="post">
+                        data.posts.forEach(function(post) {
+                            let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo'; // Clase diferente dependiendo de si ha dado like
+                            resultsHtml += `
+                                <div class="post">
+                                    <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
                                     <div class="post-image">
-                                        <!-- Asegurándote de que la imagen se muestra correctamente -->
                                         <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
                                     </div>
                                     <div class="post-content">
                                         <div class="post-header">
-                                            <i class='bx bx-user-circle' ></i>
-                                            <div class="user-details"
+                                            <i class='bx bx-user-circle'></i>
+                                            <div class="user-details">
                                                 <h4>${post.nombre}</h4>
                                                 <p>${post.ciudad} , ${post.estado}</p>
                                             </div>
@@ -424,9 +427,12 @@ $(document).ready(function () {
                                             <h4>${post.titulo}</h4>
                                             <p>${post.contenido}</p>
                                             <div class="post-meta">
-                                                <span><i class='bx bx-calendar' ></i> ${post.fecha_creacion}</span>
+                                                <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
                                                 <div class="meta-post-button">
-                                                    <span><i id="likes" class='bx bx-like' ></i></span>
+                                                    <span>
+                                                        <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                    </span>
+                                                    <span class="likes-count">${post.likes || 0}</span>
                                                     <span><i id="comentarios" class='bx bx-chat'></i></span>
                                                 </div>
                                             </div>
@@ -539,6 +545,7 @@ $(document).ready(function () {
                         } else {
                             let postsHtml = '';
                             data.posts.forEach(function(post) {
+                                let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo';
                                 postsHtml += `
                                     <div class="post">
                                     <div class="post-image">
@@ -550,7 +557,10 @@ $(document).ready(function () {
                                         <div class="post-meta">
                                             <span><i class='bx bx-calendar' ></i> ${post.fecha_creacion}</span>
                                             <div class="meta-post-button">
-                                                <span><i id="likes" class='bx bx-like' ></i></span>
+                                                <span>
+                                                    <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                </span>
+                                                <span class="likes-count">${post.likes || 0}</span>
                                                 <span><i id="comentarios" class='bx bx-chat'></i></span>
                                             </div>
                                         </div>
