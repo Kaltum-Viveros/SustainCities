@@ -8,7 +8,10 @@
 }
 
 body{
-    min-height: 42px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
     background: #d2d2d2;
 }
 
@@ -160,7 +163,10 @@ body{
 
 /* Contenedor principal */
 .main-content {
-    margin-left: 85px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Ocupa el espacio disponible */
+    margin-left: 85px; /* Ajusta según la sidebar */
     padding: 20px;
     transition: margin-left 0.4s ease;
 }
@@ -227,6 +233,7 @@ body{
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
 }
 
 .post:hover {
@@ -235,10 +242,6 @@ body{
 }
 
 /* Contenido de la publicación */
-.post-content {
-    flex: 3;
-    
-}
 
 .post-content h3 {
     margin-bottom: 10px;
@@ -398,13 +401,11 @@ body{
 }
 
 .post-content h4 {
-    margin-bottom: 10px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #333;
 }
 
 .post-content p {
-    margin-bottom: 10px;
     color: #666;
     font-size: 1rem;
 }
@@ -419,13 +420,6 @@ body{
     top: 15px;
     right: 15px; /* Colocarlos en la esquina superior derecha */
 }
-
-/*.post-meta, .post-buttons {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.875rem;
-    color: #999;
-}*/
 
 /* Botones de acción */
 .post-buttons form {
@@ -455,10 +449,43 @@ body{
     background-color: #002f5d;
 }
 
-.activo {
-    color: blue; /* Cambia a azul si el ícono debe ser azul */
+
+#comentario {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px; /* Espacio entre los comentarios */
+    margin-top: 15px;
 }
 
-.inactivo {
-    background-color: rgb(255, 255, 255); /* Cambia a blanco si el ícono debe ser blanco */
+.comment-text {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    gap: 15px; 
+}
+
+.comment-text p{
+    color: #666;
+    font-size: 1rem;
+}
+
+.main-content footer {
+    position: sticky;
+    margin-top: auto; /* Mantiene el footer en la parte inferior */
+    bottom: 0; /* Fija el footer a la parte inferior visible */
+    gap: 10px;
+    z-index: 9999;
+}
+
+footer.search-bar {
+    background: rgba(0, 25, 46, 1);
+}
+
+footer.search-bar input::placeholder {
+    color: #e5dede; /* Cambia 'gray' por el color que desees */
+}
+
+footer.search-bar input {
+    color: #e5dede; /* Cambia 'gray' por el color que desees */
 }
