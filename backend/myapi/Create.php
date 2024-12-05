@@ -161,7 +161,7 @@
         
                 // Verificar si la sesión contiene 'id_usuario'
                 if (!isset($_SESSION['id_usuario'])) {
-                    throw new Exception('Usuario no autenticado');
+                    throw new \Exception('Usuario no autenticado');
                 }
                 
                 $usuario_id = $_SESSION['id_usuario'];
