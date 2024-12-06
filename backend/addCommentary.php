@@ -5,7 +5,6 @@ header('Content-Type: application/json');
 
 session_start(); // Asegúrate de que la sesión esté iniciada
 
-// Comprobar si la solicitud es POST y si existe la imagen
 if (isset($_POST['post_id']) && isset($_POST['comentario'])) {
     $id_post = $_POST['post_id'];
     $comentario = $_POST['comentario'];

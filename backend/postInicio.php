@@ -8,7 +8,6 @@ session_start();
 
 // Verificar si la solicitud es GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Iniciar sesión y obtener el ID del usuario (si el usuario está autenticado)
 
     try {
         // Crear una instancia del objeto Read
