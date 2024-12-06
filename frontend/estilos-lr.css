@@ -180,3 +180,16 @@ body {
 .input-box input::placeholder {
     color: #fff; /* Color del texto del placeholder blanco */
 }
+
+.swal-darkblue-popup {
+    background-color: #1b3a57; /* Azul marino */
+    color: #ffffff; /* Texto blanco para contraste */
+}
+.swal-darkblue-button {
+    background-color: #12293a; /* Azul marino oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+}
+.swal-darkblue-button:hover {
+    background-color: #0f2233; /* Azul aún más oscuro en hover */
+}

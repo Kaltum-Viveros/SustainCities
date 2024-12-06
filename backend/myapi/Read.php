@@ -498,7 +498,6 @@ class Read extends DataBase {
             // Capturar cualquier error en la ejecución y devolverlo en formato JSON
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
-    }  
+    }
 }
-
 ?>

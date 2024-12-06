@@ -256,9 +256,11 @@ body{
 }
 
 .post-meta {
+    margin-top: 5px;
+    margin-right: 10px;
     display: flex;
     justify-content: space-between; /* Alinea el contenido a la derecha */
-    font-size: 0.875rem;
+    font-size: 1rem;
     color: #999;
 }
 
@@ -293,6 +295,16 @@ body{
     flex-direction: column; /* Pone h4 encima de h5 */
     margin: 0;
 }
+
+.comment .user-details {
+    display: flex;
+    flex-direction: row; /* Pone h4 encima de h5 */
+    align-items: center;
+    margin: 0;
+    gap: 7px;
+    margin-bottom: 10px;
+}
+
 
 .user-details h4, .user-details h5 {
     margin: 0; /* Elimina márgenes predeterminados */
@@ -452,13 +464,12 @@ body{
     background-color: #002f5d;
 }
 
-
 #like-buton:hover {
     cursor: pointer;
 }
 
 .activo {
-    color: blue; /* Cambia a azul si el ícono debe ser azul */
+    color: #0056b3; /* Cambia a azul si el ícono debe ser azul */
 }
 
 .inactivo {
@@ -543,10 +554,15 @@ footer.search-bar input {
 /* Estilo de los botones para interacción */
 .comment-form {
     margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    gap: 10px;
 }
 
 .comment-form textarea {
+    resize: none !important;
     width: 100%;
+    height: 50px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -564,6 +580,7 @@ footer.search-bar input {
     cursor: pointer;
     font-size: 1rem;
     width: 100%;
+    height: 50px;
 }
 
 .submit-comment:hover {
@@ -583,18 +600,26 @@ footer.search-bar input {
 }
 
 .ver-comentarios {
-    background-color: #007bff;
-    color: #fff;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
     cursor: pointer;
-    font-size: 1rem;
-    display: block;
-    margin-top: 10px;
 }
 
 .ver-comentarios:hover {
-    background-color: #0056b3;
+    color: #0056b3; /* Color en hover */
 }
 
+input[type="checkbox"]:checked + .ver-comentarios {
+    color: #0056b3; /* Color permanente cuando está activo */
+}
+
+.swal-darkblue-popup {
+    background-color: #1b3a57; /* Azul marino */
+    color: #ffffff; /* Texto blanco para contraste */
+}
+.swal-darkblue-button {
+    background-color: #12293a; /* Azul marino oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+}
+.swal-darkblue-button:hover {
+    background-color: #0f2233; /* Azul aún más oscuro en hover */
+}

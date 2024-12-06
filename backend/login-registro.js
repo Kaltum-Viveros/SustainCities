@@ -210,11 +210,43 @@ $(document).ready(function () {
             },
             body: JSON.stringify(data) // Enviamos todo dentro del campo 'data'
             })
-            .then(response => response.json())
-            .then(data => {
-                wrapperLogin();
+            .then(response => {
+                if (!response.ok) {
+                    // Si la respuesta del servidor no es 200-299, lanza un error
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Error en la respuesta del servidor');
+                    });
+                }
+                return response.json(); // Si la respuesta es exitosa, conviértela a JSON
             })
-            .catch(error => console.error('Error:', error));
+            .then(data => {
+                if (data.message == "Usuario registrado exitosamente") {
+                    // Muestra un mensaje de alerta si la respuesta contiene un mensaje
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: 'Registro exitoso.',
+                        customClass: {
+                            popup: 'swal-darkblue-popup',
+                            confirmButton: 'swal-darkblue-button'
+                        },
+                        confirmButtonText: 'Entendido',
+                    });
+                    wrapperLogin();
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Error!',
+                        text: `El correo ingresado ya está en uso`,
+                        customClass: {
+                            popup: 'swal-darkblue-popup',
+                            confirmButton: 'swal-darkblue-button'
+                        },
+                        confirmButtonText: 'Entendido',
+                    });
+                }
+            })
         }
 
         // Función para logear un usuario
@@ -234,10 +266,36 @@ function loginUser() {
     .then(response => response.json())
     .then(data => {
         if (data.message === 'Login exitoso') {
+            // Redirige al usuario si el inicio de sesión es exitoso
             window.location.href = 'foro.php';
+        } else {
+            // Si la respuesta no es un "Login exitoso", muestra un mensaje de error
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: data.message || 'Hubo un error en el inicio de sesión.',
+                customClass: {
+                    popup: 'swal-darkblue-popup',
+                    confirmButton: 'swal-darkblue-button'
+                },
+                confirmButtonText: 'Entendido',
+            });
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        // Muestra un mensaje de error general si hay un problema de red o de la solicitud
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: `Algo salió mal: ${error.message || error}`,
+            customClass: {
+                popup: 'swal-darkblue-popup',
+                confirmButton: 'swal-darkblue-button'
+            },
+            confirmButtonText: 'Entendido',
+        });
+    });
 }
 
 });

@@ -101,13 +101,21 @@ $(document).ready(function () {
                 try {
                     data = response; // Convertir la respuesta a JSON
                 } catch (e) {
-                    alert('Respuesta inesperada del servidor. Por favor, intenta nuevamente.');
                     console.error('Error al parsear la respuesta:', response);
                     return;
                 }
 
                 if (data.status === 'success') {
-                    alert('Operación exitosa');
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: 'Operación exitosa.',
+                        customClass: {
+                            popup: 'swal-darkblue-popup',
+                            confirmButton: 'swal-darkblue-button'
+                        },
+                        confirmButtonText: 'Entendido',
+                    });
                     actualizarMisPosts();
                     editar = false; // Reiniciar el estado de edición
                     $('#nameP').text('Crear Post');
@@ -116,16 +124,9 @@ $(document).ready(function () {
                     $('#title').val('');
                     $('#image-container').hide();
                     $('#image').val('');
-                } else {
-                    if (editar) {
-                        alert('Error al editar el post línea 114: ' + data.message);
-                    } else {
-                        alert('Error al crear el post línea 114: ' + data.message);
-                    }
                 }
             },
             error: function(xhr, status, error) {
-                alert('Error en la comunicación con el servidor: ' + error);
                 console.error('Detalles del error:', xhr, status, error);
             }
         });
@@ -150,53 +151,57 @@ $(document).ready(function () {
                                 <div class="post">
                                     <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
                                     <div class="post-content">
-                                        <div class="post-header">
-                                            <i class='bx bx-user-circle'></i>
-                                            <div class="user-details">
-                                                <h4>${post.nombre}</h4>
-                                                <p>${post.ciudad} , ${post.estado}</p>
+                                        <div class="post-all">
+                                            <div class="post-image">
+                                                <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
                                             </div>
-                                        </div>
-                                        <div class="post-image">
-                                            <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                        </div>
-                                        <div id="post-text">
-                                            <h4>${post.titulo}</h4>
-                                            <p>${post.contenido}</p>
-                                            <div class="post-meta">
-                                                <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
-                                                <div class="meta-post-button">
-                                                    <span>
-                                                        <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                                    </span>
-                                                    <span class="likes-count">${post.likes || 0}</span>
-                                                    <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                            <div class="post-textanddata">
+                                                <div class="post-header">
+                                                    <i class='bx bx-user-circle'></i>
+                                                    <div class="user-details">
+                                                        <h4>${post.nombre}</h4>
+                                                        <p>${post.ciudad} , ${post.estado}</p>
+                                                    </div>
+                                                </div>
+                                                <div id="post-text">
+                                                    <h4>${post.titulo}</h4>
+                                                    <p>${post.contenido}</p>
+                                                    <div class="post-meta">
+                                                        <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                                        <div class="meta-post-button">
+                                                            <span>
+                                                                <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                            </span>
+                                                            <span class="likes-count">${post.likes || 0}</span>
+                                                        <input type="checkbox" id="toggle-like-${post.id_post}" style="display: none;">
+                                                        <label for="toggle-like-${post.id_post}" class="ver-comentarios bx bx-chat" data-post-id="${post.id_post}"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="post-buttons">
+                                                    <form action="edit_post.php" method="GET">
+                                                        <input type="hidden" name="id" value="${post.id_post}">
+                                                        <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
+                                                    </form>
+                                                    <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
+                                                        <input type="hidden" name="id" value="${post.id_post}">
+                                                        <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="post-buttons">
-                                            <form action="edit_post.php" method="GET">
-                                                <input type="hidden" name="id" value="${post.id_post}">
-                                                <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
-                                            </form>
-                                            <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
-                                                <input type="hidden" name="id" value="${post.id_post}">
-                                                <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
-                                            </form>
-                                        </div>
-                                        <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
                                         <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
-                                            <div id="comentarios-post-${post.id_post}" class="comments-list">
-                                                <!-- Los comentarios se cargarán aquí -->
-                                            </div>
-                                        </div>
-                                        <div class="comment-form">
-                                            <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
-                                            <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
+                                        <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                            <!-- Los comentarios se cargarán aquí -->
                                         </div>
                                     </div>
+                                    <div class="comment-form">
+                                        <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                        <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
+                                    </div>
+                                    </div>
                                 </div>
-                                `;                
+                                `;
                         });
                         // Insertar los posts generados en el contenedor
                         $('#mis-posts-container').html(postsHtml);
@@ -244,24 +249,49 @@ $(document).ready(function () {
 
                         // Función para eliminar el post
                         function eliminarPost(id_post) {
-                            if (confirm("¿De verdad deseas eliminar el post?")) {
-                                // Enviar solicitud AJAX para eliminar el post
-                                $.ajax({
-                                    url: '/SustainCities/backend/deletePost.php',
-                                    type: 'POST',
-                                    data: { id: id_post },
-                                    dataType: 'json',
-                                    success: function(response) {
-                                        let respuesta = response;
-                                        console.log(respuesta);
-                                        if (respuesta.status === 'success') {
-                                            actualizarMisPosts(); // Actualizar la lista de posts después de eliminar
-                                        } else {
-                                            alert('Error al eliminar el post.');
+                            Swal.fire({
+                                icon: 'question', // Ícono de pregunta para la confirmación
+                                title: '¿De verdad deseas eliminar el post?',
+                                showCancelButton: true, // Muestra el botón de cancelar
+                                confirmButtonText: 'Sí, eliminar', // Texto del botón de confirmación
+                                cancelButtonText: 'Cancelar', // Texto del botón de cancelación
+                                customClass: {
+                                    popup: 'swal-darkblue-popup',
+                                    confirmButton: 'swal-darkblue-button',
+                                    cancelButton: 'swal-darkblue-button'
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Lógica para eliminar el post si el usuario confirma
+                                    console.log('El post ha sido eliminado');
+                                    $.ajax({
+                                        url: '/SustainCities/backend/deletePost.php',
+                                        type: 'POST',
+                                        data: { id: id_post },
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            let respuesta = response;
+                                            console.log(respuesta);
+                                            if (respuesta.status === 'success') {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: '¡Éxito!',
+                                                    text: 'Post eliminado exitosamente.',
+                                                    customClass: {
+                                                        popup: 'swal-darkblue-popup',
+                                                        confirmButton: 'swal-darkblue-button'
+                                                    },
+                                                    confirmButtonText: 'Entendido',
+                                                });
+                                                actualizarMisPosts(); // Actualizar la lista de posts después de eliminar
+                                            }
                                         }
-                                    }
-                                });
-                            }
+                                    });
+                                    // Aquí podrías agregar la llamada a la función de eliminación o redirigir a otra página.
+                                } else {
+                                    console.log('El post no fue eliminado');
+                                }
+                            });
                         }
                     }
                 } else {
@@ -269,9 +299,6 @@ $(document).ready(function () {
                     $('#mis-posts-container').html('<p>Error al cargar publicaciones.</p>');
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('Error al actualizar la sección de Mis Posts');
-            }
         });
     }
 
@@ -307,9 +334,9 @@ $(document).ready(function () {
                             <div class="comment">
                             <div class="user-details">
                                 <h4>${comentario.nombre}</h4>
-                                    <p>${comentario.ciudad} , ${comentario.estado}</p>
-                                </div>
-                                <div class="comment-body">${comentario.contenido}</div>
+                                <p>${comentario.ciudad} , ${comentario.estado}</p>
+                            </div>
+                            <div class="comment-body">${comentario.contenido}</div>
                             </div>
                         `;
                     });
@@ -322,7 +349,16 @@ $(document).ready(function () {
                 }
             },
             error: function() {
-                alert('Error al cargar los comentarios');
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: `Error al cargar los comentarios}`,
+                    customClass: {
+                        popup: 'swal-darkblue-popup',
+                        confirmButton: 'swal-darkblue-button'
+                    },
+                    confirmButtonText: 'Entendido',
+                });
             }
         });
     }
@@ -354,12 +390,30 @@ $(document).ready(function () {
                         $("#comentarios-post-" + postId).prepend(comentarioHtml); // Insertar al inicio de los comentarios
                         $("#comentario-input-" + postId).val(""); // Limpiar el campo de comentario
                     } else {
-                        alert("Error al agregar el comentario: " + response.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Error!',
+                            text: `Error al agregar el comentario`,
+                            customClass: {
+                                popup: 'swal-darkblue-popup',
+                                confirmButton: 'swal-darkblue-button'
+                            },
+                            confirmButtonText: 'Entendido',
+                        });
                     }
                 }
             });
         } else {
-            alert("Por favor, escribe un comentario.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Alerta!',
+                text: `Por favor, escribe un comentario`,
+                customClass: {
+                    popup: 'swal-darkblue-popup',
+                    confirmButton: 'swal-darkblue-button'
+                },
+                confirmButtonText: 'Entendido',
+            });
         }
     })
     
@@ -381,131 +435,59 @@ $(document).ready(function () {
                         data.posts.forEach(function(post) {
                             let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo'; // Clase diferente dependiendo de si ha dado like
                             postsHtml += `
-                            <div class="post">
-                                <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
-                                <div class="post-content">
-                                    <div class="post-all">
-                                        <div class="post-image">
-                                            <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                        </div>
-
-                                        <div class="post-textanddata">
-                                            <div class="post-header">
-                                            <i class='bx bx-user-circle'></i>
-                                                <div class="user-details">
-                                                    <h4>${post.nombre}</h4>
-                                                    <p>${post.ciudad} , ${post.estado}</p>
-                                                </div>
+                                <div class="post">
+                                    <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
+                                    <div class="post-content">
+                                        <div class="post-all">
+                                            <div class="post-image">
+                                                <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
                                             </div>
-
-                                            <div id="post-text">
-                                                <h4>${post.titulo}</h4>
-                                                <p>${post.contenido}</p>
-                                                <div class="post-meta">
-                                                    <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
-                                                    <div class="meta-post-button">
-                                                        <span>
-                                                            <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                                        </span>
-                                                        <span class="likes-count">${post.likes || 0}</span>
-                                                        <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                            <div class="post-textanddata">
+                                                <div class="post-header">
+                                                <i class='bx bx-user-circle'></i>
+                                                    <div class="user-details">
+                                                        <h4>${post.nombre}</h4>
+                                                        <p>${post.ciudad} , ${post.estado}</p>
+                                                    </div>
+                                                </div>
+                                                <div id="post-text">
+                                                    <h4>${post.titulo}</h4>
+                                                    <p>${post.contenido}</p>
+                                                    <div class="post-meta">
+                                                        <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                                        <div class="meta-post-button">
+                                                            <span>
+                                                                <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                            </span>
+                                                            <span class="likes-count">${post.likes || 0}</span>
+                                                            <input type="checkbox" id="toggle-like-${post.id_post}" style="display: none;">
+                                                            <label for="toggle-like-${post.id_post}" class="ver-comentarios bx bx-chat" data-post-id="${post.id_post}"></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
-                                    <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
-                                        <div id="comentarios-post-${post.id_post}" class="comments-list">
-                                            <!-- Los comentarios se cargarán aquí -->
+                                        <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                            <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                                <!-- Los comentarios se cargarán aquí -->
+                                            </div>
+                                        </div>
+                                        <div class="comment-form">
+                                            <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                            <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
                                         </div>
                                     </div>
-                                    <div class="comment-form">
-                                        <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
-                                        <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
-                                    </div>
                                 </div>
-                            </div>
                             `;
                         });
                         // Insertar los posts generados en el contenedor
                         $('#results-container').html(postsHtml);
-
-                        // Asegurarse de no duplicar eventos para "Editar"
-                        $(document).off('click', '[id^="editarPost-"]').on('click', '[id^="editarPost-"]', function(e) {
-                            e.preventDefault(); // Evitar que el formulario recargue la página
-                            const id_post = $(this).closest('form').find('input[name="id"]').val();
-                            cargarPostParaEdicion(id_post);
-                        });
-
-                        // Asegurarse de no duplicar eventos para "Eliminar"
-                        $(document).off('click', '[id^="eliminarPost-"]').on('click', '[id^="eliminarPost-"]', function(e) {
-                            e.preventDefault();
-                            const id_post = $(this).closest('form').find('input[name="id"]').val();
-                            eliminarPost(id_post);
-                        });
-
-                        function cargarPostParaEdicion(id_post) {
-                            $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
-                                const post = response.posts[0];
-                                console.log(post);
-
-                                // Rellenar el formulario con los datos del post
-                                $('#title').val(post.titulo);
-                                $('#content').val(post.contenido);
-                                $('#post_id').val(post.id_post);
-                                console.log(post.id_post);
-                                // Mostrar la imagen actual (si existe)
-                                if (post.imagen) {
-                                    // Mostrar la imagen actual si está disponible
-                                    $('#current-image').attr('src', 'data:image/jpeg;base64,' + post.imagen);
-                                } else {
-
-                                }
-
-                                // Limpiar el campo para la imagen
-                                $('#image').val(''); // Asegurarse de que el input de archivo esté vacío
-
-                                // Mostrar el contenedor para editar la imagen
-                                $('#image-container').show(); // Mostrar el contenedor de imagen actual y campo de subida
-
-                                $('#nameP').text('Editar Post');
-                                $('#aceptar').text('Guardar Cambios');
-                                editar=true;
-                            });
-                        }
-
-                        // Función para eliminar el post
-                        function eliminarPost(id_post) {
-                            if (confirm("¿De verdad deseas eliminar el post?")) {
-                                // Enviar solicitud AJAX para eliminar el post
-                                $.ajax({
-                                    url: '/SustainCities/backend/deletePost.php',
-                                    type: 'POST',
-                                    data: { id: id_post },
-                                    dataType: 'json',
-                                    success: function(response) {
-                                        let respuesta = response;
-                                        console.log(respuesta);
-                                        if (respuesta.status === 'success') {
-                                            actualizarMisPosts(); // Actualizar la lista de posts después de eliminar
-                                        } else {
-                                            alert('Error al eliminar el post.');
-                                        }
-                                    }
-                                });
-                            }
-                        }
                     }
                 } else {
                     // Si algo salió mal, mostrar el mensaje de error
                     $('#results-container').html('<p>Error al cargar publicaciones.</p>');
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('Error al actualizar la sección de Mis Posts');
-            }
         });
     }
 
@@ -536,118 +518,54 @@ $(document).ready(function () {
                         data.posts.forEach(function(post) {
                             let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo'; // Clase diferente dependiendo de si ha dado like
                             resultsHtml += `
-                                <div class="post">
-                                <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
-                                <div class="post-content">
-                                    <div class="post-all">
-                                        <div class="post-image">
-                                            <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                        </div>
-
-                                        <div class="post-textanddata">
-                                            <div class="post-header">
-                                            <i class='bx bx-user-circle'></i>
-                                                <div class="user-details">
-                                                    <h4>${post.nombre}</h4>
-                                                    <p>${post.ciudad} , ${post.estado}</p>
+                                    <div class="post">
+                                        <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
+                                        <div class="post-content">
+                                            <div class="post-all">
+                                                <div class="post-image">
+                                                    <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
                                                 </div>
-                                            </div>
-
-                                            <div id="post-text">
-                                                <h4>${post.titulo}</h4>
-                                                <p>${post.contenido}</p>
-                                                <div class="post-meta">
-                                                    <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
-                                                    <div class="meta-post-button">
-                                                        <span>
-                                                            <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                                            <span class="likes-count">${post.likes || 0}</span>
-                                                        </span>
-                                                        <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                                <div class="post-textanddata">
+                                                    <div class="post-header">
+                                                    <i class='bx bx-user-circle'></i>
+                                                        <div class="user-details">
+                                                            <h4>${post.nombre}</h4>
+                                                            <p>${post.ciudad} , ${post.estado}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div id="post-text">
+                                                        <h4>${post.titulo}</h4>
+                                                        <p>${post.contenido}</p>
+                                                        <div class="post-meta">
+                                                            <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                                            <div class="meta-post-button">
+                                                                <span>
+                                                                    <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                                </span>
+                                                                <span class="likes-count">${post.likes || 0}</span>
+                                                                <input type="checkbox" id="toggle-like-${post.id_post}" style="display: none;">
+                                                                <label for="toggle-like-${post.id_post}" class="ver-comentarios bx bx-chat" data-post-id="${post.id_post}"></label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                                <div id="comentarios-post-${post.id_post}" class="comments-list">
+                                                    <!-- Los comentarios se cargarán aquí -->
+                                                </div>
+                                            </div>
+                                            <div class="comment-form">
+                                                <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
+                                                <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
-                                    <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
-                                        <div id="comentarios-post-${post.id_post}" class="comments-list">
-                                            <!-- Los comentarios se cargarán aquí -->
-                                        </div>
-                                    </div>
-                                    <div class="comment-form">
-                                        <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
-                                        <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
-                                    </div>
-                                </div>
-                            </div>
                                 `;
                             });
 
                             // Insertar los resultados generados en el contenedor
                             $('#results-container').html(resultsHtml);
-
-                            // Asegurarse de no duplicar eventos para "Editar"
-                            $(document).off('click', '[id^="editarPost-"]').on('click', '[id^="editarPost-"]', function(e) {
-                                e.preventDefault(); // Evitar que el formulario recargue la página
-                                const id_post = $(this).closest('form').find('input[name="id"]').val();
-                                cargarPostParaEdicion(id_post);
-                            });
-
-                            // Asegurarse de no duplicar eventos para "Eliminar"
-                            $(document).off('click', '[id^="eliminarPost-"]').on('click', '[id^="eliminarPost-"]', function(e) {
-                                e.preventDefault();
-                                const id_post = $(this).closest('form').find('input[name="id"]').val();
-                                eliminarPost(id_post);
-                            });
-
-                            function cargarPostParaEdicion(id_post) {
-                                $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
-                                    const post = response.posts[0];
-                                    console.log(post);
-
-                                    // Rellenar el formulario con los datos del post
-                                    $('#title').val(post.titulo);
-                                    $('#content').val(post.contenido);
-                                    $('#post_id').val(post.id_post);
-                                    console.log(post.id_post);
-                                    // Mostrar la imagen actual (si existe)
-                                    if (post.imagen) {
-                                        $('#current-image').attr('src', 'data:image/jpeg;base64,' + post.imagen);
-                                    } else {
-
-                                    }
-
-                                    $('#image').val(''); // Limpiar el campo de la imagen
-                                    $('#image-container').show(); // Mostrar contenedor de imagen y campo de subida
-
-                                    $('#nameP').text('Editar Post');
-                                    $('#aceptar').text('Guardar Cambios');
-                                    editar = true;
-                                });
-                            }
-
-                            // Función para eliminar el post
-                            function eliminarPost(id_post) {
-                                if (confirm("¿De verdad deseas eliminar el post?")) {
-                                    $.ajax({
-                                        url: '/SustainCities/backend/deletePost.php',
-                                        type: 'POST',
-                                        data: { id: id_post },
-                                        dataType: 'json',
-                                        success: function(response) {
-                                            let respuesta = response;
-                                            console.log(respuesta);
-                                            if (respuesta.status === 'success') {
-                                                actualizarResultados(); // Actualizar lista después de eliminar
-                                            } else {
-                                                alert('Error al eliminar el post.');
-                                            }
-                                        }
-                                    });
-                                }
-                            }
                         }
                     } else {
                         $('#results-container').html('<p>No se encontraron resultados.</p>');
@@ -690,47 +608,49 @@ $(document).ready(function () {
                             data.posts.forEach(function(post) {
                                 let likeIconClass = post.ha_dado_like ? 'activo' : 'inactivo';
                                 postsHtml += `
-                                <div class="post">
-                                    <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
-                                    <div class="post-image">
-                                            <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
-                                    </div>
-                                    <div class="post-content">
-                                        <div class="post-header">
-                                            <i class='bx bx-user-circle'></i>
-                                            <div class="user-details">
-                                                <h4>${post.nombre}</h4>
-                                                <p>${post.ciudad} , ${post.estado}</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div id="post-text">
-                                            <h4>${post.titulo}</h4>
-                                            <p>${post.contenido}</p>
-                                            <div class="post-meta">
-                                                <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
-                                                <div class="meta-post-button">
-                                                    <span>
-                                                        <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
-                                                    </span>
-                                                    <span class="likes-count">${post.likes || 0}</span>
-                                                    <span><i id="comentarios" class='bx bx-chat'></i></span>
+                                    <div class="post">
+                                        <input type="hidden" name="id_post" class="id_post" value="${post.id_post}">
+                                        <div class="post-content">
+                                            <div class="post-all">
+                                                <div class="post-image">
+                                                    <img src="${post.imagen ? 'data:image/jpeg;base64,' + post.imagen : ''}">
+                                                </div>
+                                                <div class="post-textanddata">
+                                                    <div class="post-header">
+                                                        <i class='bx bx-user-circle'></i>
+                                                        <div class="user-details">
+                                                            <h4>${post.nombre}</h4>
+                                                            <p>${post.ciudad} , ${post.estado}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div id="post-text">
+                                                        <h4>${post.titulo}</h4>
+                                                        <p>${post.contenido}</p>
+                                                        <div class="post-meta">
+                                                            <span><i class='bx bx-calendar'></i> ${post.fecha_creacion}</span>
+                                                            <div class="meta-post-button">
+                                                                <span>
+                                                                    <i id="like-buton" class='bx bx-like like-icon ${likeIconClass}'></i>
+                                                                </span>
+                                                                <span class="likes-count">${post.likes || 0}</span>
+                                                            <input type="checkbox" id="toggle-like-${post.id_post}" style="display: none;">
+                                                            <label for="toggle-like-${post.id_post}" class="ver-comentarios bx bx-chat" data-post-id="${post.id_post}"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="post-buttons">
+                                                        <form action="edit_post.php" method="GET">
+                                                            <input type="hidden" name="id" value="${post.id_post}">
+                                                            <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
+                                                        </form>
+                                                        <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
+                                                            <input type="hidden" name="id" value="${post.id_post}">
+                                                            <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="post-buttons">
-                                            <form action="edit_post.php" method="GET">
-                                                <input type="hidden" name="id" value="${post.id_post}">
-                                                <button type="submit" id="editarPost-${post.id_post}"><i class='bx bx-edit'></i></button>
-                                            </form>
-                                            <form action="delete_post.php" method="POST" id="delete-post-form-${post.id_post}">
-                                                <input type="hidden" name="id" value="${post.id_post}">
-                                                <button type="submit" id="eliminarPost-${post.id_post}"><i class='bx bx-trash'></i></button>
-                                            </form>
-                                        </div>
-                                        <button class="ver-comentarios" data-post-id="${post.id_post}">Ver comentarios</button>
-                                        <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
+                                            <div id="comentarios-container-${post.id_post}" class="comentarios-container" style="display: none;">
                                             <div id="comentarios-post-${post.id_post}" class="comments-list">
                                                 <!-- Los comentarios se cargarán aquí -->
                                             </div>
@@ -739,8 +659,8 @@ $(document).ready(function () {
                                             <textarea id="comentario-input-${post.id_post}" placeholder="Escribe tu comentario..."></textarea>
                                             <button class="submit-comment" data-post-id="${post.id_post}">Comentar</button>
                                         </div>
+                                        </div>
                                     </div>
-                                </div>
                                 `;
                             });
                             // Insertar los posts generados en el contenedor
@@ -788,28 +708,52 @@ $(document).ready(function () {
 
                             // Función para eliminar el post
                             function eliminarPost(id_post) {
-                                if (confirm("¿De verdad deseas eliminar el post?")) {
-                                    $.ajax({
-                                        url: '/SustainCities/backend/deletePost.php',
-                                        type: 'POST',
-                                        data: { id: id_post },
-                                        dataType: 'json',
-                                        success: function(response) {
-                                            let respuesta = response;
-                                            console.log(respuesta);
-                                            if (respuesta.status === 'success') {
-                                                actualizarMisPosts(); // Actualizar lista después de eliminar
-                                            } else {
-                                                alert('Error al eliminar el post.');
+                                Swal.fire({
+                                    icon: 'question', // Ícono de pregunta para la confirmación
+                                    title: '¿De verdad deseas eliminar el post?',
+                                    showCancelButton: true, // Muestra el botón de cancelar
+                                    confirmButtonText: 'Sí, eliminar', // Texto del botón de confirmación
+                                    cancelButtonText: 'Cancelar', // Texto del botón de cancelación
+                                    customClass: {
+                                        popup: 'swal-darkblue-popup',
+                                        confirmButton: 'swal-darkblue-button',
+                                        cancelButton: 'swal-darkblue-button'
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Lógica para eliminar el post si el usuario confirma
+                                        console.log('El post ha sido eliminado');
+                                        $.ajax({
+                                            url: '/SustainCities/backend/deletePost.php',
+                                            type: 'POST',
+                                            data: { id: id_post },
+                                            dataType: 'json',
+                                            success: function(response) {
+                                                let respuesta = response;
+                                                console.log(respuesta);
+                                                if (respuesta.status === 'success') {
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: '¡Éxito!',
+                                                        text: 'Post eliminado exitosamente.',
+                                                        customClass: {
+                                                            popup: 'swal-darkblue-popup',
+                                                            confirmButton: 'swal-darkblue-button'
+                                                        },
+                                                        confirmButtonText: 'Entendido',
+                                                    });
+                                                    actualizarMisPosts(); // Actualizar la lista de posts después de eliminar
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                        // Aquí podrías agregar la llamada a la función de eliminación o redirigir a otra página.
+                                    } else {
+                                        console.log('El post no fue eliminado');
+                                    }
+                                });
                                 }
                             }
                         }
-                    } else {
-                        $('#mis-posts-container').html('<p>Error al cargar publicaciones.</p>');
-                    }
                 },
                 error: function () {
                     $('#mis-posts-container').html('<p>Error en la búsqueda</p>');
@@ -824,12 +768,6 @@ $(document).ready(function () {
     $(document).on('click', '#like-buton', function() {
         const id_post = $(this).closest('.post').find('.id_post').val();
         console.log('Entrando al clic. ID del post:', id_post);
-    
-        // Verifica que se obtuvieron los datos necesarios
-        if (!id_post) {
-            alert('Error: No se pudo obtener la información necesaria.');
-            return;
-        }
     
         // Realiza la solicitud al servidor para registrar el "like"
         $.ajax({
@@ -861,14 +799,8 @@ $(document).ready(function () {
                             $(this).addClass('inactivo');
                         }
                     }
-                } else {
-                    alert('Error: ' + data.message);
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('Hubo un problema al enviar la solicitud.');
-            }
         });
     });
 
