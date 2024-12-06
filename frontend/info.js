@@ -80,6 +80,245 @@ function volverLogin() {
     window.location.href = 'login.html';
 }
 
+function estadosPopulares() {
+    fetch('http://localhost/SustainCities/frontend/estados-popu.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos obtenidos:', data);
+            const contenedor = document.getElementById('estados-popu');
+
+            contenedor.innerHTML = '<canvas id="estadosChart"></canvas>';
+            const ctx = document.getElementById('estadosChart').getContext('2d');
+
+            const estados = data.map(item => item.estado);
+            const numAportaciones = data.map(item => item.num_aportaciones);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: estados,
+                    datasets: [{
+                        label: 'Número de Aportaciones',
+                        data: numAportaciones,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: 'black',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // Desactiva la leyenda para evitar el cuadro
+                        },
+                        title: {
+                            display: true, // Activa la visualización del título
+                            text: 'Estados con más actividad',
+                            font: {
+                                size: 18 // Tamaño de la fuente del título
+                            },
+                            padding: {
+                                bottom: 20 // Espacio debajo del título
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: true,
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al obtener los datos:', error));
+}
+
+
+function ciudadesPopulares() {
+    fetch('http://localhost/SustainCities/frontend/ciudades-popu.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos obtenidos:', data);
+            const contenedor = document.getElementById('ciudades-popu');
+
+            // Limpia el contenedor y agrega un canvas para la gráfica
+            contenedor.innerHTML = '<canvas id="ciudadesChart"></canvas>';
+            const ctx = document.getElementById('ciudadesChart').getContext('2d');
+
+            // Extrae los nombres de las ciudades y el número de aportaciones
+            const ciudades = data.map(item => item.ciudad);
+            const numAportaciones = data.map(item => item.num_aportaciones);
+
+            // Genera la gráfica con Chart.js
+            new Chart(ctx, {
+                type: 'pie', // Tipo de gráfica de pastel
+                data: {
+                    labels: ciudades,
+                    datasets: [{
+                        label: 'Número de Aportaciones',
+                        data: numAportaciones,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: 'black'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true, // Muestra la leyenda
+                            position: 'top' // Posición de la leyenda
+                        },
+                        title: {
+                            display: true, // Activa la visualización del título
+                            text: 'Ciudades con más actividad',
+                            font: {
+                                size: 18 // Tamaño de la fuente del título
+                            },
+                            padding: {
+                                bottom: 20 // Espacio debajo del título
+                            }
+                        },
+                        tooltip: {
+                            enabled: true // Habilita los tooltips
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al obtener los datos:', error));
+}
+
+function usuariosMasActivos() {
+    fetch('http://localhost/SustainCities/frontend/usuarios-popu.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos obtenidos:', data);
+            const contenedor = document.getElementById('usuarios-popu');
+
+            // Limpia el contenedor y agrega un canvas para la gráfica
+            contenedor.innerHTML = '<canvas id="usuariosChart"></canvas>';
+            const ctx = document.getElementById('usuariosChart').getContext('2d');
+
+            // Extrae los nombres de los usuarios y el número de aportaciones
+            const usuarios = data.map(item => item.nombre);
+            const numAportaciones = data.map(item => item.num_aportaciones);
+
+            // Limita los datos a un máximo de 10 usuarios
+            const usuariosLimitados = usuarios.slice(0, 10);
+            const numAportacionesLimitadas = numAportaciones.slice(0, 10);
+
+            // Genera la gráfica con Chart.js (gráfico de líneas)
+            new Chart(ctx, {
+                type: 'line', // Tipo de gráfica de líneas
+                data: {
+                    labels: usuariosLimitados,
+                    datasets: [{
+                        label: 'Número de Aportaciones',
+                        data: numAportacionesLimitadas,
+                        borderColor: 'black',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Usuarios más activos',
+                            font: {
+                                size: 18
+                            },
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: true,
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al obtener los datos:', error));
+}
+
+
+function totalPosts() {
+    fetch('http://localhost/SustainCities/frontend/total-posts.php')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Verifica los datos
+
+        const contenedor = document.getElementById('total-posts');
+
+        if (!contenedor) {
+            console.error("El contenedor 'ciudades-popu' no existe.");
+            return;
+        }
+
+        let parrafo = `
+            <h2>Numero total de usuarios registrados: ${data}</h2>`;
+
+        contenedor.innerHTML = parrafo;
+    })
+}
+
 $(document).ready(function() {
     console.log('JQuery está trabajando');
 
@@ -457,85 +696,32 @@ $(document).ready(function() {
         success: function(){
                 let template_bar = '';
                 template_bar += `
-                            <h1>Datos destacables</h1>
-                            <p> 
-                                El Objetivo de Desarrollo Sostenible (ODS) 11 de la ONU se enfoca en crear ciudades y comunidades sostenibles, promoviendo un entorno urbano inclusivo, seguro, resiliente y sostenible. Contribuir a este objetivo implica adoptar prácticas y tomar decisiones que beneficien tanto al medioambiente como a la calidad de vida de las personas. A continuaci[on te sugerimos acciones clave para aportar a una ciudad sostenible:
-                            </p>
+                        <div id="contenedor-estilo">
+                            <div class="centrarDashboard">
+                                <h1>Datos destacables</h1>
+                                <div id="total-posts"></div>
+                            </div><br>
+                            <div id="contenidoDashboard">
+                                <div id="estados-popu" class="chart-container"></div>
+                                <div id="ciudades-popu" class="chart-container"></div>
+                                <div id="usuarios-popu" class="chart-container"></div>
+                            </div>
 
-                            <h2> 1. Promover el transporte sostenible </h2>
-                            <ul>
-                                <li> Usar medios de transporte público o alternativas como bicicletas y caminatas, reduciendo la dependencia de automóviles privados.</li>
-                                <li>Optar por vehículos eléctricos o de baja emisión si necesitas transporte privado.</li>
-                                <li>Apoyar y abogar por la expansión de redes de transporte público eficientes y accesibles.</li>
-                            </ul>
-                            
-                            <h2> 2. Impulsar espacios verdes y biodiversidad </h2>
-                            <ul>
-                                <li> Participar en campañas de reforestación urbana y cuidado de áreas verdes.</li>
-                                <li>Promover la creación de jardines comunitarios, techos verdes y muros vegetales para mejorar la calidad del aire y reducir el efecto isla de calor.</li>
-                                <li>Fomentar la protección de la flora y fauna local en los planes de desarrollo urbano.</li>
-                            </ul>
-                            
-                            <h2> 3. Adoptar prácticas de consumo responsable </h2>
-                            <ul>
-                                <li> Reducir, reutilizar y reciclar para minimizar los residuos sólidos urbanos.</li>
-                                <li>Apoyar políticas y empresas que prioricen envases reutilizables y materiales sostenibles.</li>
-                                <li>Optar por productos locales y de comercio justo, que reduzcan la huella de carbono.</li>
-                            </ul>
-                            
-                            <h2> 4. Abogar por viviendas accesibles y sostenibles </h2>
-                            <ul>
-                                <li> Impulsar proyectos que ofrezcan viviendas asequibles y bien planificadas, integradas con servicios esenciales como agua, electricidad y saneamiento.</li>
-                                <li>Promover el uso de materiales de construcción sostenibles y tecnologías de eficiencia energética en edificios.</li>
-                            </ul>
-                            
-                            <h2> 5. Mejorar la resiliencia ante desastres </h2>
-                            <ul>
-                                <li> Apoyar iniciativas de planificación urbana que consideren riesgos climáticos y naturales, como inundaciones, terremotos o tormentas. </li>
-                                <li>Fomentar la educación comunitaria sobre gestión de riesgos y desastres.</li>
-                                <li>Colaborar en la implementación de infraestructuras resilientes, como sistemas de drenaje sostenible y estructuras antisísmicas.</li>
-                            </ul>
-                            
-                            <h2> 6. Participar en la planificación urbana inclusiva </h2>
-                            <ul>
-                                <li> Contribuir a procesos participativos en los que se escuchen las necesidades de diferentes sectores de la sociedad, incluyendo comunidades vulnerables. </li>
-                                <li>Apoyar iniciativas que garanticen acceso equitativo a servicios básicos como salud, educación, transporte y cultura.</li>
-                            </ul>
-                            
-                            <h2> 7. Promover el uso de energía limpia </h2>
-                            <ul>
-                                <li> Usar energías renovables en hogares y negocios, como paneles solares. </li>
-                                <li> Reducir el consumo energético mediante tecnologías eficientes, como bombillas LED y electrodomésticos con certificación energética. </li>
-                                <li> Participar en programas que promuevan la transición a fuentes de energía limpias a nivel local.</li>
-                            </ul>
-                            
-                            <h2> 8. Fomentar la innovación tecnológica sostenible </h2>
-                            <ul>
-                                <li> Apoyar o desarrollar aplicaciones y herramientas tecnológicas que contribuyan a la sostenibilidad urbana, como plataformas para compartir transporte o monitorear el consumo energético.</li>
-                                <li> Impulsar el uso de datos abiertos para tomar decisiones urbanas más inteligentes y sostenibles. </li>
-                            </ul>
-                            
-                            <h2> 9. Educar y sensibilizar </h2>
-                            <ul>
-                                <li> Informar y educar a la comunidad sobre la importancia de las ciudades sostenibles y cómo pueden contribuir. </li>
-                                <li> Fomentar actividades escolares y comunitarias que refuercen valores de respeto por el medioambiente. </li>
-                            </ul>
-                            
-                            <h2> 10. Apoyar políticas públicas sostenibles </h2>
-                            <ul>
-                                <li> Respaldar a líderes y legislaciones que prioricen la sostenibilidad urbana. </li>
-                                <li> Participar en consultas públicas y abogar por normas que promuevan el transporte público, la protección de áreas verdes y la reducción de emisiones contaminantes. </li>
-                            </ul>
+                        </div>
                         `;
 
                 let contenedor = document.getElementById("contenedor");
                 if (contenedor) {
                     contenedor.innerHTML = template_bar;
+                    totalPosts();
+                    estadosPopulares();
+                    ciudadesPopulares();
+                    usuariosMasActivos();
                 } else {
                     console.error("Element with ID 'contenedor' not found.");
                 }
             }
-        });        
+        });
     });
 
     // Botón Metas //
@@ -574,4 +760,5 @@ $(document).ready(function() {
             }
         });  
     });
+
 });
