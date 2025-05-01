@@ -81,7 +81,7 @@ function volverLogin() {
 }
 
 function estadosPopulares() {
-    fetch('http://localhost/SustainCities/frontend/estados-popu.php')
+    fetch('http://localhost/SustainCities/backend/estados-popu.php')
         .then(response => response.json())
         .then(data => {
             console.log('Datos obtenidos:', data);
@@ -157,7 +157,7 @@ function estadosPopulares() {
 
 
 function ciudadesPopulares() {
-    fetch('http://localhost/SustainCities/frontend/ciudades-popu.php')
+    fetch('http://localhost/SustainCities/backend/ciudades-popu.php')
         .then(response => response.json())
         .then(data => {
             console.log('Datos obtenidos:', data);
@@ -218,7 +218,7 @@ function ciudadesPopulares() {
 }
 
 function usuariosMasActivos() {
-    fetch('http://localhost/SustainCities/frontend/usuarios-popu.php')
+    fetch('http://localhost/SustainCities/backend/usuarios-popu.php')
         .then(response => response.json())
         .then(data => {
             console.log('Datos obtenidos:', data);
@@ -298,9 +298,8 @@ function usuariosMasActivos() {
         .catch(error => console.error('Error al obtener los datos:', error));
 }
 
-
 function totalPosts() {
-    fetch('http://localhost/SustainCities/frontend/total-posts.php')
+    fetch('http://localhost/SustainCities/backend/total-posts.php')
     .then(response => response.json())
     .then(data => {
         console.log(data); // Verifica los datos
@@ -319,8 +318,81 @@ function totalPosts() {
     })
 }
 
+function verificarSesion() {
+    $.ajax({
+        url: '../backend/usuario-data.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                $('#user-name').text(response.data.primer_nombre);
+                $('#user-info').show();
+                // Modificar el enlace al foro para mantener sesión
+                $('#foro').attr('onclick', "window.location.href='foro.html'");
+            }
+        },
+        error: function() {
+            // No hacer nada si no hay sesión
+        }
+    });
+}
+
+function cerrarSesion() {
+    Swal.fire({
+        title: '¿Cerrar sesión?',
+        text: "¿Estás seguro que deseas salir?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            popup: 'swal-darkblue-popup',
+            confirmButton: 'swal-darkblue-button',
+            cancelButton: 'swal-darkblue-button'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../backend/logout.php',
+                type: 'POST',
+                success: function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Sesión cerrada!',
+                        text: 'Has cerrado sesión correctamente.',
+                        customClass: {
+                            popup: 'swal-darkblue-popup',
+                            confirmButton: 'swal-darkblue-button'
+                        },
+                        confirmButtonText: 'Entendido',
+                    }).then(() => {
+                        // Redirigir al login o recargar según necesites
+                        window.location.href = '../frontend/index.html';
+                    });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo cerrar la sesión',
+                        customClass: {
+                            popup: 'swal-darkblue-popup',
+                            confirmButton: 'swal-darkblue-button'
+                        },
+                        confirmButtonText: 'Entendido',
+                    });
+                }
+            });
+        }
+    });
+}
+
 $(document).ready(function() {
     console.log('JQuery está trabajando');
+
+    // Verificar estado de sesión al cargar la página
+    verificarSesion();
 
     // Mostrar Primera Opción Al Cargar La Página Por Primera Vez //
     ciudadesSostenibles();

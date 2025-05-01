@@ -1,502 +1,512 @@
 <?php
-
 namespace SustainCities\backend\myapi;
 use SustainCities\backend\myapi\DataBase;
 include_once __DIR__.'/DataBase.php';
+
 class Read extends DataBase {
 
-    public function __construct($db) {
+    public function __construct($db = 'sustaincities') {
         $this->data = array();
         parent::__construct($db);
     }
 
     public function getEstados() {
-        $query = 'SELECT id_estado, nombre_estado FROM estado ';
-        $stmt = $this->conexion->prepare($query);
+        try {
+            $query = 'SELECT id_estado, nombre_estado FROM estado';
+            $stmt = $this->conexion->query($query);
 
-        if (!$stmt) {
-            throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+            if ($stmt === false) {
+                $errorInfo = $this->conexion->errorInfo();
+                throw new \Exception("Error al ejecutar la consulta: " . $errorInfo[2]);
+            }
+
+            $this->data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $this->getData();
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Error en getEstados: " . $e->getMessage());
         }
-
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $estados = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $estados[] = $row;
-        }
-
-        $stmt->close(); // Liberar recursos
-        $this->data = $estados;
     }
 
     public function getCiudades($id_estado) {
-        $query = "SELECT id_ciudad, nombre FROM ciudades WHERE id_estado = ?";
-        $stmt = $this->conexion->prepare($query);
+        try {
+            $query = "SELECT id_ciudad, nombre FROM ciudades WHERE id_estado = ?";
+            $stmt = $this->conexion->prepare($query);
 
-        if (!$stmt) {
-            throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+            if (!$stmt->execute([$id_estado])) {
+                throw new \Exception("Error al ejecutar la consulta: " . implode(" ", $stmt->errorInfo()));
+            }
+
+            $this->data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $this->getData();
+
+        } catch (\PDOException $e) {
+            throw new \Exception("Error al obtener ciudades: " . $e->getMessage());
         }
-
-        $stmt->bind_param('i', $id_estado); // Vincula el parámetro como un entero
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $ciudades = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $ciudades[] = $row;
-        }
-
-        $stmt->close(); // Liberar recursos
-        $this->data = $ciudades;
     }
 
     public function postInicio() {
         try {
-            // Establecer el encabezado adecuado para la respuesta JSON
             header('Content-Type: application/json');
 
+            if (!isset($_SESSION['id_usuario'])) {
+                throw new \Exception("Usuario no autenticado");
+            }
+
             $id_usuario = $_SESSION['id_usuario'];
-        
-            // Consulta SQL para obtener los posts de la vista
+
+            // Consulta principal para obtener posts
             $query = "SELECT * FROM vista_posts_usuario WHERE eliminado = 0 ORDER BY fecha_creacion DESC";
-            $stmt = $this->conexion->prepare($query);
-    
-            if (!$stmt) {
-                throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+            $stmt = $this->conexion->query($query);
+
+            if ($stmt === false) {
+                throw new \Exception("Error en consulta principal: " . implode(" ", $this->conexion->errorInfo()));
             }
-    
-            // Ejecutar la consulta y obtener los resultados
-            $stmt->execute();
-            $result = $stmt->get_result();
-    
-            // Verificar si hay posts
-            if ($result->num_rows > 0) {
-                $posts = [];
-    
-                // Iterar sobre los resultados de los posts
-                while ($row = $result->fetch_assoc()) {
-                    // Verificar si hay una imagen y convertirla a base64 si existe
-                    $imagen = null;
-                    if ($row['imagen'] !== null) {
-                        // Convertir el BLOB a base64
-                        $imagen = base64_encode($row['imagen']);
-                    }
-    
-                    // Consulta para verificar si el usuario ha dado 'like' a este post
-                    $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
-                    $stmtLike = $this->conexion->prepare($queryLike);
-                    if (!$stmtLike) {
-                        throw new \Exception("Error al preparar la consulta de likes: " . $this->conexion->error);
-                    }
-    
-                    // Vincular los parámetros de usuario e id_post
-                    $stmtLike->bind_param("ii", $id_usuario, $row['id_post']);
-                    $stmtLike->execute();
-                    $stmtLike->store_result();
-    
-                    // Determinar si el usuario ha dado 'like' al post
-                    $haDadoLike = $stmtLike->num_rows > 0;
-    
-                    // Cerrar el stmt de la consulta de likes
-                    $stmtLike->close();
-    
-                    // Agregar el post al array de resultados
-                    $posts[] = [
-                        'id_post' => $row['id_post'],
-                        'titulo' => $row['titulo'],
-                        'contenido' => $row['contenido'],
-                        'fecha_creacion' => $row['fecha_creacion'],
-                        'likes' => $row['likes'],
-                        'imagen' => $imagen, // La imagen en base64 o null si no existe
-                        'id_usuario' => $row['id_usuario'],
-                        'nombre' => $row['nombre'],
-                        'ciudad' => $row['ciudad'],
-                        'estado' => $row['estado'],
-                        'ha_dado_like' => $haDadoLike, // Se asigna el valor true o false
-                    ];
+
+            $posts = [];
+            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                // Procesar imagen
+                $imagen = null;
+                if (!empty($row['imagen'])) {
+                    $imagen = base64_encode($row['imagen']);
                 }
-    
-                $stmt->close(); // Liberar recursos
-                // Retornar la respuesta en formato JSON
-                echo json_encode(['status' => 'success', 'posts' => $posts]);
-    
-            } else {
-                // Si no hay posts, retornar un mensaje en formato JSON
-                $stmt->close();
-                echo json_encode(['status' => 'success', 'posts' => 'No tienes publicaciones.']);
+
+                // Verificar like
+                $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
+                $stmtLike = $this->conexion->prepare($queryLike);
+                $stmtLike->execute([$id_usuario, $row['id_post']]);
+                $haDadoLike = ($stmtLike->rowCount() == true);
+
+                $posts[] = [
+                    'id_post' => $row['id_post'],
+                    'titulo' => $row['titulo'],
+                    'contenido' => $row['contenido'],
+                    'fecha_creacion' => $row['fecha_creacion'],
+                    'likes' => $row['likes'],
+                    'imagen' => $imagen,
+                    'id_usuario' => $row['id_usuario'],
+                    'nombre' => $row['nombre'],
+                    'ciudad' => $row['ciudad'],
+                    'estado' => $row['estado'],
+                    'ha_dado_like' => $haDadoLike
+                ];
             }
+
+            echo json_encode([
+                'status' => 'success',
+                'posts' => $posts ?: 'No tienes publicaciones.'
+            ]);
+
         } catch (\Exception $e) {
-            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
-            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
         }
     }
-    
-    
 
     public function getMyPosts($id_usuario) {
         try {
-            // Establecer el encabezado adecuado para la respuesta JSON
             header('Content-Type: application/json');
-    
-            // Consulta SQL para obtener los posts de la vista, filtrando por el id_usuario
+
             $query = "SELECT * FROM vista_posts_usuario WHERE id_usuario = ? AND eliminado = 0 ORDER BY fecha_creacion DESC";
             $stmt = $this->conexion->prepare($query);
-    
-            if (!$stmt) {
-                throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+            if (!$stmt->execute([$id_usuario])) {
+                throw new \Exception("Error al ejecutar la consulta: " . implode(" ", $stmt->errorInfo()));
             }
-    
-            // Vincular el parámetro de id_usuario
-            $stmt->bind_param("i", $id_usuario);
-    
-            // Ejecutar la consulta y obtener los resultados
-            $stmt->execute();
-            $result = $stmt->get_result();
-    
-            // Verificar si hay posts
-            if ($result->num_rows > 0) {
-                $posts = [];
-    
-                // Iterar sobre los resultados de los posts
-                while ($row = $result->fetch_assoc()) {
-                    // Verificar si hay una imagen y convertirla a base64 si existe
-                    $imagen = null;
-                    if ($row['imagen'] !== null) {
-                        // Convertir el BLOB a base64
-                        $imagen = base64_encode($row['imagen']);
-                    }
-    
-                    // Consulta para verificar si el usuario ha dado 'like' a este post
-                    $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
-                    $stmtLike = $this->conexion->prepare($queryLike);
-                    if (!$stmtLike) {
-                        throw new \Exception("Error al preparar la consulta de likes: " . $this->conexion->error);
-                    }
-    
-                    // Vincular los parámetros de usuario e id_post
-                    $stmtLike->bind_param("ii", $id_usuario, $row['id_post']);
-                    $stmtLike->execute();
-                    $stmtLike->store_result();
-    
-                    // Determinar si el usuario ha dado 'like' al post
-                    $haDadoLike = $stmtLike->num_rows > 0;
-    
-                    // Cerrar el stmt de la consulta de likes
-                    $stmtLike->close();
-    
-                    // Agregar el post al array de resultados
-                    $posts[] = [
-                        'id_post' => $row['id_post'],
-                        'titulo' => $row['titulo'],
-                        'contenido' => $row['contenido'],
-                        'fecha_creacion' => $row['fecha_creacion'],
-                        'likes' => $row['likes'],
-                        'imagen' => $imagen, // La imagen en base64 o null si no existe
-                        'id_usuario' => $row['id_usuario'],
-                        'nombre' => $row['nombre'],
-                        'ciudad' => $row['ciudad'],
-                        'estado' => $row['estado'],
-                        'ha_dado_like' => $haDadoLike, // Se asigna el valor true o false
-                    ];
+
+            $posts = [];
+            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $imagen = null;
+                if (!empty($row['imagen'])) {
+                    $imagen = base64_encode($row['imagen']);
                 }
-    
-                $stmt->close(); // Liberar recursos
-                // Retornar la respuesta en formato JSON
-                echo json_encode(['status' => 'success', 'posts' => $posts]);
-    
-            } else {
-                // Si no hay posts, retornar un mensaje en formato JSON
-                $stmt->close();
-                echo json_encode(['status' => 'success', 'posts' => 'No tienes publicaciones.']);
+
+                $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
+                $stmtLike = $this->conexion->prepare($queryLike);
+                $stmtLike->execute([$id_usuario, $row['id_post']]);
+                $haDadoLike = ($stmtLike->rowCount() == true);
+
+                $posts[] = [
+                    'id_post' => $row['id_post'],
+                    'titulo' => $row['titulo'],
+                    'contenido' => $row['contenido'],
+                    'fecha_creacion' => $row['fecha_creacion'],
+                    'likes' => $row['likes'],
+                    'imagen' => $imagen,
+                    'id_usuario' => $row['id_usuario'],
+                    'nombre' => $row['nombre'],
+                    'ciudad' => $row['ciudad'],
+                    'estado' => $row['estado'],
+                    'ha_dado_like' => $haDadoLike,
+                ];
             }
+
+            echo json_encode(['status' => 'success', 'posts' => $posts ?: 'No tienes publicaciones.']);
+
         } catch (\Exception $e) {
-            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
-            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
-        }
-    }
-    
-    public function getPost($id_post) {
-        try {
-            // Establecer el encabezado adecuado para la respuesta JSON
-            header('Content-Type: application/json');
-    
-            // Consulta SQL para obtener los posts de la vista
-            $query = "SELECT * FROM vista_posts_usuario WHERE id_post = ?";
-            $stmt = $this->conexion->prepare($query);
-    
-            if (!$stmt) {
-                throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
-            }
-    
-            // Vincula el parámetro como un entero (id_usuario)
-            $stmt->bind_param('i', $id_post);
-            $stmt->execute();
-            $result = $stmt->get_result();
-    
-            // Verificar si hay posts
-            if ($result->num_rows > 0) {
-                $posts = [];
-    
-                // Generar el array de posts
-                while ($row = $result->fetch_assoc()) {
-                    // Verificar si hay una imagen y convertirla a base64 si existe
-                    $imagen = null;
-                    if ($row['imagen'] !== null) {
-                        // Convertir el BLOB a base64
-                        $imagen = base64_encode($row['imagen']);
-                    }
-    
-                    $posts[] = [
-                        'id_post' => $row['id_post'],
-                        'titulo' => $row['titulo'],
-                        'contenido' => $row['contenido'],
-                        'fecha_creacion' => $row['fecha_creacion'],
-                        'likes' => $row['likes'],
-                        'imagen' => $imagen, // La imagen en base64 o null si no existe
-                        'id_usuario' => $row['id_usuario']
-                    ];
-                }
-    
-                $stmt->close(); // Liberar recursos
-                // Retornar la respuesta en formato JSON
-                echo json_encode(['status' => 'success', 'posts' => $posts]);
-    
-            } else {
-                // Si no hay posts, retornar un mensaje en formato JSON
-                $stmt->close();
-                echo json_encode(['status' => 'success', 'posts' => 'No tienes publicaciones.']);
-            }
-        } catch (\Exception $e) {
-            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
 
+    public function getPost($id_post) {
+        try {
+            header('Content-Type: application/json');
+
+            $query = "SELECT * FROM vista_posts_usuario WHERE id_post = ?";
+            $stmt = $this->conexion->prepare($query);
+            if (!$stmt->execute([$id_post])) {
+                throw new \Exception("Error al ejecutar la consulta: " . implode(" ", $stmt->errorInfo()));
+            }
+
+            $posts = [];
+            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $imagen = null;
+                if (!empty($row['imagen'])) {
+                    $imagen = base64_encode($row['imagen']);
+                }
+
+                $posts[] = [
+                    'id_post' => $row['id_post'],
+                    'titulo' => $row['titulo'],
+                    'contenido' => $row['contenido'],
+                    'fecha_creacion' => $row['fecha_creacion'],
+                    'likes' => $row['likes'],
+                    'imagen' => $imagen,
+                    'id_usuario' => $row['id_usuario']
+                ];
+            }
+
+            echo json_encode(['status' => 'success', 'posts' => $posts ?: 'No tienes publicaciones.']);
+
+        } catch (\Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
 
     public function searchAll($dato) {
         try {
-            // Establecer el encabezado adecuado para la respuesta JSON
             header('Content-Type: application/json');
-    
-            // Obtener el id_usuario desde la sesión
+
             if (!isset($_SESSION['id_usuario'])) {
                 throw new \Exception("Usuario no autenticado.");
             }
             $id_usuario = $_SESSION['id_usuario'];
-    
-            // Consulta SQL con marcador de posición para el parámetro de búsqueda
-            $query = "SELECT * FROM vista_posts_usuario 
-                      WHERE (titulo LIKE ? OR contenido LIKE ? OR fecha_creacion LIKE ?) 
-                      AND eliminado = 0 
-                      ORDER BY fecha_creacion DESC";
+
+            $query = "SELECT * FROM vista_posts_usuario
+                    WHERE (titulo LIKE ? OR contenido LIKE ? OR CONVERT(VARCHAR, fecha_creacion, 120) LIKE ?)
+                    AND eliminado = 0
+                    ORDER BY fecha_creacion DESC";
             $stmt = $this->conexion->prepare($query);
-    
-            if (!$stmt) {
-                throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+
+            $searchParam = "%" . $dato . "%";
+            $stmt->execute([$searchParam, $searchParam, $searchParam]);
+
+            $posts = [];
+            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $imagen = $row['imagen'] !== null ? base64_encode($row['imagen']) : null;
+
+                $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
+                $stmtLike = $this->conexion->prepare($queryLike);
+                $stmtLike->execute([$id_usuario, $row['id_post']]);
+                $haDadoLike = ($stmtLike->rowCount() == true);
+
+                $posts[] = [
+                    'id_post' => $row['id_post'],
+                    'titulo' => $row['titulo'],
+                    'contenido' => $row['contenido'],
+                    'fecha_creacion' => $row['fecha_creacion'],
+                    'likes' => $row['likes'],
+                    'imagen' => $imagen,
+                    'id_usuario' => $row['id_usuario'],
+                    'nombre' => $row['nombre'],
+                    'ciudad' => $row['ciudad'],
+                    'estado' => $row['estado'],
+                    'ha_dado_like' => $haDadoLike,
+                ];
             }
-    
-            // Preparar los valores a ser vinculados
-            $searchParam = "%" . $dato . "%"; // Se agrega '%' para que la búsqueda sea "LIKE"
-            $stmt->bind_param('sss', $searchParam, $searchParam, $searchParam);
-    
-            $stmt->execute();
-            $result = $stmt->get_result();
-    
-            // Verificar si hay posts
-            if ($result->num_rows > 0) {
-                $posts = [];
-    
-                // Generar el array de posts
-                while ($row = $result->fetch_assoc()) {
-                    // Verificar si hay una imagen y convertirla a base64 si existe
-                    $imagen = null;
-                    if ($row['imagen'] !== null) {
-                        $imagen = base64_encode($row['imagen']); // Convertir el BLOB a base64
-                    }
-    
-                    // Consulta para verificar si el usuario ha dado 'like' a este post
-                    $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
-                    $stmtLike = $this->conexion->prepare($queryLike);
-    
-                    if (!$stmtLike) {
-                        throw new \Exception("Error al preparar la consulta de likes: " . $this->conexion->error);
-                    }
-    
-                    // Vincular los parámetros de usuario e id_post
-                    $stmtLike->bind_param("ii", $id_usuario, $row['id_post']);
-                    $stmtLike->execute();
-                    $stmtLike->store_result();
-    
-                    // Determinar si el usuario ha dado 'like' al post
-                    $haDadoLike = $stmtLike->num_rows > 0;
-    
-                    // Cerrar el stmt de la consulta de likes
-                    $stmtLike->close();
-    
-                    // Agregar el post al array de resultados
-                    $posts[] = [
-                        'id_post' => $row['id_post'],
-                        'titulo' => $row['titulo'],
-                        'contenido' => $row['contenido'],
-                        'fecha_creacion' => $row['fecha_creacion'],
-                        'likes' => $row['likes'],
-                        'imagen' => $imagen, // La imagen en base64 o null si no existe
-                        'id_usuario' => $row['id_usuario'],
-                        'nombre' => $row['nombre'],
-                        'ciudad' => $row['ciudad'],
-                        'estado' => $row['estado'],
-                        'ha_dado_like' => $haDadoLike, // Se asigna true o false
-                    ];
-                }
-    
-                $stmt->close(); // Liberar recursos
-                // Retornar la respuesta en formato JSON
+
+            if (count($posts) > 0) {
                 echo json_encode(['status' => 'success', 'posts' => $posts]);
-    
             } else {
-                // Si no hay posts, retornar un mensaje en formato JSON
-                $stmt->close();
                 echo json_encode(['status' => 'error', 'posts' => 'No se encontraron publicaciones.']);
             }
         } catch (\Exception $e) {
-            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
-    
-    
+
     public function mySearch($dato, $id_usuario) {
-        $search = $dato;
         try {
-            // Establecer el encabezado adecuado para la respuesta JSON
             header('Content-Type: application/json');
-    
-            // Consulta SQL para obtener los posts con el filtro de búsqueda y usuario
-            $query = "SELECT * FROM vista_posts_usuario 
-                      WHERE (titulo LIKE ? OR contenido LIKE ? OR fecha_creacion LIKE ?) 
-                      AND eliminado = 0 
-                      AND id_usuario = ? 
-                      ORDER BY fecha_creacion DESC";
+
+            $query = "SELECT * FROM vista_posts_usuario
+                    WHERE (titulo LIKE ? OR contenido LIKE ? OR CONVERT(VARCHAR, fecha_creacion, 120) LIKE ?)
+                    AND eliminado = 0
+                    AND id_usuario = ?
+                    ORDER BY fecha_creacion DESC";
             $stmt = $this->conexion->prepare($query);
-    
-            if (!$stmt) {
-                throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+
+            $searchParam = "%" . $dato . "%";
+            $stmt->execute([$searchParam, $searchParam, $searchParam, $id_usuario]);
+
+            $posts = [];
+            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $imagen = $row['imagen'] !== null ? base64_encode($row['imagen']) : null;
+
+                $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
+                $stmtLike = $this->conexion->prepare($queryLike);
+                $stmtLike->execute([$id_usuario, $row['id_post']]);
+                $haDadoLike = ($stmtLike->rowCount() == true);
+
+                $posts[] = [
+                    'id_post' => $row['id_post'],
+                    'titulo' => $row['titulo'],
+                    'contenido' => $row['contenido'],
+                    'fecha_creacion' => $row['fecha_creacion'],
+                    'likes' => $row['likes'],
+                    'nombre' => $row['nombre'],
+                    'ciudad' => $row['ciudad'],
+                    'estado' => $row['estado'],
+                    'imagen' => $imagen,
+                    'id_usuario' => $row['id_usuario'],
+                    'ha_dado_like' => $haDadoLike
+                ];
             }
-    
-            // Preparar los valores para la búsqueda
-            $searchParam = "%" . $search . "%";
-            $stmt->bind_param('sssi', $searchParam, $searchParam, $searchParam, $id_usuario);
-    
-            $stmt->execute();
-            $result = $stmt->get_result();
-    
-            // Verificar si hay resultados
-            if ($result->num_rows > 0) {
-                $posts = [];
-    
-                // Iterar sobre los resultados
-                while ($row = $result->fetch_assoc()) {
-                    // Convertir la imagen a base64 si existe
-                    $imagen = null;
-                    if ($row['imagen'] !== null) {
-                        $imagen = base64_encode($row['imagen']);
-                    }
-    
-                    // Verificar si el usuario ha dado 'like' al post
-                    $queryLike = "SELECT 1 FROM likes WHERE id_usuario = ? AND id_post = ?";
-                    $stmtLike = $this->conexion->prepare($queryLike);
-                    if (!$stmtLike) {
-                        throw new \Exception("Error al preparar la consulta de likes: " . $this->conexion->error);
-                    }
-    
-                    // Vincular parámetros para la consulta de 'likes'
-                    $stmtLike->bind_param("ii", $id_usuario, $row['id_post']);
-                    $stmtLike->execute();
-                    $stmtLike->store_result();
-    
-                    // Determinar si el usuario ha dado 'like'
-                    $haDadoLike = $stmtLike->num_rows > 0;
-    
-                    // Cerrar el statement de 'likes'
-                    $stmtLike->close();
-    
-                    // Agregar el post al array de resultados
-                    $posts[] = [
-                        'id_post' => $row['id_post'],
-                        'titulo' => $row['titulo'],
-                        'contenido' => $row['contenido'],
-                        'fecha_creacion' => $row['fecha_creacion'],
-                        'likes' => $row['likes'],
-                        'nombre' => $row['nombre'],
-                        'ciudad' => $row['ciudad'],
-                        'estado' => $row['estado'],
-                        'imagen' => $imagen,
-                        'id_usuario' => $row['id_usuario'],
-                        'ha_dado_like' => $haDadoLike
-                    ];
-                }
-    
-                $stmt->close(); // Liberar recursos
+
+            if (count($posts) > 0) {
                 echo json_encode(['status' => 'success', 'posts' => $posts]);
             } else {
-                // Si no hay resultados
-                $stmt->close();
                 echo json_encode(['status' => 'success', 'posts' => 'No tienes publicaciones.']);
             }
         } catch (\Exception $e) {
-            // Manejo de errores
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
-    
-    public function getComments($id_post){
+
+    public function getComments($id_post) {
         try {
-            // Establecer el encabezado adecuado para la respuesta JSON
             header('Content-Type: application/json');
-    
+
             // Consulta SQL para obtener los comentarios de un post
-            $query = "SELECT * FROM vw_comentarios WHERE id_post = ? ORDER BY fecha_creacion DESC";
+            $query = "SELECT
+                        c.id_comentario,
+                        c.contenido,
+                        c.fecha_creacion,
+                        u.id_usuario,
+                        u.nombre AS nombre_usuario,
+                        ci.nombre AS ciudad,
+                        e.nombre_estado AS estado
+                    FROM comentarios c
+                    JOIN usuarios u ON c.id_usuario = u.id_usuario
+                    LEFT JOIN ciudades ci ON u.id_ciudad = ci.id_ciudad
+                    LEFT JOIN estado e ON ci.id_estado = e.id_estado
+                    WHERE c.id_post = ?
+                    ORDER BY c.fecha_creacion DESC";
+
             $stmt = $this->conexion->prepare($query);
-    
+
             if (!$stmt) {
-                throw new \Exception("Error al preparar la consulta: " . $this->conexion->error);
+                throw new \Exception("Error al preparar la consulta: " . implode(" ", $this->conexion->errorInfo()));
             }
-    
-            // Vincular el parámetro de id_post
-            $stmt->bind_param('i', $id_post);
-            $stmt->execute();
-            $result = $stmt->get_result();
-    
-            // Verificar si hay comentarios
-            if ($result->num_rows > 0) {
-                $comentarios = [];
-    
-                // Iterar sobre los resultados de los comentarios
-                while ($row = $result->fetch_assoc()) {
-                    $comentarios[] = [
-                        'id_comentario' => $row['id_comentario'],
-                        'contenido' => $row['contenido'],
-                        'fecha_creacion' => $row['fecha_creacion'],
-                        'id_usuario' => $row['id_usuario'],
-                        'nombre' => $row['nombre_usuario'],
-                        'ciudad'=> $row['ciudad'],
-                        'estado'=> $row['estado']
-                    ];
-                }
-    
-                $stmt->close(); // Liberar recursos
-                // Retornar la respuesta en formato JSON
-                echo json_encode(['status' => 'success', 'comentarios' => $comentarios]);
-    
-            } else {
-                // Si no hay comentarios, retornar un mensaje en formato JSON
-                $stmt->close();
-                echo json_encode(['status' => 'success', 'comentarios' => 'No hay comentarios.']);
+
+            // Ejecutar la consulta con parámetros
+            if (!$stmt->execute([$id_post])) {
+                throw new \Exception("Error al ejecutar la consulta: " . implode(" ", $stmt->errorInfo()));
             }
+
+            // Obtener todos los resultados
+            $comentarios = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            if (empty($comentarios)) {
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'No hay comentarios para este post',
+                    'comentarios' => []
+                ]);
+                return;
+            }
+
+            // Formatear los datos de respuesta
+            $response = [];
+            foreach ($comentarios as $row) {
+                $response[] = [
+                    'id_comentario' => $row['id_comentario'],
+                    'contenido' => $row['contenido'],
+                    'fecha_creacion' => $row['fecha_creacion'],
+                    'id_usuario' => $row['id_usuario'],
+                    'nombre' => $row['nombre_usuario'],
+                    'ciudad' => $row['ciudad'],
+                    'estado' => $row['estado']
+                ];
+            }
+
+            echo json_encode([
+                'status' => 'success',
+                'comentarios' => $response
+            ]);
+
         } catch (\Exception $e) {
-            // Capturar cualquier error en la ejecución y devolverlo en formato JSON
-            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getTopEstados() {
+        try {
+            $query = "
+                SELECT TOP 5
+                    estado,
+                    COUNT(id_post) AS num_aportaciones
+                FROM
+                    vista_posts_usuario
+                WHERE
+                    eliminado = 0
+                GROUP BY
+                    estado
+                ORDER BY
+                    num_aportaciones DESC
+            ";
+
+            $stmt = $this->conexion->query($query);
+
+            if ($stmt === false) {
+                return []; // Devuelve array vacío si hay error
+            }
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            // Devuelve solo el array de datos sin estructura adicional
+            return $resultados ?: [];
+
+        } catch (\PDOException $e) {
+            return []; // Devuelve array vacío en caso de excepción
+        }
+    }
+
+    public function getTopCiudades() {
+        try {
+            $query = "
+                SELECT TOP 5
+                    ciudad,
+                    COUNT(id_post) AS num_aportaciones
+                FROM
+                    vista_posts_usuario
+                WHERE
+                    eliminado = 0
+                GROUP BY
+                    ciudad
+                ORDER BY
+                    num_aportaciones DESC
+            ";
+
+            $stmt = $this->conexion->query($query);
+
+            if ($stmt === false) {
+                return []; // Devuelve array vacío si hay error
+            }
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            // Devuelve solo el array de datos sin estructura adicional
+            return $resultados ?: [];
+
+        } catch (\PDOException $e) {
+            return []; // Devuelve array vacío en caso de excepción
+        }
+    }
+
+    public function getTotalPosts() {
+        try {
+            $query = "SELECT COUNT(*) AS total FROM usuarios";
+
+            $stmt = $this->conexion->query($query);
+
+            if ($stmt === false) {
+                return 0; // Devuelve 0 si hay error
+            }
+
+            $resultado = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            // Devuelve solo el número
+            return (int)$resultado['total'] ?? 0;
+
+        } catch (\PDOException $e) {
+            return 0; // Devuelve 0 en caso de excepción
+        }
+    }
+
+    public function getUsuariosActivos() {
+        try {
+            $query = "
+                SELECT TOP 5
+                    nombre,
+                    COUNT(id_post) AS num_aportaciones
+                FROM
+                    vista_posts_usuario
+                WHERE
+                    eliminado = 0
+                GROUP BY
+                    nombre
+                ORDER BY
+                    num_aportaciones DESC
+            ";
+
+            $stmt = $this->conexion->query($query);
+
+            if ($stmt === false) {
+                return []; // Devuelve array vacío si hay error
+            }
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            // Devuelve solo el array de datos sin estructura adicional
+            return $resultados ?: [];
+
+        } catch (\PDOException $e) {
+            return []; // Devuelve array vacío en caso de excepción
+        }
+    }
+
+    public function getUserData($userId, $nombre, $idCiudad) {
+        try {
+            // Validar que el usuario existe (opcional pero recomendado)
+            $query = "SELECT 1 FROM usuarios WHERE id_usuario = ?";
+            $stmt = $this->conexion->prepare($query);
+            $stmt->execute([$userId]);
+            
+            if (!$stmt->fetch()) {
+                throw new \Exception("Usuario no encontrado");
+            }
+    
+            // Resto de la lógica existente...
+            $ciudad = "Ciudad desconocida";
+            if ($idCiudad) {
+                $query = "SELECT nombre FROM ciudades WHERE id_ciudad = ?";
+                $stmt = $this->conexion->prepare($query);
+                $stmt->execute([$idCiudad]);
+                $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+                if ($result) {
+                    $ciudad = $result['nombre'];
+                }
+            }
+    
+            $primerNombre = explode(' ', $nombre)[0];
+    
+            return [
+                'status' => 'success',
+                'data' => [
+                    'primer_nombre' => $primerNombre,
+                    'ciudad' => $ciudad,
+                    'nombre_completo' => $nombre,
+                    'id_usuario' => $userId
+                ]
+            ];
+    
+        } catch (\PDOException $e) {
+            throw new \Exception("Error al obtener datos de usuario: " . $e->getMessage());
         }
     }
 }

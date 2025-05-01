@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SustainCities | Foro</title>
-    <link href="estilos-foro.css" rel="stylesheet" >
+    <link href="estilos-foro.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <div class="sidebar">
@@ -27,23 +28,29 @@
                 </li>
                 <li>
                     <a id="misPost">
-                        <i class='bx bxs-plus-square' ></i>
+                        <i class='bx bxs-plus-square'></i>
                         Mis Posts
                     </a>
                 </li>
                 <li>
-                <a href="http://localhost/SustainCities/frontend/login-registro.html">
-                        <i class='bx bx-log-out bx-rotate-180' ></i>
+                    <a href="http://localhost/SustainCities/frontend/index.html">
+                        <i class='bx bx-log-out bx-rotate-180'></i>
+                        Volver Al Foro
+                    </a>
+                </li>
+                <li>
+                    <a id="logout-btn" href="#">
+                        <i class='bx bx-log-out bx-rotate-180'></i>
                         Cerrar Sesión
                     </a>
                 </li>
             </ul>
             <div class="user-account">
                 <div class="user-profile">
-                    <i class='bx bxs-user-circle' ></i>
+                    <i class='bx bxs-user-circle'></i>
                     <div class="user-detail">
-                        <h3><?php echo $primer_nombre?></h3>
-                        <span><?php echo $ciudad?></span>
+                        <h3 id="user-primer-nombre">Cargando...</h3>
+                        <span id="user-ciudad"></span>
                     </div>
                 </div>
             </div>
@@ -51,15 +58,11 @@
     </div>
 
     <div class="main-content">
-        <!-- Barra de búsqueda -->
-        
-        <!-- Área de publicaciones -->
-        <div id="contenedor">
-
-        </div>
-
+        <div id="contenedor"></div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="foro.js"></script>
 </body>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="foro.js"></script>
-</ht>
+</html>

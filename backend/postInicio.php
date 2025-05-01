@@ -4,7 +4,7 @@ use SustainCities\backend\myapi\Read;
 include_once __DIR__.'/myapi/Read.php';
 header('Content-Type: application/json');
 
-session_start(); 
+session_start();
 
 // Verificar si la solicitud es GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {

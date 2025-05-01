@@ -1,14 +1,24 @@
 <?php
 namespace SustainCities\backend\myapi;
+
 abstract class DataBase {
     protected $conexion;
     protected $data;
 
-    protected function __construct($db, $user = 'root', $pass = 'changocome') {
-        $this->conexion = new \mysqli('localhost', $user, $pass, $db, 3307);
+    protected function __construct($db = 'sustaincities', $user = '', $pass = '') {
+        try {
+            $this->conexion = new \PDO(
+                "sqlsrv:Server=RCRDT;Database=$db",
+                $user,
+                $pass,
+                [
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+                ]
+            );
 
-        if ($this->conexion->connect_error) {
-            throw new \Exception('Error de conexión a la base de datos: ' . $this->conexion->connect_error);
+        } catch (\PDOException $e) {
+            throw new \Exception('Error al conectar con SQL Server: ' . $e->getMessage());
         }
     }
 
@@ -17,8 +27,6 @@ abstract class DataBase {
     }
 
     public function __destruct() {
-        if ($this->conexion) {
-            $this->conexion->close(); // Cerrar conexión al finalizar
-        }
+        $this->conexion = null;
     }
 }

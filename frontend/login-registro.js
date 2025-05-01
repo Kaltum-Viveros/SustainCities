@@ -12,24 +12,24 @@ $(document).ready(function () {
             <form id="loginForm">
                 <h1>Inicio Sesión</h1>
                 <div class="input-box">
-                    <input type="email" 
-                    id="correo" 
-                    placeholder="Correo electrónico" 
+                    <input type="email"
+                    id="correo"
+                    placeholder="Correo electrónico"
                     required
                     title="Por favor, ingresa un correo electrónico válido.">
                     <i class='bx bxs-user'></i>
                 </div>
 
                 <div class="input-box">
-                    <input type="password" 
-                    id="contraseña" 
-                    placeholder="Contraseña" 
+                    <input type="password"
+                    id="contraseña"
+                    placeholder="Contraseña"
                     required
-                    minlength="8" 
+                    minlength="8"
                     title="La contraseña debe tener al menos 8 caracteres.">
                     <i class='bx bxs-lock-alt'></i>
                 </div>
-                
+
                 <button type="submit" id="iniciarSesion" class="btn" >Iniciar Sesión</button>
 
                 <div class="link-lr">
@@ -57,11 +57,11 @@ $(document).ready(function () {
             <form id="registerForm">
                 <h1>Registro</h1>
                 <div class="input-box">
-                    <input type="text" 
-                    id="nombre" 
-                    placeholder="Ingresa tu nombre" 
+                    <input type="text"
+                    id="nombre"
+                    placeholder="Ingresa tu nombre"
                     required
-                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]{2,50}" 
+                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]{2,50}"
                     title="El nombre debe contener solo letras y espacios, entre 2 y 50 caracteres.">
                     <i class='bx bxs-user'></i>
                 </div>
@@ -81,19 +81,19 @@ $(document).ready(function () {
                 </div>
 
                 <div class="input-box">
-                    <input type="tel" 
-                    id="telefono" 
-                    placeholder="Ingresa tu télefono" 
+                    <input type="tel"
+                    id="telefono"
+                    placeholder="Ingresa tu télefono"
                     required
-                    pattern="\\d{10}" 
+                    pattern="\\d{10}"
                     title="El teléfono debe contener exactamente 10 dígitos.">
                     <i class='bx bxs-phone'></i>
                 </div>
 
                 <div class="input-box">
-                    <input type="email" 
-                    id="correo" 
-                    placeholder="Ingresa tu correo electrónico" 
+                    <input type="email"
+                    id="correo"
+                    placeholder="Ingresa tu correo electrónico"
                     required
                     title="Por favor, ingresa un correo electrónico válido."
                     >
@@ -101,11 +101,11 @@ $(document).ready(function () {
                 </div>
 
                 <div class="input-box">
-                    <input type="password" 
-                    id="contraseña" 
-                    placeholder="Crea una contraseña" 
+                    <input type="password"
+                    id="contraseña"
+                    placeholder="Crea una contraseña"
                     required
-                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}" 
+                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}"
                     title="La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial.">
                     <i class='bx bxs-lock-alt'></i>
                 </div>
@@ -153,7 +153,7 @@ $(document).ready(function () {
                         option.textContent = estado.nombre_estado;
                         estadoSelect.appendChild(option);
                     });
-    
+
                     // Escuchar cambios en el select de estados
                     estadoSelect.addEventListener('change', function () {
                         const idEstado = this.value;
@@ -172,7 +172,7 @@ $(document).ready(function () {
             })
             .catch(error => console.error('Error al cargar los estados:', error));
     }
-    
+
     function cargarCiudades(idEstado) {
         fetch(`http://localhost/SustainCities/backend/getCiudades.php?id_estado=${idEstado}`)
             .then(response => response.json())
@@ -202,7 +202,7 @@ $(document).ready(function () {
             correo: document.getElementById('correo').value,
             password: document.getElementById('contraseña').value
         };
-    
+
         fetch('http://localhost/SustainCities/backend/register.php', {
             method: 'POST',
             headers: {
@@ -261,13 +261,13 @@ function loginUser() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify( data ) 
+        body: JSON.stringify( data )
     })
     .then(response => response.json())
     .then(data => {
         if (data.message === 'Login exitoso') {
             // Redirige al usuario si el inicio de sesión es exitoso
-            window.location.href = 'foro.php';
+            window.location.href = 'foro.html';
         } else {
             // Si la respuesta no es un "Login exitoso", muestra un mensaje de error
             Swal.fire({

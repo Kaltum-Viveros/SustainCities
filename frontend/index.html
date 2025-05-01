@@ -12,10 +12,17 @@
     <header>
         <img src="resources/img/logoSC.png" alt="Logo" id="logo" />
 
+        <!-- Mostrar nombre de usuario si está logueado -->
+        <div id="user-info" style="display: none;">
+            <span id="user-name"></span>
+            <button onclick="cerrarSesion();">Cerrar sesión</button>
+        </div>
+
         <div onclick="irAlForo();" id="foro">
             <p>Ir Al Foro</p>
             <img src="resources/img/foro.png" alt="Foro" />
         </div>
+
     </header>
 
     <div class="parallax">
@@ -41,6 +48,7 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="info.js"></script>
 </body>
 </html>

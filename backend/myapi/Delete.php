@@ -6,42 +6,51 @@ include_once __DIR__.'/DataBase.php';
 
 class Delete extends DataBase {
 
-    public function __construct($db){
+    public function __construct($db = 'sustaincities') {
         $this->data = array();
         parent::__construct($db);
     }
 
     public function deletePost($id_post) {
-        // Verificar si el post existe y actualizar su estado a 'eliminado'
-        $query = "UPDATE post SET eliminado = 1 WHERE id_post = ?";
-        $stmt = $this->conexion->prepare($query);
-        
-        // Comprobar si la preparación de la sentencia fue exitosa
-        if ($stmt === false) {
-            $this->data['status'] = "error";
-            $this->data['message'] = "Error al preparar la consulta: " . mysqli_error($this->conexion);
-            echo $this->getData();
-            return;
-        }
+        try {
+            // Verificar si el post existe y actualizar su estado a 'eliminado'
+            $query = "UPDATE post SET eliminado = 1 WHERE id_post = ?";
+            $stmt = $this->conexion->prepare($query);
 
-        // Vincular el parámetro y ejecutar
-        $stmt->bind_param("i", $id_post);
-        
-        if ($stmt->execute()) {
-            // Si la ejecución es exitosa
-            $this->data['status'] = "success";
-            $this->data['message'] = "Post eliminado correctamente";
-        } else {
-            // En caso de error en la ejecución
-            $this->data['status'] = "error";
-            $this->data['message'] = "Error al eliminar el post: " . mysqli_error($this->conexion);
-        }
+            if ($stmt === false) {
+                throw new \PDOException("Error al preparar la consulta");
+            }
 
-        // Cerrar el statement
-        $stmt->close();
+            // Ejecutar la consulta con parámetros
+            if ($stmt->execute([$id_post])) {
+                $rowCount = $stmt->rowCount();
+
+                if ($rowCount > 0) {
+                    $this->data = [
+                        'status' => "success",
+                        'message' => "Post eliminado correctamente",
+                        'affected_rows' => $rowCount
+                    ];
+                } else {
+                    $this->data = [
+                        'status' => "warning",
+                        'message' => "No se encontró el post con el ID proporcionado"
+                    ];
+                }
+            } else {
+                throw new \PDOException("Error al ejecutar la consulta");
+            }
+
+        } catch (\PDOException $e) {
+            $this->data = [
+                'status' => "error",
+                'message' => $e->getMessage(),
+                'error_info' => isset($stmt) ? $stmt->errorInfo() : $this->conexion->errorInfo()
+            ];
+        }
 
         // Retornar los datos en formato JSON
-        echo $this->getData();
+        header('Content-Type: application/json');
+        echo json_encode($this->data);
     }
 }
-?>

@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = new Update('sustaincities');
 
     // Obtener los datos del formulario
-    $titulo = $_POST['title'] ?? null; 
-    $descripcion = $_POST['content'] ?? null; 
+    $titulo = $_POST['title'] ?? null;
+    $descripcion = $_POST['content'] ?? null;
     $id_post = $_POST['post_id'];
 
     // Validar datos requeridos

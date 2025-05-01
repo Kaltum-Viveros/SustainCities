@@ -47,7 +47,6 @@ $(document).ready(function () {
                                 <textarea name="content" id="content" rows="5" placeholder="Escribe tu post aquí..." required></textarea>
                                 <div id="image-container" style="display: none;">
                                     <label for="current-image">Imagen Actual:</label>
-                                    <img id="current-image" src="https://via.placeholder.com/150" alt="Imagen actual" style="max-width: 150px; max-height: 150px;">
                                     <br>
                                 </div>
                                 <label for="images">Sube imágenes (opcional):</label>
@@ -76,7 +75,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     $(document).on('submit', '#createPostForm', function(e) {
         e.preventDefault(); // Evitar que el formulario recargue la página
         enviarPost(this); // Llamar a la función para enviar el post
@@ -224,23 +223,23 @@ $(document).ready(function () {
                             $.get('/SustainCities/backend/getPost.php', { id: id_post }, function(response) {
                                 const post = response.posts[0];
                                 console.log(post);
-                        
+
                                 // Rellenar el formulario con los datos del post
                                 $('#title').val(post.titulo);
                                 $('#content').val(post.contenido);
                                 $('#post_id').val(post.id_post);
                                 console.log(post.id_post);
-                        
+
                                 // Mostrar la imagen actual si existe
                                 if (post.imagen) {
                                     $('#current-image').attr('src', 'data:image/jpeg;base64,' + post.imagen);
                                     $('#image-container').show(); // Mostrar el contenedor de imagen actual y campo de subida
                                 } else {
                                 }
-                        
+
                                 // Asegurarse de que el campo de imagen esté listo para aceptar una nueva imagen
                                 $('#image').val(''); // Limpiar el campo de entrada de imagen para la edición
-                        
+
                                 $('#nameP').text('Editar Post');
                                 $('#aceptar').text('Guardar Cambios');
                                 editar = true;
@@ -306,16 +305,16 @@ $(document).ready(function () {
     $(document).off('click', '.ver-comentarios').on('click', '.ver-comentarios', function() {
         var postId = $(this).data("post-id");
         var comentariosContainer = $("#comentarios-container-" + postId);
-        
+
         // Alternar la visibilidad del contenedor de comentarios
         comentariosContainer.toggle();
-        
+
         // Si los comentarios aún no han sido cargados, cargarlos ahora
         if (comentariosContainer.is(":visible") && comentariosContainer.find(".comment").length === 0) {
             getComments(postId);
         }
     });
-    
+
     function getComments(postId) {
         $.ajax({
             url: 'http://localhost/SustainCities/backend/getComments.php',
@@ -323,11 +322,11 @@ $(document).ready(function () {
             data: { post_id: postId },
             success: function(response) {
                 console.log(response);  // Verifica la respuesta aquí
-    
+
                 // Comprobar que la respuesta contiene comentarios
                 if (response.status === 'success' && Array.isArray(response.comentarios)) {
                     let comentariosHtml = '';
-    
+
                     // Iterar sobre los comentarios y agregar el HTML correspondiente
                     response.comentarios.forEach(function(comentario) {
                         comentariosHtml += `
@@ -340,7 +339,7 @@ $(document).ready(function () {
                             </div>
                         `;
                     });
-    
+
                     // Inyectar los comentarios en el contenedor adecuado
                     $("#comentarios-post-" + postId).html(comentariosHtml);
                 } else {
@@ -352,7 +351,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: 'error',
                     title: '¡Error!',
-                    text: `Error al cargar los comentarios}`,
+                    text: `Error al cargar los comentarios`,
                     customClass: {
                         popup: 'swal-darkblue-popup',
                         confirmButton: 'swal-darkblue-button'
@@ -362,8 +361,7 @@ $(document).ready(function () {
             }
         });
     }
-    
-    
+
     $(document).off('click', '.submit-comment').on('click', '.submit-comment', function() {
         var postId = $(this).data("post-id");
         var comentario = $("#comentario-input-" + postId).val();
@@ -386,7 +384,7 @@ $(document).ready(function () {
                                 <div class="comment-body">${comentario}</div>
                             </div>
                         `;
-                        
+
                         $("#comentarios-post-" + postId).prepend(comentarioHtml); // Insertar al inicio de los comentarios
                         $("#comentario-input-" + postId).val(""); // Limpiar el campo de comentario
                     } else {
@@ -416,7 +414,6 @@ $(document).ready(function () {
             });
         }
     })
-    
 
     function postInicio() {
         $.ajax({
@@ -768,7 +765,7 @@ $(document).ready(function () {
     $(document).on('click', '#like-buton', function() {
         const id_post = $(this).closest('.post').find('.id_post').val();
         console.log('Entrando al clic. ID del post:', id_post);
-    
+
         // Realiza la solicitud al servidor para registrar el "like"
         $.ajax({
             url: '../backend/like.php',
@@ -780,13 +777,13 @@ $(document).ready(function () {
                 if (data.status === 'success') {
                     // Verifica si la acción fue "like" o "unlike"
                     const action = data.message; // Asumiendo que el servidor devuelve esta propiedad
-    
+
                     const postElement = $(this).closest('.post');
                     const likesCount = postElement.find('.likes-count');
-    
+
                     if (likesCount.length) {
                         let currentLikes = parseInt(likesCount.text()) || 0;
-    
+
                         if (action === 'Like added') {
                             // Incrementa el contador de likes y agrega la clase "active" al botón
                             likesCount.text(currentLikes + 1);
@@ -802,6 +799,68 @@ $(document).ready(function () {
                 }
             },
         });
+    });
+
+    fetch('../backend/usuario-data.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    $('#user-primer-nombre').text(data.data.primer_nombre);
+                    $('#user-ciudad').text(data.data.ciudad);
+                } else {
+                    console.error('Error:', data.message);
+                }
+            })
+            .catch(error => console.error('Error al obtener datos:', error));
+
+    // Manejar clic en cerrar sesión
+    $('#logout-btn').on('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Cerrar sesión?',
+            text: "¿Estás seguro que deseas salir?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cerrar sesión',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                popup: 'swal-darkblue-popup',
+                confirmButton: 'swal-darkblue-button',
+                cancelButton: 'swal-darkblue-button'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../backend/logout.php',
+                    type: 'POST',
+                    success: function() {
+                        window.location.href = '../frontend/login-registro.html';
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error',
+                            'No se pudo cerrar la sesión',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+
+    $.ajax({
+        url: '../backend/usuario-data.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.status !== 'success') {
+                // Redirigir a login si no hay sesión
+                window.location.href = '../frontend/login-registro.html';
+            }
+        },
+        error: function() {
+            window.location.href = '../frontend/login-registro.html';
+        }
     });
 
 });

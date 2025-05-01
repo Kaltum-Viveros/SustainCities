@@ -1,76 +1,66 @@
 <?php
-    namespace SustainCities\backend\myapi;
-    use SustainCities\backend\myapi\DataBase;
+namespace SustainCities\backend\myapi;
+use SustainCities\backend\myapi\DataBase;
 
-    include_once __DIR__.'/DataBase.php';
+include_once __DIR__.'/DataBase.php';
 
-    class Update extends DataBase{
+class Update extends DataBase {
 
-        public function __construct($db){
-            $this->data = array();
-            parent::__construct($db);
-        }
-        
-        public function updatePost($titulo, $descripcion, $imagen, $id_post) {
-            $this->conexion->begin_transaction();
-            $error = false;
+    public function __construct($db = 'sustaincities') {
+        $this->data = array();
+        parent::__construct($db);
+    }
+
+    public function updatePost($titulo, $descripcion, $imagen, $id_post) {
+        try {
+            $this->conexion->beginTransaction();
             $errorMessage = '';
-        
+
             // Actualizar el post
             $queryPost = "UPDATE post SET titulo = ?, contenido = ? WHERE id_post = ?";
             $stmtPost = $this->conexion->prepare($queryPost);
-            $stmtPost->bind_param("ssi", $titulo, $descripcion, $id_post);
-        
-            if (!$stmtPost->execute()) {
-                $error = true;
-                $errorMessage = "Error al actualizar el post: " . $stmtPost->error;
-            } else {
-                // Validar si existe una imagen
-                if ($imagen && $imagen['error'] === UPLOAD_ERR_OK) {
-                    $imageContent = file_get_contents($imagen['tmp_name']);
-        
-                    // Verificar si ya existe una imagen asociada al post
-                    $queryCheckImage = "SELECT COUNT(*) AS count FROM imagenes WHERE id_post = ?";
-                    $stmtCheckImage = $this->conexion->prepare($queryCheckImage);
-                    $stmtCheckImage->bind_param("i", $id_post);
-                    $stmtCheckImage->execute();
-                    $result = $stmtCheckImage->get_result();
-                    $row = $result->fetch_assoc();
-                    $stmtCheckImage->close();
-        
-                    if ($row['count'] > 0) {
-                        // Actualizar la imagen si ya existe
-                        $queryImagen = "UPDATE imagenes SET imagen = ? WHERE id_post = ?";
-                    } else {
-                        // Insertar una nueva imagen si no existe
-                        $queryImagen = "INSERT INTO imagenes (imagen, id_post) VALUES (?, ?)";
-                    }
-        
-                    $stmtImagen = $this->conexion->prepare($queryImagen);
-                    $stmtImagen->bind_param("bi", $imageContent, $id_post);
-                    $stmtImagen->send_long_data(0, $imageContent);
-        
-                    if (!$stmtImagen->execute()) {
-                        $error = true;
-                        $errorMessage = "Error al guardar la imagen: " . $stmtImagen->error;
-                    }
-        
-                    $stmtImagen->close();
+
+            if (!$stmtPost->execute([$titulo, $descripcion, $id_post])) {
+                throw new \Exception("Error al actualizar el post: " . implode(" ", $stmtPost->errorInfo()));
+            }
+
+            // Validar si existe una imagen
+            if ($imagen && $imagen['error'] === UPLOAD_ERR_OK) {
+                $imageContent = file_get_contents($imagen['tmp_name']);
+
+                // Verificar si ya existe una imagen asociada al post
+                $queryCheckImage = "SELECT COUNT(*) AS count FROM imagenes WHERE id_post = ?";
+                $stmtCheckImage = $this->conexion->prepare($queryCheckImage);
+                $stmtCheckImage->execute([$id_post]);
+                $row = $stmtCheckImage->fetch(\PDO::FETCH_ASSOC);
+
+                if ($row['count'] > 0) {
+                    // Actualizar la imagen si ya existe
+                    $queryImagen = "UPDATE imagenes SET imagen = ? WHERE id_post = ?";
+                } else {
+                    // Insertar una nueva imagen si no existe
+                    $queryImagen = "INSERT INTO imagenes (imagen, id_post) VALUES (?, ?)";
+                }
+
+                // Manejo especial para datos binarios en SQL Server
+                $stmtImagen = $this->conexion->prepare($queryImagen);
+                $stmtImagen->bindParam(1, $imageContent, \PDO::PARAM_LOB, 0, \PDO::SQLSRV_ENCODING_BINARY);
+                $stmtImagen->bindParam(2, $id_post, \PDO::PARAM_INT);
+
+                if (!$stmtImagen->execute()) {
+                    throw new \Exception("Error al guardar la imagen: " . implode(" ", $stmtImagen->errorInfo()));
                 }
             }
-        
-            // Confirmar o revertir la transacción
-            if ($error) {
-                $this->conexion->rollback();
-                $this->data = array('status' => 'error', 'message' => $errorMessage);
-            } else {
-                $this->conexion->commit();
-                $this->data = array('status' => 'success', 'message' => 'Post actualizado exitosamente.');
-            }
-        
-            $stmtPost->close();
-            echo json_encode($this->data);
+
+            $this->conexion->commit();
+            $this->data = ['status' => 'success', 'message' => 'Post actualizado exitosamente.'];
+
+        } catch (\Exception $e) {
+            $this->conexion->rollBack();
+            $this->data = ['status' => 'error', 'message' => $e->getMessage()];
         }
-           
+
+        echo json_encode($this->data);
     }
+}
 ?>
