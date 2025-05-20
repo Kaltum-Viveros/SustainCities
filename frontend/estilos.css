@@ -219,12 +219,6 @@ nav {
     z-index: 10;
 }
 
-/*#contenedor-estilo {
-    background-color: #02121f;
-    border-radius: 20px;
-    padding: 80px;
-}*/
-
 .fotosContenedor {
     width: 90%;
     max-width: 800px;
@@ -310,13 +304,6 @@ li {
     width: 100px;
     height: 100px;
 }
-
-
-/* contenedores */
-
-/*#contenedor-estilo h2 {
-    color: #D9B310;
-}*/
 
 .contenedor-intro-cs {
     display: grid;
@@ -410,6 +397,11 @@ li {
     height: 430px;
     object-fit: cover;
     display: block;
+    transition: filter 0.5s ease-in-out;
+}
+
+.slide:hover img {
+    filter: grayscale(100%) brightness(0.6); /* Efecto blanco y negro con oscurecimiento */
 }
 
 .slide::after {
@@ -439,7 +431,6 @@ li {
     text-align: center;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
     padding: 20px;
-    background: rgba(0, 0, 0, 0.6);
     border-radius: 8px;
     opacity: 0;
     transition: all 0.4s ease-in-out;
@@ -460,6 +451,7 @@ li {
     margin: 0;
     transform: translateY(20px);
     transition: inherit;
+    text-align: center; 
 }
 
 .slide:hover .slide-contenido {
@@ -638,7 +630,6 @@ button.next {
     border: 3px solid #D9B310;
     border-radius: 15px;
     padding: 40px;
-    /*max-width: 1000px;*/
     margin: 0 auto;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     font-family: 'Montserrat', 'Roboto', sans-serif;
@@ -663,7 +654,7 @@ button.next {
     color: #fff;
     text-align: center;
     font-size: 3rem;
-    margin-bottom: 10px;
+    margin-bottom: 50px;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 900;
@@ -679,7 +670,7 @@ button.next {
     color: rgba(255, 255, 255, 0.8);
     text-align: center;
     font-size: 1.2rem;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 300;
@@ -841,3 +832,142 @@ button.next {
 }
 
 
+/* Estilos para h2 */
+#contenedor-estilo h2 {
+    color: #D9B310;
+    font-size: 1.8rem;
+    margin: 20px 0 20px; 
+    position: relative;
+    padding-bottom: 10px;
+}
+
+#contenedor-estilo h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #D9B310;
+}
+
+/* Sección introductoria */
+.contenedor-intro-cs {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.contenedor-intro-cs p {
+    flex: 1;
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+/* Imagen más corta y con margen */
+.img-cortas {
+    max-width: 750px;
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid rgba(217, 179, 16, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-left: 20px; /* espacio entre imagen y texto */
+}
+
+/* Lista de características */
+.contenedor-caracteristicas-cs ul {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    gap: 15px;
+}
+
+.contenedor-caracteristicas-cs li {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-left: 4px solid #D9B310;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease;
+}
+
+.contenedor-caracteristicas-cs li:hover {
+    transform: translateX(10px);
+    background: rgba(217, 179, 16, 0.1);
+}
+
+.contenedor-caracteristicas-cs b {
+    color: #D9B310;
+    font-weight: 700;
+}
+
+/* Beneficios */
+.lista-beneficios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.beneficio {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(217, 179, 16, 0.3);
+}
+
+.beneficio:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-color: #D9B310;
+}
+
+.iconos {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 5px rgba(217, 179, 16, 0.5));
+}
+
+/* Sección final */
+#parrafo-afecta{
+    font-size: 1.1rem;
+    margin-top: 7px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .contenedor-intro-cs {
+        flex-direction: column;
+    }
+
+    .img-cortas {
+        width: 100%;
+        max-width: 700px;
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    #contenedor-estilo {
+        padding: 25px;
+    }
+
+    #contenedor-estilo h2 {
+        font-size: 1.5rem;
+    }
+
+    .lista-beneficios {
+        grid-template-columns: 1fr;
+    }
+
+    .contenedor-caracteristicas-cs li {
+        padding: 15px;
+    }
+}

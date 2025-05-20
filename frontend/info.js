@@ -11,7 +11,7 @@ function initializeCarousel() {
     const nextButton = document.querySelector('.next');
     let currentIndex = 0;
     let autoSlideInterval;
-    const slideDuration = 5000; // 5 segundos
+    const slideDuration = 3000; // 5 segundos
 
     function updateSlides() {
         slides.forEach((slide, index) => {
@@ -432,21 +432,19 @@ $(document).ready(function() {
         template_bar += `
 
                     <div id="contenedor-estilo">
-                        <h1>Ciudades y Comunidades Sostenibles</h1>
+                        <h1 class="titulo-ods">CIUDADES Y COMUNIDADES <span class="ods-numero">SOTENIBLES</h1>
 
                         <div class="contenedor-intro-cs">
                         
                             <p>
                                 Las comunidades y ciudades sostenibles son aquellas que buscan mejorar la calidad de vida de sus habitantes al mismo tiempo que minimizan su impacto negativo en el medio ambiente. Se trata de un modelo de desarrollo urbano que busca un equilibrio entre el crecimiento económico, el cuidado del entorno natural y el bienestar social.
-
-                                <br/>
                             
-                                Las ciudades representan el futuro del modo de vida global. La población mundial alcanzó los 8000 millones de personas en 2022, de las cuales más de la mitad viven en zonas urbanas. Se prevé que esta cifra aumente y que para 2050 el 70 % de la población vivirá en ciudades.<br/>
+                                La población mundial alcanzó los 8000 millones de personas en 2022, de las cuales más de la mitad viven en zonas urbanas. Se prevé que esta cifra aumente y que para 2050 el 70 % de la población vivirá en ciudades.<br/>
                                 Aproximadamente 1100 millones de personas viven actualmente en barrios marginales, o en condiciones similares en las ciudades, y se espera que en los próximos 30 años haya 2000 millones más.<br/> 
 
                                 <br/>
 
-                                Sin embargo, muchas de estas ciudades no están preparadas para esta rápida urbanización, y el desarrollo de la vivienda, las infraestructuras y los servicios se ve superado, lo que provoca un crecimiento de los barrios marginales o de condiciones similares. El crecimiento urbano descontrolado, la contaminación atmosférica y la escasez de espacios públicos abiertos persisten en las ciudades.<br/>
+                                Sin embargo, muchas de estas ciudades no están preparadas para esta rápida urbanización, y el desarrollo de la vivienda, las infraestructuras y los servicios se ve superado, lo que provoca un crecimiento de los barrios marginales o de condiciones similares.  <br/>
                                 Desde la implementación de los ODS en 2015 se han realizado grandes progresos y, a día de hoy, el número de países con estrategias nacionales y locales de reducción del riesgo de catástrofes se ha duplicado. No obstante, siguen existiendo problemas y, en 2022, solo la mitad de la población urbana mundial tenía acceso al transporte público.<br/>
                                 No es posible alcanzar el desarrollo sostenible sin transformar significativamente la forma en que se construyen y gestionan los espacios urbanos.
 
@@ -495,7 +493,7 @@ $(document).ready(function() {
                         </div>
                         
                         <h2>¿En qué nos afecta?</h2>
-                        <p>
+                        <p id="parrafo-afecta">
                             Con el tiempo, estos problemas afectarán a toda la población. La desigualdad puede generar malestar e inseguridad, la contaminación deteriora la salud de la población y afecta a la productividad de los trabajadores y, por tanto, a la economía, y los desastres naturales pueden alterar el estilo de vida de las personas. La contaminación del aire no es solo un problema urbano que perjudica la salud de millones de personas, sino que también afecta a los pueblos y las zonas rurales.
                         </p>
                     </div>
