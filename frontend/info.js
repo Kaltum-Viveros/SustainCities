@@ -10,6 +10,8 @@ function initializeCarousel() {
     const prevButton = document.querySelector('.prev');
     const nextButton = document.querySelector('.next');
     let currentIndex = 0;
+    let autoSlideInterval;
+    const slideDuration = 5000; // 5 segundos
 
     function updateSlides() {
         slides.forEach((slide, index) => {
@@ -20,16 +22,43 @@ function initializeCarousel() {
         });
     }
 
-    prevButton.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        updateSlides();
-    });
-
-    nextButton.addEventListener('click', () => {
+    function nextSlide() {
         currentIndex = (currentIndex + 1) % slides.length;
         updateSlides();
-    });
+        resetAutoSlide();
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlides();
+        resetAutoSlide();
+    }
+
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(nextSlide, slideDuration);
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    }
+
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+
+    // Pausar al interactuar
+    const slider = document.querySelector('.slider');
+    slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+    slider.addEventListener('mouseleave', startAutoSlide);
+
+    // Iniciar
+    startAutoSlide();
+    updateSlides();
 }
+
+document.addEventListener('DOMContentLoaded', initializeCarousel);
+
+// ---------------------------------------------------------
 
 const heading = document.getElementById("heading");
 const moon = document.getElementById("moon");
