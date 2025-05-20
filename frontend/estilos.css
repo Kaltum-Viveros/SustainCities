@@ -219,11 +219,11 @@ nav {
     z-index: 10;
 }
 
-#contenedor-estilo {
+/*#contenedor-estilo {
     background-color: #02121f;
     border-radius: 20px;
     padding: 80px;
-}
+}*/
 
 .fotosContenedor {
     width: 90%;
@@ -314,9 +314,10 @@ li {
 
 /* contenedores */
 
-#contenedor-estilo h2 {
+/*#contenedor-estilo h2 {
     color: #D9B310;
-}
+}*/
+
 .contenedor-intro-cs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -375,7 +376,6 @@ li {
 }
 
 /* -- Estilo del carrusel 10 ciudades -- */
-
 .slider {
     position: relative;
     width: 100%;
@@ -497,6 +497,7 @@ button.next {
     right: 10px;
 }
 
+/* -------------------------------------------------------------------*/
 .tabla-ranking {
     width: 100%;
     border-collapse: collapse;
@@ -598,4 +599,214 @@ button.next {
     transform-origin: bottom right;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+/* diseño seccion metas ------------------------------------------------------------------------------ */
+
+#contenedor-estilo {
+    background: linear-gradient(135deg, #02121f 0%, #0a2a3e 100%);
+    border: 3px solid #D9B310;
+    border-radius: 15px;
+    padding: 40px;
+    /*max-width: 1000px;*/
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+
+#contenedor-estilo::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, #D9B310, #02121f, #D9B310);
+    z-index: -1;
+    filter: blur(20px);
+    opacity: 0.7;
+}
+
+.titulo-ods {
+    color: #fff;
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.ods-numero {
+    color: #D9B310;
+    font-weight: 900;
+}
+
+.subtitulo {
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 300;
+}
+
+.lista-metas {
+    display: grid;
+    gap: 20px;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 4px solid #D9B310;
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.meta:hover {
+    transform: translateX(10px);
+    background: rgba(217, 179, 16, 0.1);
+    box-shadow: 0 5px 15px rgba(217, 179, 16, 0.2);
+}
+
+.numero {
+    background: #D9B310;
+    color: #02121f;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.texto h3 {
+    color: #D9B310;
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.texto p {
+    color: #e0e0e0;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Efecto neon en hover */
+.meta:hover .numero {
+    box-shadow: 0 0 10px #D9B310, 0 0 20px rgba(217, 179, 16, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .meta {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .numero {
+        margin-bottom: 10px;
+    }
+}
+
+/* Estilo de las ciudades disponibles -------------------------------------------------- */
+/* Estilos para la nueva estructura */
+.header-content {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.divider {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #D9B310, transparent);
+    margin: 15px auto;
+    width: 60%;
+}
+
+.intro-section {
+    margin-bottom: 50px;
+}
+
+.intro-text {
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    text-align: justify;
+}
+
+.highlight-box {
+    background: rgba(217, 179, 16, 0.1);
+    border-left: 4px solid #D9B310;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.highlight-box p {
+    color: #f0f0f0;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.highlight-box strong {
+    color: #D9B310;
+}
+
+.ciudades-destacadas {
+    color: #D9B310;
+    text-align: center;
+    font-size: 1.3rem;
+    margin: 40px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.ciudades-destacadas::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: #D9B310;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .header-content {
+        margin-bottom: 30px;
+    }
+    
+    .intro-text {
+        font-size: 1rem;
+    }
+    
+    .ciudades-destacadas {
+        font-size: 1.1rem;
+        margin: 30px 0;
+    }
+    
+    .divider {
+        width: 80%;
+    }
+}
+
 

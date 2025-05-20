@@ -498,17 +498,25 @@ $(document).ready(function() {
                 template_bar += `
 
                             <div id="contenedor-estilo"> 
-                                    <h1>10 ciudades más sostenibles</h1>
+                                <div class="header-content">
+                                    <h1 class="titulo-ods">10 CIUDADES <span class="ods-numero">MÁS SOSTENIBLES</span></h1>
+                                    <div class="divider"></div>
+                                    <p class="subtitulo">LÍDERES GLOBALES EN EQUILIBRIO ENTRE DESARROLLO Y MEDIOAMBIENTE</p>
+                                </div>
                                 
-                                <p>
-                                    A lo largo del mundo, encontramos ejemplos de ciudades que destacan por su enfoque sostenible, combinando desarrollo y cuidado ambiental. Estos lugares, conocidas como ciudades inteligentes, adoptan tecnologías eficientes que las transforman en ecociudades, promoviendo un equilibrio entre el respeto por el medioambiente y el bienestar de las personas. 
-                                    En 2022, Arcadis, una destacada firma de consultoría en diseño ecológico y gestión de recursos naturales, llevó a cabo un estudio para identificar las ciudades más sostenibles a nivel global. Este análisis se basó en diversos indicadores relacionados con tres pilares fundamentales: social, ambiental y económico, los cuales están alineados con los Objetivos de Desarrollo Sostenible de la ONU.
-                                    El informe incluyó un total de 100 ciudades que, cada una a su manera, sirven de ejemplo en la transición hacia una mayor sostenibilidad. Estas ciudades reinvierten sus ganancias en iniciativas sociales y ambientales que buscan mejorar la calidad de vida de sus habitantes. Destacan nombres como Estocolmo, Tokio y Ámsterdam, que han mantenido su presencia en este tipo de rankings desde 2018. <br/> <br/>
-                                </p>
-
-                                <h4>Destacamos 10 ciudades líderes en sostenibilidad a nivel mundial, reconocidas por su habilidad para equilibrar el desarrollo con el respeto por el medioambiente.</h4> 
-
-                                <br/> <br/>
+                                <div class="intro-section">
+                                    <p class="intro-text">
+                                        A lo largo del mundo, encontramos ejemplos de ciudades que destacan por su enfoque sostenible, combinando desarrollo y cuidado ambiental. Estos lugares, conocidas como ciudades inteligentes, adoptan tecnologías eficientes que las transforman en ecociudades, promoviendo un equilibrio entre el respeto por el medioambiente y el bienestar de las personas.
+                                    </p>
+                                    
+                                    <div class="highlight-box">
+                                        <p>
+                                            <strong>Estudio Arcadis 2022:</strong> Análisis de 100 ciudades basado en indicadores sociales, ambientales y económicos alineados con los ODS de la ONU. Ciudades como Estocolmo, Tokio y Ámsterdam mantienen su liderazgo desde 2018.
+                                        </p>
+                                    </div>
+                                    
+                                    <h4 class="ciudades-destacadas">Destacamos 10 ciudades líderes en sostenibilidad a nivel mundial, reconocidas por su habilidad para equilibrar el desarrollo con el respeto por el medioambiente.</h4>
+                                </div>
 
                                 <div class="slider">
                                     <button class="prev">⟨</button>
@@ -804,23 +812,103 @@ $(document).ready(function() {
                 let template_bar = '';
                 template_bar += `
 
-                            <div id="contenedor-estilo"> 
-                                    <h1>Metas</h1>
+                        <div id="contenedor-estilo">
+                            <h1 class="titulo-ods">METAS <span class="ods-numero">ODS 11</span></h1>
+                            <p class="subtitulo">CIUDADES Y COMUNIDADES SOSTENIBLES</p>
+                            
+                            <div class="lista-metas">
+                                <!-- Meta 1 -->
+                                <div class="meta">
+                                    <div class="numero">01</div>
+                                    <div class="texto">
+                                        <h3>VIVIENDA DIGNA Y SERVICIOS BÁSICOS</h3>
+                                        <p>De aquí a 2030, asegurar el acceso de todas las personas a viviendas y servicios básicos adecuados, seguros y asequibles y mejorar los barrios marginales.</p>
+                                    </div>
+                                </div>
 
-                                <p>El Objetivo de Desarrollo Sostenible (ODS) 11 de la ONU tiene como objetivos...</p>
-                                <ol>
-                                    <li>De aquí a 2030, asegurar el acceso de todas las personas a viviendas y servicios básicos adecuados, seguros y asequibles y mejorar los barrios marginales.</li>
-                                    <li>De aquí a 2030, proporcionar acceso a sistemas de transporte seguros, asequibles, accesibles y sostenibles para todos y mejorar la seguridad vial, en particular mediante la ampliación del transporte público, prestando especial atención a las necesidades de las personas en situación de vulnerabilidad, las mujeres, los niños, las personas con discapacidad y las personas de edad.</li>
-                                    <li>De aquí a 2030, aumentar la urbanización inclusiva y sostenible y la capacidad para la planificación y la gestión participativas, integradas y sostenibles de los asentamientos humanos en todos los países.</li>
-                                    <li>Redoblar los esfuerzos para proteger y salvaguardar el patrimonio cultural y natural del mundo.</li>
-                                    <li>De aquí a 2030, reducir significativamente el número de muertes causadas por los desastres, incluidos los relacionados con el agua, y de personas afectadas por ellos, y reducir considerablemente las pérdidas económicas directas provocadas por los desastres en comparación con el producto interno bruto mundial, haciendo especial hincapié en la protección de los pobres y las personas en situaciones de vulnerabilidad.</li>
-                                    <li>De aquí a 2030, reducir el impacto ambiental negativo per capita de las ciudades, incluso prestando especial atención a la calidad del aire y la gestión de los desechos municipales y de otro tipo.</li>
-                                    <li>De aquí a 2030, proporcionar acceso universal a zonas verdes y espacios públicos seguros, inclusivos y accesibles, en particular para las mujeres y los niños, las personas de edad y las personas con discapacidad.</li>
-                                    <li>Apoyar los vínculos económicos, sociales y ambientales positivos entre las zonas urbanas, periurbanas y rurales fortaleciendo la planificación del desarrollo nacional y regional.</li>
-                                    <li>De aquí a 2020, aumentar considerablemente el número de ciudades y asentamientos humanos que adoptan e implementan políticas y planes integrados para promover la inclusión, el uso eficiente de los recursos, la mitigación del cambio climático y la adaptación a él y la resiliencia ante los desastres, y desarrollar y poner en práctica, en consonancia con el Marco de Sendai para la Reducción del Riesgo de Desastres 2015-2030, la gestión integral de los riesgos de desastre a todos los niveles.</li>
-                                    <li> Proporcionar apoyo a los países menos adelantados, incluso mediante asistencia financiera y técnica, para que puedan construir edificios sostenibles y resilientes utilizando materiales locales.</li>
-                                </ol>
+                                <!-- Meta 2 -->
+                                <div class="meta">
+                                    <div class="numero">02</div>
+                                    <div class="texto">
+                                        <h3>TRANSPORTE SOSTENIBLE Y SEGURO</h3>
+                                        <p>De aquí a 2030, proporcionar acceso a sistemas de transporte seguros, asequibles, accesibles y sostenibles para todos y mejorar la seguridad vial, en particular mediante la ampliación del transporte público, prestando especial atención a las necesidades de las personas en situación de vulnerabilidad, las mujeres, los niños, las personas con discapacidad y las personas de edad.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 3 -->
+                                <div class="meta">
+                                    <div class="numero">03</div>
+                                    <div class="texto">
+                                        <h3>URBANIZACIÓN INCLUSIVA Y SOSTENIBLE</h3>
+                                        <p>De aquí a 2030, aumentar la urbanización inclusiva y sostenible y la capacidad para la planificación y la gestión participativas, integradas y sostenibles de los asentamientos humanos en todos los países.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 4 -->
+                                <div class="meta">
+                                    <div class="numero">04</div>
+                                    <div class="texto">
+                                        <h3>PROTECCIÓN DEL PATRIMONIO MUNDIAL</h3>
+                                        <p>Redoblar los esfuerzos para proteger y salvaguardar el patrimonio cultural y natural del mundo.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 5 -->
+                                <div class="meta">
+                                    <div class="numero">05</div>
+                                    <div class="texto">
+                                        <h3>REDUCCIÓN DE MUERTES POR DESASTRES</h3>
+                                        <p>De aquí a 2030, reducir significativamente el número de muertes causadas por los desastres, incluidos los relacionados con el agua, y de personas afectadas por ellos, y reducir considerablemente las pérdidas económicas directas provocadas por los desastres en comparación con el producto interno bruto mundial, haciendo especial hincapié en la protección de los pobres y las personas en situaciones de vulnerabilidad.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 6 -->
+                                <div class="meta">
+                                    <div class="numero">06</div>
+                                    <div class="texto">
+                                        <h3>IMPACTO AMBIENTAL URBANO</h3>
+                                        <p>De aquí a 2030, reducir el impacto ambiental negativo per capita de las ciudades, incluso prestando especial atención a la calidad del aire y la gestión de los desechos municipales y de otro tipo.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 7 -->
+                                <div class="meta">
+                                    <div class="numero">07</div>
+                                    <div class="texto">
+                                        <h3>ESPACIOS PÚBLICOS VERDES</h3>
+                                        <p>De aquí a 2030, proporcionar acceso universal a zonas verdes y espacios públicos seguros, inclusivos y accesibles, en particular para las mujeres y los niños, las personas de edad y las personas con discapacidad.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 8 -->
+                                <div class="meta">
+                                    <div class="numero">08</div>
+                                    <div class="texto">
+                                        <h3>INTEGRACIÓN URBANO-RURAL</h3>
+                                        <p>Apoyar los vínculos económicos, sociales y ambientales positivos entre las zonas urbanas, periurbanas y rurales fortaleciendo la planificación del desarrollo nacional y regional.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 9 -->
+                                <div class="meta">
+                                    <div class="numero">09</div>
+                                    <div class="texto">
+                                        <h3>POLÍTICAS URBANAS RESILIENTES</h3>
+                                        <p>De aquí a 2020, aumentar considerablemente el número de ciudades y asentamientos humanos que adoptan e implementan políticas y planes integrados para promover la inclusión, el uso eficiente de los recursos, la mitigación del cambio climático y la adaptación a él y la resiliencia ante los desastres, y desarrollar y poner en práctica, en consonancia con el Marco de Sendai para la Reducción del Riesgo de Desastres 2015-2030, la gestión integral de los riesgos de desastre a todos los niveles.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Meta 10 -->
+                                <div class="meta">
+                                    <div class="numero">10</div>
+                                    <div class="texto">
+                                        <h3>APOYO A PAÍSES EN DESARROLLO</h3>
+                                        <p>Proporcionar apoyo a los países menos adelantados, incluso mediante asistencia financiera y técnica, para que puedan construir edificios sostenibles y resilientes utilizando materiales locales.</p>
+                                    </div>
+                                </div>
+                                
                             </div>
+                        </div>
                         `;
 
                 let contenedor = document.getElementById("contenedor");
