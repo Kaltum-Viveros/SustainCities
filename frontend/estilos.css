@@ -971,3 +971,46 @@ button.next {
         padding: 15px;
     }
 }
+
+#user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #0a1e2c;
+    padding: 10px 18px;
+    border-left: 4px solid #D9B310;
+    border-radius: 8px;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    transition: all 0.3s ease-in-out;
+}
+
+#user-info #user-name {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+#user-info button {
+    background-color: #D9B310;
+    color: #0a1e2c;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#user-info button:hover {
+    background-color: #f5d244;
+    transform: translateY(-2px);
+}
